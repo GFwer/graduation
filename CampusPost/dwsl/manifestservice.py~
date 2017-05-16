@@ -1,0 +1,657 @@
+from flask.ext import restful
+from flask import request
+from flask import jsonify
+from flask import Response
+from tools.info import Info
+from conf import httpserver, httpport
+from tools.crossdomain import allow_cross_domain
+from orml.manifestorml import Manifestorml
+from tools.log import logger
+
+
+            
+class Manifestnewest(restful.Resource):
+
+    '''
+    请求参数:
+    usertoken_str: tokenstr
+
+    返回值:
+    True, totallines,
+
+    manifest_id: 1
+    manifest_user: Tom
+    manifest_datetime: 15分钟前
+    manifest_title: 卖二手自行车
+    manifest_price: 188
+    manifest_desp: 九成新，只需188元
+    manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+    manifest_labels: [交通工具, 自行车, 白色]
+    manifest_visitcount: 100
+    manifest_logo: http://192.168.1.100:8080/logo/1.png
+    manifest_favorite: 0
+
+    manifest_id: 2
+    manifest_user: Tom
+    manifest_datetime: 15分钟前
+    manifest_title: 卖二手自行车
+    manifest_price: 188
+    manifest_desp: 九成新，只需188元
+    manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+    manifest_labels: [交通工具, 自行车, 白色]
+    manifest_visitcount: 100
+    manifest_logo: http://192.168.1.100:8080/logo/1.png
+    manifest_favorite: 1
+    '''
+    @allow_cross_domain
+    def get(self):  # 返回我的货单信息
+        logger().info("<br/>class Manifestnewest # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_startposi = request.args.get("manifest_startposi")
+        manifest_pagesize = request.args.get("manifest_pagesize")
+        if not all([manifest_startposi, manifest_pagesize]):
+            logger().info("<br/>class Manifestnewest # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestnewest(usertoken,manifest_startposi,manifest_pagesize)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestnewest # func get() # end<br/>")
+        return result
+              
+class Manifestiddetail(restful.Resource):
+         
+    '''
+    请求方式: GET
+    请求参数:
+    manifest_id: manifestid
+    usertoken_str: tokenstr
+    返回值:
+    True, 1,
+        manifest_id: 1
+        manifest_userid: 1
+        manifest_user: Tom
+        manifest_datetime: 15分钟前
+        manifest_title: 卖二手自行车
+        manifest_price: 188
+        manifest_desp: 九成新，只需188元
+        manifest_pics [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+        manifest_labels: [交通工具, 自行车, 白色]
+        manifest_visitcount: 100
+        manifest_logo: http://192.168.1.100:8080/logo/1.png
+        manifest_favorite: 1
+        manifest_comments:
+                comment_id: 1
+                comment_userid: 2
+                comment_username: Jack
+                comment_userlogo: http://192.168.1.100:8080/logo/2.png
+                comment_text: 这个车还不错
+                comment_parentid: 0
+                comment_datetime: 10分钟前 
+                comment_id: 2
+                comment_userid: 3
+                comment_username: Mary
+                comment_userlogo: http://192.168.1.100:8080/logo/3.png
+                comment_text: 我怎么感觉很一般呢
+                comment_parentid: 1
+                comment_datetime: 6分钟前
+                comment_id: 3
+                comment_userid: 4
+                comment_username: Lily
+                comment_userlogo: http://192.168.1.100:8080/logo/4.png
+                comment_text: 嗯嗯，我也觉得是
+                comment_parentid: 2
+                comment_datetime: 5分钟前
+                comment_id: 5
+                comment_userid: 3,
+                comment_username: Mary
+                comment_userlogo: http://192.168.1.100:8080/logo/3.png
+                comment_text: 对吧～
+                comment_parentid: 3
+                comment_datetime: 5分钟前
+                comment_id: 4
+                comment_userid: 5
+                comment_username: Lucy
+                comment_userlogo: http://192.168.1.100:8080/logo/5.png
+                comment_text: 可以考虑入手
+                comment_parentid: 0,
+                comment_datetime: 1分钟前
+    False, 数据库错误, None
+    备注: “manifest_desp”展示全部描述，注意级联评论回复的展示方法。注意要通过usertoken_str判断用户是否已经登录，如果登录了，要判断当前货单有没有被用户收藏，来决定右上角的收藏操作
+    '''
+    
+    @allow_cross_domain
+    def get(self):  # 根据货单编号查看详细信息 
+        logger().info("<br/>class Manifestiddetail# func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_id = request.args.get("manifest_id")
+        if not all([manifest_id]):
+            logger().info("<br/>class Manifestiddetail # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestiddetail(usertoken,manifest_id)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestiddetail # func get() # end<br/>")
+        return result
+         
+         
+class Manifestnewestpages(restful.Resource):
+         
+    '''
+    请求方式: GET
+    请求参数:
+    manifest_pagesize: pagesize
+    返回值:
+    True, None,
+        manifest_pagecount: 30
+    False, 数据库错误, None
+    '''
+    
+    @allow_cross_domain
+    def get(self):  #返回最新货单信息的总页码
+        logger().info("<br/>class Manifestnewestpages# func get() # begin<br/>")
+        manifest_pagesize = request.args.get("manifest_pagesize")
+        if not all([manifest_pagesize]):
+            logger().info("<br/>class Manifestnewestpages # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestnewestpages(manifest_pagesize)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestnewestpages # func get() # end<br/>")
+        return result         
+         
+class Manifestcontact(restful.Resource):
+         
+    '''
+    请求方式: GET
+    请求参数:
+    usertoken_str: tokenstr
+    manifest_id : manifestid
+    返回值:
+    True, None,
+        user_phone: 12345678
+        user_wx: 135798642
+        user_qq: 156273849
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    '''
+    
+    @allow_cross_domain
+    def get(self):  #根据货单查联系方式
+        logger().info("<br/>class Manifestcontact# func get() # begin<br/>")
+        manifest_id = request.args.get("manifest_id")
+        usertoken_str = request.args.get("usertoken_str")
+        if not all([manifest_id]):
+            logger().info("<br/>class Manifestcontact # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestcontact(usertoken_str,manifest_id)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestcontact # func get() # end<br/>")
+        return result                   
+        
+class Manifestcomment(restful.Resource):
+         
+    '''
+    请求方式: POST
+    请求参数:
+    usertoken_str: tokenstr
+    manifest_id: manifestid
+    comment_str: commentstr
+    返回值:
+    True, 评论成功, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    '''
+    
+    @allow_cross_domain
+    def post(self):  #评论货单
+        logger().info("<br/>class Manifestcomment# func get() # begin<br/>")
+        usertoken_str = request.form["usertoken_str"]
+        manifest_id = request.form["manifest_id"]
+        comment_str = request.form["comment_str"]
+        mo = Manifestorml()
+        Infoa = mo.manifestcomment(usertoken_str,manifest_id,comment_str)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestcomment # func get() # end<br/>")
+        return result            
+
+class Manifestreply(restful.Resource):
+         
+    '''
+    请求方式: POST
+    请求参数:
+    usertoken_str: tokenstr
+    comment_id: commentid
+    reply_str: replystr
+    返回值:
+    True, 回复成功, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    '''
+    
+    @allow_cross_domain
+    def post(self):  #回复评论
+        logger().info("<br/>class Manifestreply # func get() # begin<br/>")
+        usertoken_str = request.form["usertoken_str"]
+        comment_id = request.form["comment_id"]
+        reply_str = request.form["reply_str"]
+        if not all([comment_id,reply_str]):
+            logger().info("<br/>class Manifestreply # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestreply(usertoken_str,comment_id,reply_str)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestreply # func get() # end<br/>")
+        return result            
+        
+class Manifesthottest(restful.Resource):
+
+    '''
+    请求方式: GET
+    请求参数:
+        usertoken_str: tokenstr
+        manifest_startposi: startposi
+        manifest_pagesize: pagesize
+    返回值:
+        True, 50(totallines),
+            manifest_id: 1
+            manifest_user: Tom
+            manifest_datetime: 15分钟前
+            manifest_title: 卖二手自行车
+            manifest_price: 188
+            manifest_desp: 九成新，只需188元
+            manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/        pic/3.png]
+            manifest_labels: [交通工具, 自行车, 白色]
+            manifest_visitcount: 100
+            manifest_logo: http://192.168.1.100:8080/logo/1.png
+            manifest_favorite: 0
+            manifest_id: 2
+            manifest_user: Tom
+            manifest_datetime: 15分钟前
+            manifest_title: 卖二手自行车
+            manifest_price: 188
+            manifest_desp: 九成新，只需188元
+            manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+            manifest_labels: [交通工具, 自行车, 白色]
+            manifest_visitcount: 100
+            manifest_logo: http://192.168.1.100:8080/logo/1.png
+            manifest_favorite: 1
+        False, 数据库错误, None
+    备注: “infomsg”的位置绑定的是货单总条数。 “manifest_desp”，后端返回所有描述文字，由前端负责截取一定数量的字符，注意要通过          usertoken_str判断用户是否已经登录，如果登录了，要判断当前货单有没有被用户收藏，来决定右上角的收藏操作。startposi是起点，pagesize是页面大小，比如每页有10个货单，那么在第一次请求时，startposi=0，pagesize=10，用户下拉显示更多货单，发第二次请求，startposi=10, pagesize=10，依此类推。前端的配置文件里要写一个参数用来记录pagesize，也就是每页多少数据。
+    '''
+    @allow_cross_domain
+    def get(self):  
+        logger().info("<br/>class Manifesthottest # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_startposi = request.args.get("manifest_startposi")
+        manifest_pagesize = request.args.get("manifest_pagesize")
+        if not all([manifest_startposi, manifest_pagesize]):
+            logger().info("<br/>class Manifesthottest # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifesthottest(usertoken,manifest_startposi,manifest_pagesize)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifesthottest # func get() # end<br/>")
+        return result        
+   
+class Manifestfavorite(restful.Resource):
+
+    '''
+    路径: /v1/manifests/favorite/
+    请求方式: GET
+    请求参数:
+    返回值:
+    True, 已收藏货单（已取消收藏）, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    备注：注意收藏状态的相互切换。
+    '''
+    
+    @allow_cross_domain
+    def get(self):  
+        logger().info("<br/>class  Manifestfavourite # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_id = request.args.get("manifest_id")
+        if not all([manifest_id]):
+            logger().info("<br/>class  Manifestfavourite # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestfavorite(usertoken,manifest_id)
+        result = jsonify(Infoa)
+        logger().info("<br/>class  Manifestfavourite # func get() # end<br/>")
+        return result           
+   
+class Manifestrecommend(restful.Resource):
+
+    '''
+            路径: /v1/manifests/recommend/
+        请求方式: GET
+        请求参数:
+            usertoken_str: tokenstr
+            manifest_startposi: startposi
+            manifest_pagesize: pagesize
+
+        返回值:
+            True, 50(totallines),
+                manifest_id: 1
+                manifest_user: Tom
+                manifest_datetime: 15分钟前
+                manifest_title: 卖二手自行车
+                manifest_price: 188
+                manifest_desp: 九成新，只需188元
+                manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+                manifest_labels: [交通工具, 自行车, 白色]
+                manifest_visitcount: 100
+                manifest_logo: http://192.168.1.100:8080/logo/1.png
+                manifest_favorite: 0
+                manifest_id: 2
+                manifest_user: Tom
+                manifest_datetime: 15分钟前
+                manifest_title: 卖二手自行车
+                manifest_price: 188
+                manifest_desp: 九成新，只需188元
+                manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+                manifest_labels: [交通工具, 自行车, 白色]
+                manifest_visitcount: 100
+                manifest_logo: http://192.168.1.100:8080/logo/1.png
+                manifest_favorite: 1
+            False, 数据库错误, None
+        备注: “infomsg”的位置绑定的是货单总条数。 “manifest_desp”，后端返回所有描述文字，由前端负责截取一定数量的字符，注意要通过usertoken_str判断用户是否已经登录，如果登录了，要判断当前货单有没有被用户收藏，来决定右上角的收藏操作。startposi是起点，pagesize是页面大小，比如每页有10个货单，那么在第一次请求时，startposi=0，pagesize=10，用户下拉显示更多货单，发第二次请求，startposi=10, pagesize=10，依此类推。前端的配置文件里要写一个参数用来记录pagesize，也就是每页多少数据。
+    '''
+    
+    @allow_cross_domain
+    def get(self):  
+        logger().info("<br/>class Manifestrecomment # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_startposi = request.args.get("manifest_startposi")
+        manifest_pagesize = request.args.get("manifest_pagesize")
+        if not all([manifest_startposi, manifest_pagesize]):
+            logger().info("<br/>class Manifestrecomment # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestrecommend(usertoken,manifest_startposi,manifest_pagesize)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestrecomment # func get() # end<br/>")
+        return result       
+   
+class Manifestmyfavorite(restful.Resource):
+
+    '''
+    路径: /v1/manifests/myfavorite/
+    请求方式: GET
+    请求参数:
+
+    usertoken_str: tokenstr
+    manifest_startposi: startposi
+    manifest_pagesize: pagesize
+    返回值:
+    True, 50(totallines),
+        manifest_id: 1
+        manifest_user: Tom
+        manifest_datetime: 15分钟前
+        manifest_title: 卖二手自行车
+        manifest_price: 188
+        manifest_desp: 九成新，只需188元
+        manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+        manifest_labels: [交通工具, 自行车, 白色]
+        manifest_visitcount: 100
+        manifest_logo: http://192.168.1.100:8080/logo/1.png
+        manifest_favorite: 1
+        manifest_id: 2
+        manifest_user: Tom
+        manifest_datetime: 15分钟前
+        manifest_title: 卖二手自行车
+        manifest_price: 188
+        manifest_desp: 九成新，只需188元
+        manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+        manifest_labels: [交通工具, 自行车, 白色]
+        manifest_visitcount: 100
+        manifest_logo: http://192.168.1.100:8080/logo/1.png
+        manifest_favorite: 1
+    False, 数据库错误, None
+备注: “infomsg”的位置绑定的是货单总条数。 “manifest_desp”，后端返回所有描述文字，由前端负责截取一定数量的字符，注意要通过usertoken_str判断用户是否已经登录，如果登录了，要判断当前货单有没有被用户收藏，来决定右上角的收藏操作。startposi是起点，pagesize是页面大小，比如每页有10个货单，那么在第一次请求时，startposi=0，pagesize=10，用户下拉显示更多货单，发第二次请求，startposi=10, pagesize=10，依此类推。前端的配置文件里要写一个参数用来记录pagesize，也就是每页多少数据。
+    '''
+    
+    @allow_cross_domain
+    def get(self):  
+        logger().info("<br/>class Manifestmyfavorite # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_startposi = request.args.get("manifest_startposi")
+        manifest_pagesize = request.args.get("manifest_pagesize")
+        if not all([usertoken,manifest_startposi, manifest_pagesize]):
+            logger().info("<br/>class Manifestmyfavorite # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestmyfavorite(usertoken,manifest_startposi,manifest_pagesize)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestmyfavorite # func get() # end<br/>")
+        return result     
+   
+class Manifestpublish(restful.Resource):
+         
+    '''
+    路径: /v1/manifests/publish/
+    请求方式: POST
+    请求参数:
+    usertoken_str: tokenstr
+    manifest_title: manifesttitle
+    manifest_price: manifestprice
+    manifest_desp: manifestdesp
+    manifest_pics: manifestpics
+    返回值:
+    True, 发布成功, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    备注：注意主题manifest_title不能超过30个字。manifest_pics: 传到后端的格式是列表，如[“http://192.168.1.111:8080/logo/1.png“,       “http://192.168.1.111:8080/logo/2.png“, “http://192.168.1.111:8080/logo/3.png“],因为json默认是字符串，需要用pics = demjson.decode(manifest_pics)转成列表
+    '''
+    
+    @allow_cross_domain
+    def post(self):  #回复评论
+        logger().info("<br/>class Manifestpublish # func get() # begin<br/>")
+        usertoken_str = request.form["usertoken_str"]
+        manifest_title = request.form["manifest_title"]
+        manifest_price = request.form["manifest_price"]
+        manifest_desp = request.form["manifest_desp"]
+        manifest_pics = request.form["manifest_pics"]
+        print(manifest_pics)
+        if not all([usertoken_str,manifest_title, manifest_price,manifest_desp,manifest_pics]):
+            logger().info("<br/>class Manifestpublish # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestpublish(usertoken_str,manifest_title,manifest_price,manifest_desp,manifest_pics)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestpublish # func get() # end<br/>")
+        return result    
+               
+class Pictureremove(restful.Resource):
+
+    '''
+    路径: /v1/picture/remove/
+    请求方式: GET
+    请求参数:
+    usertoken_str: tokenstr
+    pic_address: picaddress
+    返回值:
+    True, 图片删除成功, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    备注：这个API用在用户上传多张图片之后删除其中一张。
+    '''
+    
+    @allow_cross_domain
+    def get(self):  
+        logger().info("<br/>class Pictureremove # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        pic_address = request.args.get("pic_address")
+        if not all([usertoken,pic_address]):
+            logger().info("<br/>class Pictureremove # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.pictureremove(usertoken,pic_address)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Pictureremove # func get() # end<br/>")
+        return result 
+        
+class Manifestmypublish(restful.Resource):
+
+    '''
+        路径: /v1/manifests/mypublish/
+        请求方式: GET
+        请求参数:
+            usertoken_str: tokenstr
+            manifest_startposi: startposi
+            manifest_pagesize: pagesize
+        返回值:
+            True, 50(发布的总货单数),
+                manifest_id: 1
+                manifest_user: Tom
+                manifest_datetime: 15分钟前
+                manifest_title: 卖二手自行车
+                manifest_price: 188
+                manifest_desp: 九成新，只需188元
+                manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+                manifest_visitcount: 100
+                manifest_logo: http://192.168.1.100:8080/logo/1.png
+                manifest_favorite: 1
+
+                manifest_id: 2
+                manifest_user: Tom
+                manifest_datetime: 15分钟前
+                manifest_title: 卖二手自行车
+                manifest_price: 188
+                manifest_desp: 九成新，只需188元
+                manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+                manifest_visitcount: 100
+                manifest_logo: http://192.168.1.100:8080/logo/1.png
+                manifest_favorite: 1
+            False, 数据库错误, None
+        备注: “infomsg”的位置绑定的是货单总条数。 “manifest_desp”，后端返回所有描述文字，由前端负责截取一定数量的字符，注意要通过usertoken_str判断用户是否已经登录，如果登录了，要判断当前货单有没有被用户收藏，来决定右上角的收藏操作。startposi是起点，pagesize是页面大小，比如每页有10个货单，那么在第一次请求时，startposi=0，pagesize=10，用户下拉显示更多货单，发第二次请求，startposi=10, pagesize=10，依此类推。前端的配置文件里要写一个参数用来记录pagesize，也就是每页多少数据。
+    '''
+    
+    @allow_cross_domain
+    def get(self):  
+        logger().info("<br/>class Manifestmyfavorite # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_startposi = request.args.get("manifest_startposi")
+        manifest_pagesize = request.args.get("manifest_pagesize")
+        if not all([usertoken,manifest_startposi, manifest_pagesize]):
+            logger().info("<br/>class Manifestmypublish # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestmypublish(usertoken,manifest_startposi,manifest_pagesize)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestmypublish # func get() # end<br/>")
+        return result         
+        
+class Manifestsearch(restful.Resource):
+         
+    '''
+    路径: /v1/search/keywords/
+    请求方式: GET
+    请求参数:
+    usertoken_str: tokenstr
+    keywords: keywords
+    manifest_startposi: startposi
+    manifest_pagesize: pagesize
+    返回值:
+    True, 50(totallines),
+        manifest_id: 1
+        manifest_user: Tom
+        manifest_datetime: 15分钟前
+        manifest_title: 卖二手自行车
+        manifest_price: 188
+        manifest_desp: 九成新，只需188元
+        manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+        manifest_visitcount: 100
+        manifest_logo: http://192.168.1.100:8080/logo/1.png
+        manifest_favorite: 0
+        manifest_id: 2
+        manifest_user: Tom
+        manifest_datetime: 15分钟前
+        manifest_title: 卖二手自行车
+        manifest_price: 188
+        manifest_desp: 九成新，只需188元
+        manifest_pics: [http://192.168.1.100:8080/pic/1.png, http://192.168.1.100:8080/pic/2.png, http://192.168.1.100:8080/pic/3.png]
+        manifest_visitcount: 100
+        manifest_logo: http://192.168.1.100:8080/logo/1.png
+        manifest_favorite: 1
+    False, 数据库错误, None
+    备注: 注意keywords要进行分词，假设用户输入的一句话包含5个关键词，首先返回5个都可以匹配的，如果没有，返回4个都可以匹配的，如果有多个4个匹配的，按照最热排序返回，其次找3个都匹配的，依此类推 。“infomsg”的位置绑定的是货单总条数。 “manifest_desp”，后端返回所有描述文字，由前端负责截取一定数量的字符，注意要通过usertoken_str判断用户是否已经登录，如果登录了，要判断当前货单有没有被用户收藏，来决定右上角的收藏操作。startposi是起点，pagesize是页面大小，比如每页有10个货单，那么在第一次请求时，startposi=0，pagesize=10，用户下拉显示更多货单，发第二次请求，startposi=10, pagesize=10，依此类推。前端的配置文件里要写一个参数用来记录pagesize，也就是每页多少数据。
+    '''
+    
+    @allow_cross_domain
+    def get(self):  # 根据货单编号查看详细信息 
+        logger().info("<br/>class Manifestsearch # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        keywords = request.args.get("keywords")
+        manifest_startposi = request.args.get("manifest_startposi")
+        manifest_pagesize = request.args.get("manifest_pagesize")
+        if not all([keywords,manifest_startposi,manifest_pagesize]):
+            logger().info("<br/>class Manifestsearch # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestsearch(usertoken,keywords,manifest_startposi,manifest_pagesize)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestsearch # func get() # end<br/>")
+        return result        
+        
+class Manifestbuyout(restful.Resource):
+         
+    '''
+    路径: /v1/manifests/buyout/
+    请求方式: GET
+    请求参数:
+    usertoken_str: tokenstr
+    manifest_id: manifestid
+    返回值:
+    True, 已确认售出（已恢复出售状态）, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    备注：注意售出状态的相互切换。
+    '''
+    
+    @allow_cross_domain
+    def get(self):  # 根据货单编号查看详细信息 
+        logger().info("<br/>class Manifestbuyout# func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_id = request.args.get("manifest_id")
+        if not all([manifest_id]):
+            logger().info("<br/>class Manifestbuyout # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestbuyout(usertoken,manifest_id)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestiddetail # func get() # end<br/>")
+        return result        
+        
+class Manifestremove(restful.Resource):
+
+    '''
+    路径: /v1/manifests/remove/
+    请求方式: GET
+    请求参数:
+    usertoken_str: tokenstr
+    manifest_id: manifestid
+    返回值:
+    True, 已删除, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    '''
+    
+    @allow_cross_domain
+    def get(self):  # 返回我的货单信息
+        logger().info("<br/>class Manifestremove # func get() # begin<br/>")
+        usertoken = request.args.get("usertoken_str")
+        manifest_id = request.args.get("manifest_id")
+        if not all([manifest_id]):
+            logger().info("<br/>class Manifestremove # func get() # 参数不足<br/>")
+            return jsonify(Info(False,"参数不足",None).tojson())
+        mo = Manifestorml()
+        Infoa = mo.manifestremove(usertoken,manifest_id)
+        result = jsonify(Infoa)
+        logger().info("<br/>class Manifestremove # func get() # end<br/>")
+        return result        
+        
+        
+        
+         

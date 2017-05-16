@@ -1,0 +1,179 @@
+conf.py   dapis     devmain.py   dwsl  picture      test_database  test.py~  校园社交平台.xls
+conf.py~  dbmodels  devmain.py~  orml  __pycache__  test.py        tools     校园社交平台数据库设计ok.xls
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台/CampusPost$ cd picture/
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台/CampusPost/picture$ pwd
+/home/fawen/校园社交平台/CampusPost/picture
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台/CampusPost/picture$ pwd >> 1
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台/CampusPost/picture$ vim 1
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台/CampusPost/picture$ rm -rf 1
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台/CampusPost/picture$ l
+logo/  pics/  temp/
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台/CampusPost/picture$ cd ..
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台/CampusPost$ cd ..
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台$ ls
+CampusPost  foreend  校园社交平台系统v1.0_源代码（后端30页）.docx  校园社交平台研究报告.docx  原型设计
+fawen@fawen-Lenovo-IdeaPad-Y400:~/校园社交平台$ cd ..
+fawen@fawen-Lenovo-IdeaPad-Y400:~$ ls
+examples.desktop  node-v6.10.1-linux-x64      公共的  视频  文档  校园社交平台  桌面
+firewall-ui       node-v6.10.1-linux-x64.tar  模板    图片  下载  音乐
+fawen@fawen-Lenovo-IdeaPad-Y400:~$ mv 校园社交平台 shome
+fawen@fawen-Lenovo-IdeaPad-Y400:~$ ls
+examples.desktop  firewall-ui  node-v6.10.1-linux-x64  node-v6.10.1-linux-x64.tar  shome  公共的  模板  视频  图片  文档  下载  音乐  桌面
+fawen@fawen-Lenovo-IdeaPad-Y400:~$ cd shome/
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome$ ls
+CampusPost  foreend  校园社交平台系统v1.0_源代码（后端30页）.docx  校园社交平台研究报告.docx  原型设计
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome$ cd CampusPost/
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ ls
+conf.py   dapis     devmain.py   dwsl  picture      test_database  test.py~  校园社交平台.xls
+conf.py~  dbmodels  devmain.py~  orml  __pycache__  test.py        tools     校园社交平台数据库设计ok.xls
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ nginx -s reload 
+nginx: [alert] could not open error log file: open() "/var/log/nginx/error.log" failed (13: Permission denied)
+2017/04/08 15:03:17 [warn] 5056#5056: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
+2017/04/08 15:03:17 [notice] 5056#5056: signal process started
+2017/04/08 15:03:17 [alert] 5056#5056: kill(4139, 1) failed (1: Operation not permitted)
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ nginx -
+nginx: [alert] could not open error log file: open() "/var/log/nginx/error.log" failed (13: Permission denied)
+2017/04/08 15:03:21 [warn] 5057#5057: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
+2017/04/08 15:03:21 [emerg] 5057#5057: open() "/var/log/nginx/access.log" failed (13: Permission denied)
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ nginx -t
+nginx: [alert] could not open error log file: open() "/var/log/nginx/error.log" failed (13: Permission denied)
+2017/04/08 15:03:23 [warn] 5058#5058: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+2017/04/08 15:03:23 [emerg] 5058#5058: open() "/run/nginx.pid" failed (13: Permission denied)
+nginx: configuration file /etc/nginx/nginx.conf test failed
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ 
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ ps uax | grep nginx
+root      4139  0.0  0.0 125056  1440 ?        Ss   14:49   0:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+www-data  4140  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4141  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4142  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4143  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+fawen     5067  0.0  0.0  21316  1092 pts/1    S+   15:03   0:00 grep --color=auto nginx
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ ps uax | grep nginx | grep -v grep |awk '{print $1}'
+root
+www-data
+www-data
+www-data
+www-data
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ ps uax | grep nginx | grep -v grep |awk '{print $2}'
+4139
+4140
+4141
+4142
+4143
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ ps uax | grep nginx | grep -v grep |awk '{print $2}'|xargs kill -9
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ ps uax | grep nginx
+root      4139  0.0  0.0 125056  1440 ?        Ss   14:49   0:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+www-data  4140  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4141  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4142  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4143  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+fawen     5137  0.0  0.0  21316   948 pts/1    S+   15:07   0:00 grep --color=auto nginx
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ ps uax | grep nginx | grep -v grep |awk '{print $2}'|xargs kill -9
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ ps uax | grep nginx
+root      4139  0.0  0.0 125056  1440 ?        Ss   14:49   0:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+www-data  4140  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4141  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4142  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+www-data  4143  0.0  0.0 125416  3140 ?        S    14:49   0:00 nginx: worker process
+fawen     5145  0.0  0.0  21316   936 pts/1    S+   15:07   0:00 grep --color=auto nginx
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ kill 4139
+bash: kill: (4139) - 不允许的操作
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ kill -9 4139
+bash: kill: (4139) - 不允许的操作
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ su
+密码： 
+su：认证失败
+fawen@fawen-Lenovo-IdeaPad-Y400:~/shome/CampusPost$ su
+密码： 
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# ps uax | grep nginx | grep -v grep |awk '{print $2}'|xargs kill -9
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# pa uax | grep nginx 
+pa：未找到命令
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# ps uax | grep nginx 
+root      5208  0.0  0.0  21316  1028 pts/1    S+   15:09   0:00 grep --color=auto nginx
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# ngixn -t
+未找到 'ngixn' 命令，您要输入的是否是：
+ 命令 'nginx' 来自于包 'nginx-light' (universe)
+ 命令 'nginx' 来自于包 'nginx-extras' (universe)
+ 命令 'nginx' 来自于包 'nginx-core' (main)
+ 命令 'nginx' 来自于包 'nginx-full' (universe)
+ngixn：未找到命令
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# service nginx start
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# 
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# vim /etc/nginx/conf.d/
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# vim /etc/nginx/conf.d/Picture 
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# nginx -s reload 
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# netstat -tlnp | grep 8080
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# vim /etc/nginx/conf.d/Picture 
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# nginx -s reload
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# netstat -tlnp | grep 8080
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# service nginx restart
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# netstat -tlnp | grep 8080
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# vim /etc/nginx/conf.d/Picture 
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# nginx -s
+nginx: option "-s" requires parameter
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# nginx -s reload
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# netstat -tnlp |grep 8080
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# service nginx restart
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# netstat -tnlp |grep 8080
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# netstat -tnlp |grep nginx
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      5422/nginx -g daemo
+tcp6       0      0 :::80                   :::*                    LISTEN      5422/nginx -g daemo
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# vim /etc/nginx/nginx.conf 
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# cd /etc/nginx/conf.d/Picture 
+bash: cd: /etc/nginx/conf.d/Picture: 不是目录
+root@fawen-Lenovo-IdeaPad-Y400:/home/fawen/shome/CampusPost# cd /etc/nginx/conf.d/
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# mv Picture Picture.conf
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# 
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -s reload
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# netstat tnlp | grep nginx
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# netstat -tnlp | grep nginx
+tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      5422/nginx -g daemo
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      5422/nginx -g daemo
+tcp6       0      0 :::80                   :::*                    LISTEN      5422/nginx -g daemo
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# cp Picture.conf Foreed.conf
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# vim Foreed.conf 
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -s reload
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# netstat -alnp | grep nginx
+tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      5422/nginx -g daemo
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      5422/nginx -g daemo
+tcp        0      0 0.0.0.0:8081            0.0.0.0:*               LISTEN      5422/nginx -g daemo
+tcp6       0      0 :::80                   :::*                    LISTEN      5422/nginx -g daemo
+unix  3      [ ]         流        已连接     424237   5422/nginx -g daemo 
+unix  3      [ ]         流        已连接     424234   5422/nginx -g daemo 
+unix  3      [ ]         流        已连接     424236   5422/nginx -g daemo 
+unix  3      [ ]         流        已连接     424235   5422/nginx -g daemo 
+unix  3      [ ]         流        已连接     424239   5422/nginx -g daemo 
+unix  3      [ ]         流        已连接     424238   5422/nginx -g daemo 
+unix  3      [ ]         流        已连接     424232   5422/nginx -g daemo 
+unix  3      [ ]         流        已连接     424233   5422/nginx -g daemo 
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# vim Foreed.conf 
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -s
+nginx: option "-s" requires parameter
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -t
+nginx: [warn] only the last index in "index" directive should be absolute in /etc/nginx/conf.d/Foreed.conf:38
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -s reload
+nginx: [warn] only the last index in "index" directive should be absolute in /etc/nginx/conf.d/Foreed.conf:38
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# vim Foreed.conf 
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -s reload
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# vim Picture.conf 
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# nginx -s reload
+root@fawen-Lenovo-IdeaPad-Y400:/etc/nginx/conf.d# 
+

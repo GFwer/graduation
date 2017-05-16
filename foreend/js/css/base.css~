@@ -1,0 +1,149 @@
+body {
+    font-size: 16px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.myfavorite {
+    cursor: pointer;
+}
+
+.myfavorite:hover {
+    font-weight: bold;
+}
+
+.manifest {
+    text-align: left;
+    width: 360px;
+    min-height: 300px;
+}
+
+.manifest_top {
+    width: 100%;
+    height: 160px;
+    border-bottom: 2px solid #EEEEEE;
+    font-weight: bold;
+}
+
+.manifest_bottom {
+    width: 100%;
+}
+
+.manifest_logo {
+    float: left;
+    width: 105px;
+}
+
+.manifest_user {
+    float: left;
+    width: 100px;
+    font-size: 18px;
+    padding-top: 20px;
+    padding-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.manifest_datetime {
+    float: left;
+    width: 100%;
+    color: #999999;
+    padding-left: 5px;
+    padding-top: 10px;
+}
+
+.manifest_topright {
+    float: left;
+    heigth: 100px;
+}
+
+.manifest_toprightright {
+    float: right;
+    padding-right: 30px;
+    padding-top: 30px;
+    heigth: 100px;
+    font-size: 30px;
+    color: red;
+}
+
+.manifest_topbottomleft {
+    float: left;
+    width: 100%;
+}
+
+.manifest_title {
+    float: left;
+    width: 120px;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+.manifest_price {
+    float: right;
+    width: 120px;
+    text-align: right;
+    padding-right: 20px;
+    padding-top: 10px;
+}
+
+.manifest_desp {
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.manifest_desp p {
+    text-indent: 2em;
+    font-size: 12px;
+}
+
+.manifest_visitcount {
+    float: left;
+    color: #999999;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.manifest_detail {
+    float: right;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.labelerror {
+    font-weight: bold;
+    color: #F44336;
+}
+
+.labelinfo {
+    font-weight: bold;
+    color: #52C3DD;
+}
+
+.labelsuccess {
+    font-weight: bold;
+    color: #04DD98;
+}
+
+.labelwarning {
+    font-weight: bold;
+    color: #FFEB94;
+}
+
+.myframe {
+    margin-bottom: 10px;
+}
+
+.myicon {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.myicon:hover {
+    font-weight: bold;
+}
+
+.mylabel{
+    cursor: pointer;
+}

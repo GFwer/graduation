@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/css.css"/>
+    <link rel="stylesheet" href="../css/func.css"/>
+    <link rel="stylesheet" href="../css/post.css"/>
+    <style>
+    </style>
+</head>
+<div class="one f-cb">
+    <div onclick="toForst()">哈尔滨理工大学论坛</div>
+    <ul class="f-cb ul1">
+        <li>用户名：<input type="text" class="user_name"/></li>
+        <li>密码：<input type="password" class="user_password"/></li>
+        <li><input type="button" value="登录" style="width: 80px" onclick="toLogin()"/></li>
+        <li><input type="button" value="注册" style="width: 80px" onclick="toSign()"/></li>
+    </ul>
+    <ul class="f-cb ul2">
+        <li class="span"><span class="user_name"></span>,欢迎你!</li>
+        <li>
+            <input type="button" value="我的言论" onclick="myPost()"/>
+            <input type="button" value="发表言论" onclick="publishPost()"/>
+            <input type="button" value="退出系统" onclick="secede()"/>
+        </li>
+    </ul>
+</div>
+<div class="sign f-cb">
+    <h2>用户注册</h2>
+    <div>
+        用户名：<input type="text" class="user_name"/><br><br>
+        密码： <input type="password" class="user_password"/><br><br>
+        确认密码：<input type="password" class="user_repassword"/><br><br>
+    </div>
+    <input type="button" value="确认" onclick="toSure()" class="but">
+    <input type="button" value="取消" onclick="toCancel()" class="but"/>
+</div>
+<div class="strip f-cb">
+    <div class="str f-cb">
+        <div class="strip-1">
+            <ul class="f-cb bar">
+                <li id="school0" onclick="school(0)">校内信息</li>
+                <li id="school1" onclick="school(1)">学习交流</li>
+                <li id="school2" onclick="school(2)">吃喝玩乐</li>
+                <li id="school3" onclick="school(3)">失物招领</li>
+            </ul>
+        </div>
+        <div class="strip-2"></div>
+        <div class="strip-3"></div>
+        <div id="two" class="f-cb">
+            <div class="two_box f-cb">
+                <div class="two_box_one f-cb">
+                    <ul class="f-cb">
+                        <li class="title"></li>
+                        <li class="time"></li>
+                        <li>
+                            <a href="#comment"><input type="button" value="评论" onclick="review()"/></a>
+                            <input type="button" value="删除" onclick="del()"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="two_box_two f-cb">
+                    <div class="two_box_message">
+                        <img src="" class="img"/><br><br>
+                        <h3 class="h3"></h3>
+                    </div>
+                    <div class="two_box_content"></div>
+                    <div class="two_box_img">
+                        <img src="" class="img2"/>
+                    </div>
+                </div>
+                <div class="two_box_three">
+                    <div class="comment" id="comment">
+                        <input type="text" placeholder="请输入您的评论......" class="comment-value"/><br><br>
+                        <input type="button" value="确认" class="true" onclick="toTrue()"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bottom">哈尔滨理工大学论坛</div>
+<script src="../js/URL.js"></script>
+<script src="../js/top.js"></script>
+<script src="../js/text2.js"></script>
+<script>
+
+</script>
+</body>
+</html>

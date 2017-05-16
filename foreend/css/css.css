@@ -1,0 +1,349 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: darkgray;
+}
+.one{
+    width: auto;
+    height: 50px;
+    background-color: black;
+    color: #fff;
+    padding: 30px 10px 30px 30px;
+    overflow: hidden;
+}
+.one ul{
+    float: right;
+}
+.ul1 li{
+    margin: 30px 10px 10px 0;
+    list-style-type: none;
+    float: left;
+}
+.ul1 li input{
+    width: 120px;
+    height: 25px;
+    border-radius: 12px;
+}
+.ul2{
+    display: none;
+}
+.span{
+    padding-right: 30px;
+    font-size: 25px;
+}
+.ul2 li{
+    margin: 30px 10px 10px 0;
+    list-style-type: none;
+    float: left;
+}
+.ul2 li input{
+    margin:0 10px 10px 0;
+    width: 100px;
+    height: 25px;
+}
+.one div{
+    font-size: 30px;
+    float: left;
+}
+.strip{
+    width: 1080px;
+    height: auto;
+    margin: 80px auto auto auto;
+}
+.str{
+    float: left;
+    width: 100%;
+    position: relative;
+    z-index: 0;
+}
+.strip-1{
+    width: 1020px;
+    height: 50px;
+    background-color: #767676;
+    border-bottom: 4px solid orange;
+    float: left;
+    margin-top: 60px;
+    padding-left: 60px;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+#school0{
+    background-color: orange;
+}
+.strip-2{
+    width: 0;
+    height: 0;
+    border-top: 30px solid #6F6F6F;
+    border-left: 30px solid transparent;
+    float: left;
+}
+.strip-3{
+    width: 0;
+    height: 0;
+    border-top: 30px solid #6F6F6F;
+    border-right: 30px solid transparent;
+    float: right;
+}
+#two{
+    float: left;
+    width: 982px;
+    height: auto;
+    background-color: black;
+    border-radius: 60px;
+    padding: 120px 20px 10px 20px;
+    margin-top: -150px;
+    margin-left: 30px;
+    /*position: relative;*/
+}
+.strip-1 li{
+    padding: 40px;
+    color: #ffffff;
+    font-size: larger;
+    margin: -25px 10px 10px 0;
+    list-style-type: none;
+    float: left;
+}
+.project{
+    float: left;
+    background-color: #6F6F6F;
+    height: 180px;
+    width: 940px;
+    border-radius: 50px;
+    margin-top: 50px;
+    padding: 20px;
+    position: relative;
+    z-index: 0;
+}
+.deleteMyPost{
+    float: left;
+    width: 60px;
+    height: 30px;
+    border-radius: 10px;
+    color: #ffffff;
+    /*font-weight: 600;*/
+    font-size: 15px;
+    background: -webkit-linear-gradient( #ffffff,#C91512,#C91512); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient( #ffffff,#C91512,#C91512); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient( #ffffff,#C91512,#C91512); /* Firefox 3.6 - 15 */
+    background: linear-gradient( #ffffff,#C91512,#C91512); /* 标准的语法 */
+    /*color: ;*/
+    z-index: 2;
+    position: absolute;
+    right: 40px;
+    bottom: -15px;
+}
+
+.toTop{
+    float: left;
+    width: 60px;
+    height: 30px;
+    border-radius: 10px;
+    color: #ffffff;
+    /*font-weight: 600;*/
+    font-size: 15px;
+    background: -webkit-linear-gradient( #ffffff,blue); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient( #ffffff,blue); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient( #ffffff,blue); /* Firefox 3.6 - 15 */
+    background: linear-gradient( #ffffff,blue); /* 标准的语法 */
+    /*color: ;*/
+    z-index: 2;
+    position: absolute;
+    right: 120px;
+    bottom: -15px;
+}
+
+.cancelTop{
+    float: left;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 15px;
+    display: none;
+    background: -webkit-linear-gradient( #ffffff,blue); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient( #ffffff,blue); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient( #ffffff,blue); /* Firefox 3.6 - 15 */
+    background: linear-gradient( #ffffff,blue); /* 标准的语法 */
+    z-index: 2;
+    position: absolute;
+    right: 120px;
+    bottom: -15px;
+}
+
+.project_message{
+    width: 160px;
+}
+a{
+    text-decoration: none;
+}
+.project img{
+    height: 140px;
+    width: 140px;
+    border-radius: 70px;
+    border: 1px solid orange;
+}
+.content{
+    width: 720px;
+    height: 160px;
+    background-color: #ffffff;
+    position: absolute;
+    padding: 10px 20px;
+    border-radius: 20px;
+    z-index: 1;
+    right: 20px;
+    top: 20px;
+}
+.content_title{
+    color: rgba(238, 86, 21, 0.68);
+    font-size: 20px;
+    font-weight: 800;
+}
+.content_main{
+    height: 80px;
+    overflow: hidden;
+}
+.content_time{
+    float: right;
+    margin-top: 5px;
+    font-size: 20px;
+    font-weight: 700;
+}
+.sign{
+    width: 500px;
+    height: 300px;
+    background-color: #ffffff;
+    font-size: 20px;
+    position: fixed;
+    display: none;
+    top:30%;
+    left: 40%;
+    border: 1px solid #000;
+
+}
+.sign h2{
+    text-align: center;
+    color: #ffffff;
+    background-color: maroon;
+}
+.sign div{
+    width: 370px;
+    margin: 50px auto 0 auto;
+}
+.sign div input{
+    width: 230px;
+    height: 25px;
+    border-radius: 20px;
+    float: right;
+    background-color: rgba(53, 26, 14, 0.16);
+}
+.but{
+    width: 150px;
+    height: 30px;
+    margin: 10px 45px 0 45px;
+}
+.userName{
+    color: #ffffff;
+    font-size: 30px;
+    text-align: center;
+}
+.send{
+    float: left;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 800;
+    background-color: #6F6F6F;
+    width: 940px;
+    border-radius: 50px;
+    margin: 50px 0 20px 0;
+    padding: 30px 20px 20px 20px;
+    position: relative;
+    z-index: 0;
+}
+.send div{
+    width: auto;
+}
+.send input{
+    width: 150px;
+    margin-right: 20px;
+    border-radius: 40px;
+}
+.sentTitle input{
+    width: 720px;
+    height: 50px;
+    border-radius: 40px;
+    position: absolute;
+    z-index: 1;
+    left: 220px;
+}
+.sendContent-name{
+    position: absolute;
+    top: 0;
+}
+.sentContent textarea{
+    padding: 20px;
+    height: 300px;
+    width: 720px;
+    border-radius: 40px;
+    margin-left: 198px;
+}
+.sentContent{
+    position: relative;
+    margin-top: 100px;
+}
+.sentImg{
+    margin-top: 330px;
+}
+.sentImg button{
+    width: 180px;
+    font-size: 80px;
+    font-weight: 800;
+    height: 120px;
+    border-radius: 30px;
+    position: absolute;
+    z-index: 1;
+    left: 220px;
+}
+.classify{
+    margin: 0;
+}
+.classify select{
+    width: 150px;
+    font-size: 20px;
+    font-weight: 800;
+    height: 50px;
+}
+.addImg{
+    margin-left: 200px;
+}
+.addImg .button-box{
+    margin: 30px 0 0 0;
+
+
+}
+.addImg .button-box .add{
+    margin-left: 30px;
+}
+.addImg .button-box .classify{
+    margin-right: 30px;
+}
+
+/*.classify input{*/
+    /*float: right;*/
+    /*width: 150px;*/
+    /*height: 50px;*/
+    /*border-radius: 0;*/
+    /*margin-left:550px;*/
+/*}*/
+.bottom{
+    width:auto;
+    font-size: 25px;
+    text-align: right;
+    padding: 10px 50px 10px 0;
+    background-color: #000000;
+    color: #ffffff;
+    margin-top: 10px;
+}
+

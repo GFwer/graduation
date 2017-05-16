@@ -1,0 +1,445 @@
+/*
+绘制修改头像步骤2对话框
+*/
+function drawchangelogomodal2(containerid) {
+    var container = objbyid(containerid);
+    var outercontainer = makeobj("div", {
+        "class": "modal",
+        "id": "changelogomodal2",
+        "role": "dialog",
+        "aria-labelledby": "changelogolabel2",
+        "aria-hidden": "true"
+    });
+    container.appendChild(outercontainer);
+    var mdialog = makeobj("div", {
+        "class": "modal-dialog",
+        "style": "width:610px;"
+    });
+    outercontainer.appendChild(mdialog);
+    var mcontent = makeobj("div", {
+        "class": "modal-content"
+    });
+    mdialog.appendChild(mcontent);
+    var mheader = makeobj("div", {
+        "class": "modal-header"
+    });
+    mcontent.appendChild(mheader);
+    var mbody = makeobj("div", {
+        "class": "modal-body"
+    });
+    mcontent.appendChild(mbody);
+    var mfooter = makeobj("div", {
+        "class": "modal-footer"
+    });
+    mcontent.appendChild(mfooter);
+    var h4 = makeobj("h4", {
+        "class": "modal-title",
+        "id": "changelogolabel2"
+    }, "更换头像 Step2-2");
+    mheader.appendChild(h4);
+    var bclose = makeobj("button", {
+        "type": "button",
+        "class": "btn btn-default"
+    }, "关闭");
+    mfooter.appendChild(bclose);
+    var bcut = makeobj("button", {
+        "type": "button",
+        "class": "btn btn-info",
+        "onclick": "cutimage()"
+    }, "裁剪");
+    mfooter.appendChild(bcut);
+    var innercontainer = makeobj("div", {
+        "id": "imagecut"
+    });
+    mbody.appendChild(innercontainer);
+    var table = makeobj("table");
+    innercontainer.appendChild(table);
+    var tr1 = makeobj("tr");
+    table.appendChild(tr1);
+    var td1 = makeobj("td");
+    tr1.appendChild(td1);
+    var div1 = makeobj("div", {
+        "class": "jcrop-holder",
+        "style": "idth: 360px;height:480px;position:relative;background-color:black;"
+    });
+    td1.appendChild(div1);
+    var img1 = makeobj("img", {
+        "src": "#",
+        "alt": "",
+        "id": "target",
+        "style": "display:block;visibility:visible;width:360px;height:480px;border:medium none;margin:0px;padding:0px;position:absolute;top:0px;left:0px;opacity:0.6;"
+    });
+    div1.appendChild(img1);
+    var td2 = makeobj("td");
+    tr1.appendChild(td2);
+    var div2 = makeobj("div", {
+        "style": "width:200px;height:200px;overflow:hidden;margin-left:10px;",
+        "id": "previewborder"
+    });
+    td2.appendChild(div2);
+    var img2 = makeobj("img", {
+        "src": "#",
+        "alt": "",
+        "id": "preview",
+        "style": "margin-left:-49px;margin-top:-54px;"
+    });
+    div2.appendChild(img2);
+    var tr2 = makeobj("tr");
+    table.appendChild(tr2);
+    var td3 = makeobj("td", {
+        "colspan": "2"
+    });
+    tr2.appendChild(td3);
+    var input1 = makeobj("input", {
+        "type": "hidden",
+        "id": "filename",
+        "name": "filename"
+    });
+    td3.appendChild(input1);
+    var input2 = makeobj("input", {
+        "type": "hidden",
+        "id": "x1",
+        "name": "x1",
+        "value": "0"
+    });
+    td3.appendChild(input2);
+    var input3 = makeobj("input", {
+        "type": "hidden",
+        "id": "x2",
+        "name": "x2",
+        "value": "0"
+    });
+    td3.appendChild(input3);
+    var input4 = makeobj("input", {
+        "type": "hidden",
+        "id": "y1",
+        "name": "y1",
+        "value": "0"
+    });
+    td3.appendChild(input4);
+    var input5 = makeobj("input", {
+        "type": "hidden",
+        "id": "y2",
+        "name": "y2",
+        "value": "0"
+    });
+    td3.appendChild(input5);
+    var input6 = makeobj("input", {
+        "type": "hidden",
+        "id": "cw",
+        "name": "cw",
+        "value": "0"
+    });
+    td3.appendChild(input6);
+    var input7 = makeobj("input", {
+        "type": "hidden",
+        "id": "ch",
+        "name": "ch",
+        "value": "0"
+    });
+    td3.appendChild(input7);
+}
+
+/*
+绘制修改头像步骤1对话框
+*/
+function drawchangelogomodal1(containerid) {
+    var container = objbyid(containerid);
+    var outercontainer = makeobj("div", {
+        "class": "modal",
+        "id": "changelogomodal1",
+        "role": "dialog",
+        "aria-labelledby": "changelogolabel1",
+        "aria-hidden": "true"
+    });
+    var mdialog = makeobj("div", {
+        "class": "modal-dialog"
+    });
+    outercontainer.appendChild(mdialog);
+    var mcontent = makeobj("div", {
+        "class": "modal-content"
+    });
+    mdialog.appendChild(mcontent);
+    var mheader = makeobj("div", {
+        "class": "modal-header"
+    });
+    mcontent.appendChild(mheader);
+    var mbody = makeobj("div", {
+        "class": "modal-body"
+    });
+    mcontent.appendChild(mbody);
+    var mfooter = makeobj("div", {
+        "class": "modal-footer"
+    });
+    mcontent.appendChild(mfooter);
+    var h4 = makeobj("h4", {
+        "class": "modal-title",
+        "id": "changelogolabel1",
+    }, "更换头像 Step1-2");
+    mheader.appendChild(h4);
+    var bclose = makeobj("button", {
+        "type": "button",
+        "class": "btn btn-default",
+        "onclick": "clearlogomodal1()"
+    }, "关闭");
+    mfooter.appendChild(bclose);
+    var innercontainer = makeobj("div", {
+        "class": "uploadpic",
+        "id": "uploadpic",
+        "style": "width:100%;"
+    });
+    var div1 = makeobj("div", {
+        "class": "alert alert-warning",
+    }, "为保证截图质量，请使用手机以竖直姿态拍照");
+    innercontainer.appendChild(div1);
+    var span1 = makeobj("span", {
+        "class": "btn btn-success fileinput-button",
+        "style": "width: 100%;margin-bottom:10px;"
+    });
+    innercontainer.appendChild(span1);
+    var i1 = makeobj("i", {
+        "class": "glyphicon glyphicon-plus",
+    });
+    span1.appendChild(i1);
+    var input1 = makeobj("input", {
+        "id": "fileupload",
+        "type": "file",
+        "name": "files[]",
+        "style": "width:100%"
+    });
+    span1.appendChild(input1);
+    var div2 = makeobj("div", {
+        "id": "progress",
+        "class": "progress",
+        "style": "width:100%;"
+    });
+    innercontainer.appendChild(div2);
+    var div3 = makeobj("div", {
+        "id": "files",
+        "class": "files"
+    });
+    innercontainer.appendChild(div3);
+    mbody.appendChild(innercontainer);
+    container.appendChild(outercontainer);
+}
+/*
+隐藏更换头像对话框
+*/
+function clearlogomodal1() {
+    $("#changelogomodal1").modal("hide");
+}
+
+/*
+弹出更换头像对话框
+*/
+function showchangelogo() {
+    $("#changelogomodal1").modal("show");
+}
+
+/*
+清空修改密码对话框
+*/
+function clearmodifypassword() {
+    clearvaluebyid("mpassword");
+    clearinnerhtmlbyid("mpasswordhint");
+    clearvaluebyid("newpassword");
+    clearinnerhtmlbyid("newpasswordhint");
+    clearvaluebyid("newrepassword");
+    clearinnerhtmlbyid("newrepasswordhint");
+    $("#modifypasswordmodal").modal("hide");
+}
+
+
+/*
+修改密码
+*/
+function modifypassword() {
+    var oldpassword = valuebyid("mpassword");
+    var newpassword = valuebyid("newpassword");
+    var usertoken = getCookie("usertoken");
+    if (checknewpassword()) {
+        postxmlhttp("/v1/usertoken/password/", {
+                "usertoken_str": usertoken,
+                "old_password": oldpassword,
+                "new_password": newpassword
+            },
+            function (result) {
+                if (result["infostatus"]) {
+                    alert(result["infomsg"]);
+                    window.location.replace("index.html");
+                } else {
+                    alert(result["infomsg"]);
+                }
+            }
+        );
+    }
+}
+
+/*
+获取头像和联系方式
+*/
+function getcontact() {
+    var usertoken = getCookie("usertoken");
+    getxmlhttp("/v1/user/contact/", {
+            "usertoken_str": usertoken,
+        },
+        function (result) {
+            if (result["infostatus"]) {
+                objbyid("userlogo").setAttribute("src", result["inforesult"]["user_logo"]);
+                objbyid("phonespaninput").setAttribute("value", result["inforesult"]["user_phone"]);
+                objbyid("qqspaninput").setAttribute("value", result["inforesult"]["user_qq"]);
+                objbyid("wxspaninput").setAttribute("value", result["inforesult"]["user_wx"]);
+            } else {
+                alert(result["infomsg"]);
+            }
+        }
+    );
+}
+
+/*
+禁用编辑联系方式的文本框
+*/
+function disableinput() {
+    objbyid("phonespaninput").setAttribute("disabled", "true");
+    objbyid("showphoneedit").setAttribute("style", "display:block");
+    objbyid("showphonesave").setAttribute("style", "display:none");
+    objbyid("qqspaninput").setAttribute("disabled", "true");
+    objbyid("showqqedit").setAttribute("style", "display:block");
+    objbyid("showqqsave").setAttribute("style", "display:none");
+    objbyid("wxspaninput").setAttribute("disabled", "true");
+    objbyid("showwxedit").setAttribute("style", "display:block");
+    objbyid("showwxsave").setAttribute("style", "display:none");
+}
+
+/*
+编辑电话
+*/
+function editphone() {
+    objbyid("phonespaninput").removeAttribute("disabled");
+    objbyid("showphoneedit").setAttribute("style", "display:none");
+    objbyid("showphonesave").setAttribute("style", "display:block");
+}
+
+/*
+保存电话
+*/
+function savephone() {
+    disableinput();
+    saveinfo();
+}
+
+/*
+编辑QQ
+*/
+function editqq() {
+    objbyid("qqspaninput").removeAttribute("disabled");
+    objbyid("showqqedit").setAttribute("style", "display:none");
+    objbyid("showqqsave").setAttribute("style", "display:block");
+}
+
+/*
+保存QQ
+*/
+function saveqq() {
+    disableinput();
+    saveinfo();
+}
+
+/*
+编辑微信
+*/
+function editwx() {
+    objbyid("wxspaninput").removeAttribute("disabled");
+    objbyid("showwxedit").setAttribute("style", "display:none");
+    objbyid("showwxsave").setAttribute("style", "display:block");
+}
+
+/*
+保存微信
+*/
+function savewx() {
+    disableinput();
+    saveinfo();
+}
+
+/*
+保存修改后的头像和联系方式
+*/
+function saveinfo(callback) {
+    var usertoken = getCookie("usertoken");
+    var logo = document.getElementById("userlogo").getAttribute("src");
+    var phone = valuebyid("phonespaninput");
+    var qq = valuebyid("qqspaninput");
+    var wx = valuebyid("wxspaninput");
+    postxmlhttp("/v1/user/contact/", {
+            "usertoken_str": usertoken,
+            "user_logo": logo,
+            "user_phone": phone,
+            "user_wx": wx,
+            "user_qq": qq
+        },
+        function (result) {
+            if (result["infostatus"]) {
+                callback();
+            } else {
+                alert(result["infomsg"]);
+            }
+        }
+    );
+}
+
+/*
+检查密码合法性
+*/
+function checknewpassword() {
+    var password = valuebyid("newpassword");
+    var repassword = valuebyid("newrepassword");
+    var passwordhint = objbyid("newpasswordhint");
+    var repasswordhint = objbyid("newrepasswordhint");
+    if (password.length == 0) {
+        showhint(passwordhint, "labelerror", "密码不能为空");
+    } else if (password.length > 20) {
+        showhint(passwordhint, "labelerror", "密码不能超过20个字符");
+    } else if (password != repassword) {
+        showhint(passwordhint, "labelerror", "两次密码输入不一致");
+        showhint(repasswordhint, "labelerror", "两次密码输入不一致");
+    } else {
+        showhint(passwordhint, "labelsuccess", "合法的密码");
+        showhint(repasswordhint, "labelsuccess", "合法的密码");
+        return true;
+    }
+    return false;
+}
+
+/*
+头像裁切
+*/
+function cutimage() {
+    var filename = valuebyid("filename");
+    var x1 = valuebyid("x1");
+    var y1 = valuebyid("y1");
+    var x2 = valuebyid("x2");
+    var y2 = valuebyid("y2");
+    var cw = valuebyid("cw");
+    var ch = valuebyid("ch");
+    getxmlhttp("/v1/file/imagecut/", {
+            "filename": filename,
+            "x1": x1,
+            "y1": y1,
+            "x2": x2,
+            "y2": y2,
+            "cw": cw,
+            "ch": ch
+        },
+        function (result) {
+            $("#changelogomodal2").modal("hide");
+            objbyid("userlogo").setAttribute("src", result["infomsg"]);
+            saveinfo(function () {
+                objbyid("totalcontainer").removeChild(objbyid("changelogomodal1"));
+                objbyid("totalcontainer").removeChild(objbyid("changelogomodal2"));
+                //drawchangelogomodal1("totalcontainer");
+                //drawchangelogomodal2("totalcontainer");
+            });
+        }
+    );
+}

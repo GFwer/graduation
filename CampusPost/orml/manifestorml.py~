@@ -1,0 +1,892 @@
+from orml.dbbase import DBSessionwrite
+from orml.dbbase import DBSessionread
+from dbmodels.manifestmodel import Manifest
+from tools.info import Info
+from dbmodels.usertokenmodel import Usertoken
+from dbmodels.usermodel import User
+from dbmodels.picturemodel import Picture
+from dbmodels.labelmodel import Label
+from dbmodels.manilabelmodel import Manilabel
+from dbmodels.visitmodel import Visit
+from dbmodels.userinfomodel import Userinfo
+from dbmodels.favoritemodel import Favorite
+from dbmodels.commentmodel import Comment
+from dbmodels.visitcountmodel import Visitcount
+from dbmodels.contactmodel import Contact
+from sqlalchemy import func
+import time
+import datetime
+from tools.timetools import Timetools
+from sqlalchemy import desc
+from conf import staticserver,staticport
+import random
+import demjson
+import os
+import shutil
+import jieba
+
+class Manifestorml:
+
+    def manifestnewest(self,usertoken,manifest_startposi,manifest_pagesize):
+        session = DBSessionread()
+        try:
+            # datatimelist是从manifest表中查出存储时间最近的一些货单信息
+            datatimelist = session.query(Manifest.manifest_id,Manifest.manifest_userid,Manifest.manifest_datetime,Manifest.manifest_title,Manifest.manifest_price,Manifest.manifest_desp).filter(Manifest.manifest_finish==0).order_by(desc(Manifest.manifest_datetime)).offset(manifest_startposi).limit(manifest_pagesize).all()      
+            manifest_list = []
+            manifestitems = session.query(Manifest).count()
+            for x in datatimelist:
+                manifestdict ={}
+                manifestdict['manifest_id'] = x[0]
+                username = session.query(User.user_name).filter_by(user_id=x[1]).all()
+                username= username[0][0]
+                manifestdict['manifest_user'] = username
+                tt = Timetools()
+                timetonow = tt.timetonow(x[2])
+                manifestdict['manifest_datetime'] = timetonow
+                manifestdict['manifest_title'] = x[3]
+                manifestdict['manifest_price'] = x[4]
+                manifestdict['manifest_desp'] = x[5]
+                piclist = session.query(Picture.picture_name).filter_by(picture_manifestid=x[0]).all()
+                piclist = [n[0] for n in piclist]
+                piclist = ['http://' + staticserver + ':' + staticport +'/pics/'+ x for x in piclist]
+                manifestdict['manifest_pics'] = piclist
+                labelidlist = session.query(Manilabel.manilabel_labelid).filter_by(manilabel_manifestid=x[0]).all()
+                labelnamelist =[]
+                if not labelidlist:
+                    pass
+                else:    
+                    for n in labelidlist:
+                        labelname = session.query(Label.label_text).filter_by(label_id=n[0]).all()
+                        labelname = labelname[0][0]
+                        labelnamelist.append(labelname)
+                    manifestdict['manifest_labels'] = labelnamelist
+                if session.query(Visitcount).filter_by(visitcount_manifestid=x[0]).count() == 0:
+                    manifest_visitcount = 0
+                else:    
+                    manifest_visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=x[0]).all()
+                    manifest_visitcount = manifest_visitcount[0][0]
+                manifestdict['manifest_visitcount'] = manifest_visitcount
+                userlogo = session.query(Userinfo.userinfo_logo).filter_by(userinfo_userid=x[1]).all()
+                userlogo = userlogo[0][0]
+                if not userlogo:
+                    userlogo = "default.jpg"
+                userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/'+ userlogo 
+                manifestdict['manifest_logo'] = userlogo
+                if not usertoken:
+                    manifest_favorite = 0
+                elif session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                    manifest_favorite = 0
+                else:               
+                    userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+                    userid = userid[0][0]
+                    if session.query(Favorite).filter_by(favorite_userid=userid,favorite_manifestid=x[0]).count()>0:
+                        manifest_favorite = 1
+                    else:
+                        manifest_favorite = 0
+                manifestdict['manifest_favorite'] = manifest_favorite
+                manifest_list.append(manifestdict)
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+        else:
+            session.close()
+            return Info(True, manifestitems,manifest_list).tojson()
+                 
+    def manifestiddetail(self,usertoken,manifestid):
+        session = DBSessionwrite()
+        try:
+            # msglist是从manifest表中查出货单信息
+            if session.query(Manifest).filter_by(manifest_id=manifestid).count()==0:
+                session.close()
+                return Info(False,'查询无此货单',None).tojson()          
+            msglist = session.query(Manifest.manifest_id,Manifest.manifest_userid,Manifest.manifest_datetime,
+                Manifest.manifest_title,Manifest.manifest_price,Manifest.manifest_desp).filter_by(manifest_id=manifestid).all()      
+            manifest_list = []
+            manifestdict ={}
+            manifestdict['manifest_id'] = msglist[0][0]
+            username = session.query(User.user_name).filter_by(user_id=msglist[0][1]).all()
+            username= username[0][0]
+            manifestdict['manifest_user'] = username
+            tt = Timetools()
+            timetonow = tt.timetonow(msglist[0][2])
+            manifestdict['manifest_datetime'] = timetonow
+            manifestdict['manifest_title'] = msglist[0][3]
+            manifestdict['manifest_price'] = msglist[0][4]
+            manifestdict['manifest_desp'] = msglist[0][5]
+            piclist = session.query(Picture.picture_name).filter_by(picture_manifestid=msglist[0][0]).all()
+            piclist = [n[0] for n in piclist]
+            piclist = ['http://' + staticserver + ':' + staticport +'/pics/'+ x for x in piclist]
+            manifestdict['manifest_pics'] = piclist
+            labelidlist = session.query(Manilabel.manilabel_labelid).filter_by(manilabel_manifestid=manifestid).all()
+            labelnamelist =[]
+            if not labelidlist:
+                pass
+            else:    
+                for n in labelidlist:
+                    labelname = session.query(Label.label_text).filter_by(label_id=n[0]).all()
+                    labelname = labelname[0][0]
+                    labelnamelist.append(labelname)
+                manifestdict['manifest_labels'] = labelnamelist
+            if session.query(Visitcount).filter_by(visitcount_manifestid=msglist[0][0]).count() == 0:
+                session.add(Visitcount(visitcount_manifestid=msglist[0][0],
+                                       visitcount_count=0))
+            if not usertoken:
+                manifest_visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=msglist[0][0]).all()
+                manifest_visitcount = manifest_visitcount[0][0]
+                manifestdict['manifest_visitcount'] = manifest_visitcount
+                manifest_visitcount = manifest_visitcount + 1
+                session.query(Visitcount).filter_by(visitcount_manifestid=msglist[0][0]).update({Visitcount.visitcount_count: manifest_visitcount})
+            else:
+                userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+                userid = userid[0][0]
+                manifest_visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=msglist[0][0]).all()
+                manifest_visitcount = manifest_visitcount[0][0]
+                manifestdict['manifest_visitcount'] = manifest_visitcount
+                manifest_visitcount = manifest_visitcount + 1
+                session.add(Visit(visit_manifestid=msglist[0][0],
+                                  visit_userid=userid))
+                print(manifest_visitcount)
+                session.query(Visitcount).filter_by(visitcount_manifestid=msglist[0][0]).update({Visitcount.visitcount_count: manifest_visitcount})
+            userlogo = session.query(Userinfo.userinfo_logo).filter_by(userinfo_userid=msglist[0][1]).all()
+            userlogo = userlogo[0][0]
+            if not userlogo:
+                    userlogo = "default.jpg"
+            userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/'+ userlogo 
+            manifestdict['manifest_logo'] = userlogo
+            if not usertoken:
+                    manifest_favorite = 0
+            elif session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                    manifest_favorite = 0
+            else:               
+                userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+                userid = userid[0][0]
+                if session.query(Favorite).filter_by(favorite_userid=userid,favorite_manifestid=msglist[0][0]).count()>0:
+                    manifest_favorite = 1
+                else:
+                    manifest_favorite = 0
+            manifestdict['manifest_favorite'] = manifest_favorite
+            comment = session.query(Comment.comment_id,Comment.comment_userid,Comment.comment_text,Comment.comment_datetime,
+                Comment.comment_parentid).filter_by(comment_manifestid=manifestid).order_by(desc(Comment.comment_datetime)).all() 
+            commentlist = []
+            commenta = [x[0] for x in comment if not x[4]]
+            for y in comment:
+                commentdict = {}
+                commentdict['comment_id'] = y[0]
+                commentdict['comment_userid'] = y[1]
+                username1 = session.query(User.user_name).filter_by(user_id=y[1]).all()
+                username1 = username1[0][0]
+                commentdict['comment_username'] = username1
+                userlogo = session.query(Userinfo.userinfo_logo).filter_by(userinfo_userid=y[1]).all()
+                userlogo = userlogo[0][0]
+                if not userlogo:
+                    userlogo = "default.jpg"
+                userlogo = 'http://' + staticserver + ':' + staticport +'/logo/'+userlogo 
+                commentdict['comment_userlogo'] = userlogo
+                commentdict['comment_text'] = y[2]
+                commentdict['comment_datetime'] = y[3]
+                commentdict['comment_parentid'] = y[4]
+                if not y[4]:
+                    parentname = None
+                else:    
+                    parentuserid = session.query(Comment.comment_userid).filter_by(comment_id=y[4]).all()
+                    parentuserid = parentuserid[0][0]
+                    parentname = session.query(User.user_name).filter_by(user_id=parentuserid).all()
+                    parentname = parentname[0][0]
+                commentdict['comment_parentname'] = parentname
+                commentlist.append(commentdict)
+            commentlist.sort(key = lambda x : x['comment_datetime'],reverse=False)
+            for x in commentlist:
+                x['comment_datetime'] = tt.timetonow(x['comment_datetime'])
+            manifestdict['manifest_comments'] = commentlist
+            manifest_list.append(manifestdict)
+            session.commit()
+            session.close()
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+        else:
+            session.close()
+            return Info(True, len(commenta),manifest_list).tojson()       
+                
+    def manifestnewestpages(self,manifest_pagesize):
+        session = DBSessionread()
+        try:
+            if manifest_pagesize == '0':
+                session.close()
+                return Info(False,'一页的货单数不能为0',None).tojson()
+            manifestitems = session.query(Manifest).count()
+            manifest_pagesize = int(manifest_pagesize)
+            manifest_count = manifestitems/manifest_pagesize
+            manifest_count = int(manifest_count) + 1
+            manifest_count = str(manifest_count)
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+        else:
+            session.close()
+            return Info(True, None,'manifest_count: ' + manifest_count).tojson()                         
+ 
+    def manifestcontact(self,usertoken_str,manifest_id):     
+        session = DBSessionread()
+        try:
+            if session.query(Usertoken).filter_by(user_token=usertoken_str).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            if session.query(Manifest).filter_by(manifest_id=manifest_id).count() == 0:
+                return Info(False, ' 此货单不存在，请更换货单id', None).tojson()
+            userid = session.query(Manifest.manifest_userid).filter_by(manifest_id=manifest_id).all()
+            userid = userid[0][0]
+            userdict = {}
+            userlist = session.query(Userinfo.userinfo_phone,Userinfo.userinfo_wx,Userinfo.userinfo_qq).filter_by(userinfo_userid=userid).all()
+            userlist = userlist[0]
+            userdict["user_phone"] = userlist[0]
+            userdict["user_wx"] = userlist[1]
+            userdict["user_qq"] = userlist[2]
+            return Info(True,None,userdict).tojson()
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()               
+
+    def manifestcomment(self,usertoken_str,manifest_id,comment_str):        
+        session = DBSessionwrite()
+        try:
+            if not comment_str:
+                session.close()
+                return Info(False, '评论不能为空', None).tojson() 
+            if session.query(Usertoken).filter_by(user_token=usertoken_str).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            if session.query(Manifest).filter_by(manifest_id=manifest_id).count() == 0:
+                session.close()
+                return Info(False, '该货单不存在', None).tojson()
+            userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken_str).all()
+            userid = userid[0][0]    
+            nowtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+            session.add(Comment(comment_manifestid=manifest_id,
+                                comment_userid=userid,
+                                comment_text=comment_str,
+                                comment_datetime=nowtime))
+            session.commit()
+            session.close()
+            return Info(True, '评论成功', None).tojson()
+        except Exception as a:
+            print(a)
+            session.rollback()
+            session.close()
+            return Info(False, '数据库错误', None).tojson()                    
+            
+    def manifestreply(self,usertoken_str,comment_id,reply_str):        
+        session = DBSessionwrite()
+        try:
+            if not reply_str:
+                session.close()
+                return Info(False, '回复不能为空', None).tojson()
+            if session.query(Usertoken).filter_by(user_token=usertoken_str).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken_str).all()
+            userid = userid[0][0]
+            if session.query(Comment).filter_by(comment_id=comment_id).count() == 0:
+                session.close()
+                return Info(False, '该评论不存在', None).tojson()
+            manifest_id = session.query(Comment.comment_manifestid).filter_by(comment_id=comment_id).all()
+            manifest_id = manifest_id[0][0]    
+            nowtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+            session.add(Comment(comment_manifestid=manifest_id,
+                                comment_userid=userid,
+                                comment_text=reply_str,
+                                comment_datetime=nowtime,
+                                comment_parentid=comment_id))
+            session.commit()
+            session.close()
+            return Info(True, '回复成功', None).tojson()
+        except Exception as a:
+            print(a)
+            session.rollback()
+            session.close()
+            return Info(False, '数据库错误', None).tojson()             
+            
+    def manifesthottest(self,usertoken,manifest_startposi,manifest_pagesize):
+        session = DBSessionread()
+        try:
+            manifestvisitlist = session.query(Visitcount.visitcount_manifestid).order_by(desc(Visitcount.visitcount_count)).offset(manifest_startposi).limit(manifest_pagesize).all()  
+            manifest_list = []
+            manifestitems = session.query(Manifest).count()
+            print(manifestvisitlist)
+            for y in manifestvisitlist:
+                manifestlist = session.query(Manifest.manifest_id,Manifest.manifest_userid,Manifest.manifest_datetime,
+                    Manifest.manifest_title,Manifest.manifest_price,Manifest.manifest_desp,Manifest.manifest_finish).filter_by(manifest_id=y[0]).all()
+                x = manifestlist[0]
+                if x[6] == 1 :
+                    continue
+                else:                       
+                    manifestdict ={}
+                    manifestdict['manifest_id'] = x[0]
+                    username = session.query(User.user_name).filter_by(user_id=x[1]).all()
+                    username= username[0][0]
+                    manifestdict['manifest_user'] = username
+                    tt = Timetools()
+                    timetonow = tt.timetonow(x[2])
+                    manifestdict['manifest_datetime'] = timetonow
+                    manifestdict['manifest_title'] = x[3]
+                    manifestdict['manifest_price'] = x[4]
+                    manifestdict['manifest_desp'] = x[5]
+                    manifestdict['manifest_finish'] = x[6]
+                    piclist = session.query(Picture.picture_name).filter_by(picture_manifestid=x[0]).all()
+                    piclist = [n[0] for n in piclist]
+                    piclist = ['http://' + staticserver + ':' + staticport +'/pics/'+ x for x in piclist]
+                    manifestdict['manifest_pics'] = piclist
+                    labelidlist = session.query(Manilabel.manilabel_labelid).filter_by(manilabel_manifestid=x[0]).all()
+                    labelnamelist =[]
+                    if not labelidlist:
+                        pass
+                    else:    
+                        for n in labelidlist:
+                            labelname = session.query(Label.label_text).filter_by(label_id=n[0]).all()
+                            labelname = labelname[0][0]
+                            labelnamelist.append(labelname)
+                        manifestdict['manifest_labels'] = labelnamelist
+                    manifest_visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=x[0]).all()
+                    manifest_visitcount = manifest_visitcount[0][0]
+                    manifestdict['manifest_visitcount'] = manifest_visitcount
+                    userlogo = session.query(Userinfo.userinfo_logo).filter_by(userinfo_userid=x[1]).all()
+                    userlogo = userlogo[0][0]
+                    if not userlogo:
+                        userlogo = "default.jpg"
+                    userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/'+ userlogo 
+                    manifestdict['manifest_logo'] = userlogo
+                    if not usertoken:
+                        manifest_favorite = 0
+                    elif session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                        manifest_favorite = 0
+                    else:               
+                        userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+                        userid = userid[0][0]
+                        if session.query(Favorite).filter_by(favorite_userid=userid,favorite_manifestid=x[0]).count()>0:
+                            manifest_favorite = 1
+                        else:
+                            manifest_favorite = 0
+                    manifestdict['manifest_favorite'] = manifest_favorite
+                    manifest_list.append(manifestdict)
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+        else:
+            session.close()
+            return Info(True, manifestitems,manifest_list).tojson()         
+
+    def manifestfavorite(self,usertoken,manifest_id): 
+        session = DBSessionwrite()
+        try:
+            if session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+            userid = userid[0][0]
+            if session.query(Favorite).filter_by(favorite_manifestid=manifest_id,favorite_userid=userid).count() == 0:
+                nowtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+                session.add(Favorite(favorite_manifestid=manifest_id,
+                                     favorite_userid=userid,
+                                     favorite_datetime=nowtime))
+                session.commit()
+                session.close()
+                return Info(True, '已收藏货单', None).tojson()
+            else:
+                session.query(Favorite).filter_by(favorite_manifestid=manifest_id,favorite_userid=userid).delete()
+                session.commit()
+                session.close()
+                return Info(True, '已取消收藏', None).tojson()   
+        except Exception as a:
+            session.rollback()
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+            
+    def manifestrecommend(self,usertoken,manifest_startposi,manifest_pagesize):
+        session = DBSessionread()
+        try:
+            manifestvisitlist = session.query(Manifest.manifest_id).filter_by(manifest_finish=0).all()
+            random.shuffle(manifestvisitlist)
+            manifest_startposi = int(manifest_startposi)
+            manifest_pagesize = int(manifest_pagesize)
+            manifestvisitlist = manifestvisitlist[manifest_startposi:manifest_startposi+manifest_pagesize]
+            manifest_list = []
+            manifestitems = session.query(Manifest).count()
+            for y in manifestvisitlist:
+                manifestlist = session.query(Manifest.manifest_id,Manifest.manifest_userid,Manifest.manifest_datetime,
+                    Manifest.manifest_title,Manifest.manifest_price,Manifest.manifest_desp,Manifest.manifest_finish).filter_by(manifest_id=y[0]).all()
+                x = manifestlist[0]
+                if x[6] == 1:
+                    continue
+                else:    
+                    manifestdict ={}
+                    manifestdict['manifest_id'] = x[0]
+                    username = session.query(User.user_name).filter_by(user_id=x[1]).all()
+                    username= username[0][0]
+                    manifestdict['manifest_user'] = username
+                    tt = Timetools()
+                    timetonow = tt.timetonow(x[2])
+                    manifestdict['manifest_datetime'] = timetonow
+                    manifestdict['manifest_title'] = x[3]
+                    manifestdict['manifest_price'] = x[4]
+                    manifestdict['manifest_desp'] = x[5]
+                    piclist = session.query(Picture.picture_name).filter_by(picture_manifestid=x[0]).all()
+                    piclist = [n[0] for n in piclist]
+                    piclist = ['http://' + staticserver + ':' + staticport +'/pics/'+ x for x in piclist]
+                    manifestdict['manifest_pics'] = piclist
+                    labelidlist = session.query(Manilabel.manilabel_labelid).filter_by(manilabel_manifestid=x[0]).all()
+                    labelnamelist =[]
+                    if not labelidlist:
+                        pass
+                    else:    
+                        for n in labelidlist:
+                            labelname = session.query(Label.label_text).filter_by(label_id=n[0]).all()
+                            labelname = labelname[0][0]
+                            labelnamelist.append(labelname)
+                        manifestdict['manifest_labels'] = labelnamelist
+                    if session.query(Visitcount).filter_by(visitcount_manifestid=x[0]).count() == 0:
+                        manifest_visitcount = 0
+                    else:
+                        manifest_visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=x[0]).all()
+                        manifest_visitcount = manifest_visitcount[0][0]
+                    manifestdict['manifest_visitcount'] = manifest_visitcount
+                    userlogo = session.query(Userinfo.userinfo_logo).filter_by(userinfo_userid=x[1]).all()
+                    userlogo = userlogo[0][0]
+                    if not userlogo:
+                        userlogo = "default.jpg"
+                    userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/'+ userlogo 
+                    manifestdict['manifest_logo'] = userlogo
+                    if not usertoken:
+                        manifest_favorite = 0
+                    elif session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                        manifest_favorite = 0
+                    else:               
+                        userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+                        userid = userid[0][0]
+                        if session.query(Favorite).filter_by(favorite_userid=userid,favorite_manifestid=x[0]).count()>0:
+                            manifest_favorite = 1
+                        else:
+                            manifest_favorite = 0
+                    manifestdict['manifest_favorite'] = manifest_favorite
+                    manifest_list.append(manifestdict)
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+        else:
+            session.close()
+            return Info(True, manifestitems,manifest_list).tojson()          
+            
+    def manifestmyfavorite(self,usertoken,manifest_startposi,manifest_pagesize):
+        session = DBSessionread()
+        try:
+            if session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+            userid = userid[0][0]
+            manifestvisitlist = session.query(Favorite.favorite_manifestid,Favorite.favorite_datetime).filter_by(favorite_userid=userid).order_by(desc(Favorite.favorite_datetime)).offset(manifest_startposi).limit(manifest_pagesize).all()
+            manifest_list = []
+            manifestitems = session.query(Favorite).filter_by(favorite_userid=userid).count()
+            for y in manifestvisitlist:
+                manifestdict ={}
+                tt = Timetools()
+                favoritetime = tt.timetonow(y[1])
+                manifestdict["manifest_favoritedatetime"] = favoritetime
+                manifestlist = session.query(Manifest.manifest_id,Manifest.manifest_userid,Manifest.manifest_datetime,
+                    Manifest.manifest_title,Manifest.manifest_price,Manifest.manifest_desp).filter_by(manifest_id=y[0]).all()
+                x = manifestlist[0]
+                manifestdict['manifest_id'] = x[0]
+                username = session.query(User.user_name).filter_by(user_id=x[1]).all()
+                username= username[0][0]
+                manifestdict['manifest_user'] = username
+                timetonow = tt.timetonow(x[2])
+                manifestdict['manifest_datetime'] = timetonow
+                manifestdict['manifest_title'] = x[3]
+                manifestdict['manifest_price'] = x[4]
+                manifestdict['manifest_desp'] = x[5]
+                piclist = session.query(Picture.picture_name).filter_by(picture_manifestid=x[0]).all()
+                piclist = [n[0] for n in piclist]
+                piclist = ['http://' + staticserver + ':' + staticport +'/pics/'+ x for x in piclist]
+                manifestdict['manifest_pics'] = piclist
+                labelidlist = session.query(Manilabel.manilabel_labelid).filter_by(manilabel_manifestid=x[0]).all()
+                labelnamelist =[]
+                if not labelidlist:
+                    pass
+                else:    
+                    for n in labelidlist:
+                        labelname = session.query(Label.label_text).filter_by(label_id=n[0]).all()
+                        labelname = labelname[0][0]
+                        labelnamelist.append(labelname)
+                    manifestdict['manifest_labels'] = labelnamelist
+                if session.query(Visitcount).filter_by(visitcount_manifestid=x[0]).count() == 0:
+                    manifest_visitcount = 0
+                else:
+                    manifest_visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=x[0]).all()
+                    manifest_visitcount = manifest_visitcount[0][0]
+                manifestdict['manifest_visitcount'] = manifest_visitcount
+                userlogo = session.query(Userinfo.userinfo_logo).filter_by(userinfo_userid=x[1]).all()
+                userlogo = userlogo[0][0]
+                if not userlogo:
+                    userlogo = "default.jpg"
+                userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/'+ userlogo 
+                manifestdict['manifest_logo'] = userlogo
+                if not usertoken:
+                    manifest_favorite = 0
+                elif session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                    manifest_favorite = 0
+                else:               
+                    userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+                    userid = userid[0][0]
+                    if session.query(Favorite).filter_by(favorite_userid=userid,favorite_manifestid=x[0]).count()>0:
+                        manifest_favorite = 1
+                    else:
+                        manifest_favorite = 0
+                manifestdict['manifest_favorite'] = manifest_favorite
+                manifest_list.append(manifestdict)
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+        else:
+            session.close()
+            return Info(True, manifestitems,manifest_list).tojson()             
+                     
+    def manifestpublish(self,usertoken_str,manifest_title,manifest_price,manifest_desp,manifest_pics):
+        session = DBSessionwrite()
+        try:
+            if session.query(Usertoken).filter_by(user_token=usertoken_str).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            if len(manifest_title) > 30:
+                session.close()
+                return Info(False, '主题不能超过30个字', None).tojson()
+            if int(manifest_price) < 0 or int(manifest_price) >10000:
+                return Info(False, '价格不能少于0或者大于10000', None).tojson()        
+            userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken_str).all()
+            userid = userid[0][0]
+            manifest_pics = demjson.decode(manifest_pics)
+            print(manifest_pics)
+            nowtime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+            session.add(Manifest(manifest_userid = userid,
+                                 manifest_title = manifest_title,
+                                 manifest_price = manifest_price,
+                                 manifest_desp = manifest_desp,
+                                 manifest_datetime = nowtime,
+                                 manifest_finish = 0))
+            manifestid = session.query(Manifest.manifest_id).filter_by(manifest_title=manifest_title,manifest_userid=userid).all()
+            manifestid = manifestid[0][0]
+            for x in manifest_pics:
+                x = x.split('/')
+                x = x[-1]
+                nowtime = time.strftime('%Y-%m-%d',time.localtime())
+                #shutil.move('/home/fris/erhuo/reachmedown/reachmedown/temp/' + nowtime + '/' + x,'/home/fris/erhuo/reachmedown/reachmedown/pics/')
+                session.add(Picture(picture_name=x,
+                                    picture_manifestid=manifestid))
+            session.commit()
+            session.close()                        
+            return Info(True, '发布成功', None).tojson()
+        except Exception as a:
+            print(a)
+            session.rollback()
+            session.close()
+            return Info(False, '数据库错误', None).tojson()                    
+                         
+    def pictureremove(self,usertoken,pic_address):            
+        session = DBSessionread()
+        try:
+            if session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            pic_address = pic_address.split('/')
+            pic_address = pic_address[-1]
+            if not pic_address:
+                return Info(False, '输入的地址格式错误，"/"分割后最后一个元素应该为图片名称', None).tojson()
+            else:
+                if os.path.exists('/home/fris/erhuo/reachmedown/reachmedown/pics/'+pic_address):
+                    os.remove('/home/fris/erhuo/reachmedown/reachmedown/pics/'+pic_address)
+                else:
+                    session.close()
+                    return Info(True, '你要删除的图片不存在', None).tojson() 
+            session.close()
+            return Info(True, '图片删除成功', None).tojson()
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()        
+            
+    def manifestmypublish(self,usertoken,manifest_startposi,manifest_pagesize):            
+        session = DBSessionread()
+        try:
+            if session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+            userid = userid[0][0]
+            manifestvisitlist = session.query(Manifest.manifest_id,Manifest.manifest_finish).filter_by(manifest_userid=userid).order_by(desc(Manifest.manifest_datetime)).all()
+            manifest_list1 = []
+            manifest_list2 = []
+            for m in manifestvisitlist:
+                if m[1] == 0:
+                    manifest_list1.append(m)
+                if m[1] == 1:
+                    manifest_list2.append(m)
+            manifestvisitlist = manifest_list1 + manifest_list2
+            manifest_startposi = int(manifest_startposi)
+            manifest_pagesize = int(manifest_pagesize)
+            print(len(manifestvisitlist))
+            print(manifest_startposi)
+            print(manifest_pagesize)
+            manifestvisitlist = manifestvisitlist[manifest_startposi:manifest_startposi+manifest_pagesize]
+            manifest_list = []     
+            manifestitems = session.query(Manifest).filter_by(manifest_userid=userid).count()
+            for y in manifestvisitlist:
+                manifestdict ={}
+                tt = Timetools()
+                manifestlist = session.query(Manifest.manifest_id,Manifest.manifest_userid,Manifest.manifest_datetime,
+                    Manifest.manifest_title,Manifest.manifest_price,Manifest.manifest_desp,Manifest.manifest_finish).filter_by(manifest_id=y[0]).all()
+                x = manifestlist[0]
+                manifestdict['manifest_id'] = x[0]
+                username = session.query(User.user_name).filter_by(user_id=x[1]).all()
+                username= username[0][0]
+                manifestdict['manifest_user'] = username
+                timetonow = tt.timetonow(x[2])
+                manifestdict['manifest_datetime'] = timetonow
+                manifestdict['manifest_title'] = x[3]
+                manifestdict['manifest_price'] = x[4]
+                manifestdict['manifest_desp'] = x[5]
+                piclist = session.query(Picture.picture_name).filter_by(picture_manifestid=x[0]).all()
+                piclist = [n[0] for n in piclist]
+                piclist = ['http://' + staticserver + ':' + staticport +'/pics/'+ x for x in piclist]
+                manifestdict['manifest_pics'] = piclist
+                labelidlist = session.query(Manilabel.manilabel_labelid).filter_by(manilabel_manifestid=x[0]).all()
+                labelnamelist =[]
+                if not labelidlist:
+                    pass
+                else:    
+                    for n in labelidlist:
+                        labelname = session.query(Label.label_text).filter_by(label_id=n[0]).all()
+                        labelname = labelname[0][0]
+                        labelnamelist.append(labelname)
+                    manifestdict['manifest_labels'] = labelnamelist
+                if session.query(Visitcount).filter_by(visitcount_manifestid=x[0]).count() == 0:
+                    manifest_visitcount = 0
+                else:
+                    manifest_visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=x[0]).all()
+                    manifest_visitcount = manifest_visitcount[0][0]
+                manifestdict['manifest_visitcount'] = manifest_visitcount
+                userlogo = session.query(Userinfo.userinfo_logo).filter_by(userinfo_userid=x[1]).all()
+                userlogo = userlogo[0][0]
+                if not userlogo:
+                    userlogo = "default.jpg"
+                userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/'+ userlogo 
+                manifestdict['manifest_logo'] = userlogo
+                userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+                userid = userid[0][0]
+                if session.query(Favorite).filter_by(favorite_userid=userid,favorite_manifestid=x[0]).count()>0:
+                    manifest_favorite = 1
+                else:
+                    manifest_favorite = 0
+                manifestdict['manifest_favorite'] = manifest_favorite
+                manifestdict['manifest_finished'] = x[6]
+                manifest_list.append(manifestdict)       
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+        else:
+            session.close()
+            return Info(True, manifestitems,manifest_list).tojson()    
+            
+    def manifestsearch(self,usertoken,keywords,manifest_startposi,manifest_pagesize):
+        session = DBSessionread()
+        try:
+            keywords = list(jieba.cut(keywords, cut_all=True))
+            manifestkeyworkslista = []
+            for x in keywords:
+                manifestkeyworklist1 = session.query(Manifest.manifest_id).filter(
+                    Manifest.manifest_desp.like("%" + x + "%")).all()
+                manifestkeyworklist2 = session.query(Manifest.manifest_id).filter(
+                    Manifest.manifest_title.like("%" + x + "%")).all()
+                manifestkeyworklist =set(manifestkeyworklist1 +manifestkeyworklist2)         
+                manifestkeyworklist = [x[0] for x in manifestkeyworklist]
+                manifestkeyworkslista = manifestkeyworkslista + manifestkeyworklist   
+            manifestkeyworkslistb = set(manifestkeyworkslista)
+            manifestkeyworkslistc = [[x,manifestkeyworkslista.count(x)] for x in manifestkeyworkslistb]
+            for n in manifestkeyworkslistc:
+                if session.query(Visitcount).filter_by(visitcount_manifestid=n[0]).count() == 0:
+                    visitcount = 0
+                else:
+                    visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=n[0]).all()
+                    visitcount = visitcount[0][0]
+                n.append(visitcount)  
+            manifestkeyworkslistc = sorted(manifestkeyworkslistc,key = (lambda a : (a[1],a[2])),reverse=True)
+            manifestkeyworkslistc = manifestkeyworkslistc[int(manifest_startposi) : int(manifest_startposi)+int(manifest_pagesize)]                
+            manifest_list = []
+            manifestitems = len(manifestkeyworkslistb)
+            for y in manifestkeyworkslistc:
+                manifestdict ={}
+                tt = Timetools()
+                manifestlist = session.query(Manifest.manifest_id,Manifest.manifest_userid,Manifest.manifest_datetime,
+                    Manifest.manifest_title,Manifest.manifest_price,Manifest.manifest_desp).filter_by(manifest_id=y[0]).all()
+                x = manifestlist[0]
+                manifestdict['manifest_id'] = x[0]
+                username = session.query(User.user_name).filter_by(user_id=x[1]).all()
+                username= username[0][0]
+                manifestdict['manifest_user'] = username
+                timetonow = tt.timetonow(x[2])
+                manifestdict['manifest_datetime'] = timetonow
+                manifestdict['manifest_title'] = x[3]
+                manifestdict['manifest_price'] = x[4]
+                manifestdict['manifest_desp'] = x[5]
+                piclist = session.query(Picture.picture_name).filter_by(picture_manifestid=x[0]).all()
+                piclist = [n[0] for n in piclist]
+                piclist = ['http://' + staticserver + ':' + staticport +'/pics/'+ x for x in piclist]
+                manifestdict['manifest_pics'] = piclist
+                labelidlist = session.query(Manilabel.manilabel_labelid).filter_by(manilabel_manifestid=x[0]).all()
+                labelnamelist =[]
+                if not labelidlist:
+                    pass
+                else:    
+                    for n in labelidlist:
+                        labelname = session.query(Label.label_text).filter_by(label_id=n[0]).all()
+                        labelname = labelname[0][0]
+                        labelnamelist.append(labelname)
+                    manifestdict['manifest_labels'] = labelnamelist
+                if session.query(Visitcount).filter_by(visitcount_manifestid=x[0]).count() == 0:
+                    manifest_visitcount = 0
+                else:
+                    manifest_visitcount = session.query(Visitcount.visitcount_count).filter_by(visitcount_manifestid=x[0]).all()
+                    manifest_visitcount = manifest_visitcount[0][0]
+                manifestdict['manifest_visitcount'] = manifest_visitcount
+                userlogo = session.query(Userinfo.userinfo_logo).filter_by(userinfo_userid=x[1]).all()
+                userlogo = userlogo[0][0]
+                if not userlogo:
+                    userlogo = "default.jpg"
+                userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/'+ userlogo 
+                manifestdict['manifest_logo'] = userlogo
+                if not usertoken:
+                    manifest_favorite = 0
+                elif session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                    manifest_favorite = 0
+                else:
+                    userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+                    userid = userid[0][0]
+                    if session.query(Favorite).filter_by(favorite_userid=userid,favorite_manifestid=x[0]).count()>0:
+                        manifest_favorite = 1
+                    else:
+                        manifest_favorite = 0
+                manifestdict['manifest_favorite'] = manifest_favorite
+                manifest_list.append(manifestdict)
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()
+        else:
+            session.close()
+            return Info(True, manifestitems,manifest_list).tojson()
+        
+    def manifestbuyout(self,usertoken,manifest_id):    
+        session = DBSessionwrite()
+        try:
+            if session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+            finishstatus = session.query(Manifest.manifest_finish).filter_by(manifest_id=manifest_id).all()
+            finishstatus = finishstatus[0][0]
+            if finishstatus == 0 :    
+                session.query(Manifest).filter_by(manifest_id=manifest_id).update({Manifest.manifest_finish:1})    
+            if finishstatus == 1 :
+                session.query(Manifest).filter_by(manifest_id=manifest_id).update({Manifest.manifest_finish:0})
+            session.commit()
+            session.close()    
+            return Info(True, "已确认售出（已恢复出售状态）", None ).tojson()   
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', None).tojson()        
+        
+    '''
+    路径: /v1/manifests/remove/
+    请求方式: GET
+    请求参数:
+    usertoken_str: tokenstr
+    manifest_id: manifestid
+    返回值:
+    True, 已删除, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    '''        
+    
+    def manifestremove(self,usertoken,manifest_id):
+        session = DBSessionwrite()
+        try:
+           if session.query(Usertoken).filter_by(user_token=usertoken).count() == 0:
+                session.close()
+                return Info(False, '用户登录已过期，请重新登录', None).tojson()
+           userid = session.query(Usertoken.user_id).filter_by(user_token=usertoken).all()
+           userid = userid[0][0]          
+           if session.query(Manifest).filter_by(manifest_id=manifest_id,manifest_userid=userid).count() > 0:
+               session.query(Picture).filter_by(picture_manifestid=manifest_id).delete()
+               session.query(Manilabel).filter_by(manilabel_manifestid=manifest_id).delete()
+               session.query(Comment).filter_by(comment_manifestid=manifest_id).delete()
+               session.query(Favorite).filter_by(favorite_manifestid=manifest_id).delete()
+               session.query(Visit).filter_by(visit_manifestid=manifest_id).delete()
+               session.query(Visitcount).filter_by(visitcount_manifestid=manifest_id).delete()
+               session.query(Contact).filter_by(contact_manifestid=manifest_id).delete()  
+               session.query(Manifest).filter_by(manifest_id=manifest_id,manifest_userid=userid).delete()
+           session.commit()
+           session.close()
+           return Info(True, '已删除', None).tojson()
+        except Exception as a:
+            print(a)
+            session.rollback()
+            session.close()
+            return Info(False, '数据库错误', None).tojson()          
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                   
+            
+            
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                   
+            
+            
+            

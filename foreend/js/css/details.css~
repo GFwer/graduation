@@ -1,0 +1,212 @@
+#top {
+    float: left;
+    width: 100%;
+    padding: 10px;
+}
+
+#totalleft {
+    float: left;
+    width: 640px;
+}
+
+#totalright {
+    float: right;
+}
+
+#middle {
+    float: left;
+    width: 100%;
+}
+
+#middlecontent {
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#manifest_title {
+    float: left;
+    font-size: 24px;
+    width: 300px;
+}
+
+#manifest_price {
+    float: right;
+    font-size: 24px;
+    width: 300px;
+    text-align: right;
+}
+
+#manifest_desp p {
+    text-indent: 2em;
+}
+
+#lastline {
+    margin-top: 10px;
+}
+
+#favorite {
+    float: left;
+}
+
+#manifest_label {
+    float: right;
+    text-align: right;
+}
+
+#firstline {
+    height: 48px;
+}
+
+#bottom {
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#bottomtitle {
+    border-bottom: 2px solid #CCCCCC;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#descline {
+    width: 100%;
+    font-size: 16px;
+    border-bottom: 2px solid #CCCCCC;
+    margin-bottom: 5px;
+}
+
+#manifest_id {
+    display: none;
+}
+
+#manifest_topleft {
+    float: left;
+    width: 120px;
+}
+
+#manifest_topmiddle {
+    float: left;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100px;
+}
+
+#manifest_topright1 {
+    float: left;
+    width: 200px;
+    font-size: 24px;
+    padding-left: 20px;
+}
+
+#manifest_topright2 {
+    float: right;
+    width: 200px;
+    margin-top: 50px;
+    text-align: right;
+    font-size: 24px;
+}
+
+.manifest_item {
+    margin-bottom: 10px;
+}
+
+#manifest_user {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#manifest_datetime {
+    font-size: 18px;
+    color: #999999;
+}
+
+.manifest_label {
+    float: left;
+    display: block;
+    width: 100px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.manifest_value {
+    float: left;
+    display: block;
+    width: 150px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+#myCarousel {
+    float: left;
+    overflow: hidden;
+}
+
+.commentlineleft {
+    float: left;
+    width: 100px;
+}
+
+.commentstr {
+    float: left;
+    width: 500px;
+}
+
+.commentstr p {
+    margin-top: 10px;
+    text-indent: 2em;
+}
+
+.commenticon {
+    float: left;
+    width: 500px;
+    text-align: right;
+    font-size: 20px;
+    margin-right: 80px;
+}
+
+.commentlogo {
+    text-align: center;
+    width: 120px;
+}
+
+.commentuser {
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    width: 120px;
+}
+
+.commentdatetime {
+    font-size: 16px;
+    color: #999999;
+    text-align: center;
+    width: 120px;
+}
+
+.replyitem {
+    float: left;
+    width: 600px;
+    margin-left: 120px;
+}
+
+.replyhead {
+    float: left;
+}
+
+.replybody {
+    float: left;
+}
+
+.replyend {
+    float: right;
+    margin-right: 80px;
+}
+
+.commentbox {
+    float: left;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}

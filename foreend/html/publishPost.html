@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="../js/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../js/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../js/css/Jcrop.min.css" />
+    <link rel="stylesheet" href="../js/css/jquery.fileupload.css" />
+    <link rel="stylesheet" href="../css/css.css"/>
+    <link rel="stylesheet" href="../css/func.css"/>
+    <style>
+        .one{
+            width: auto;
+            height: 100px;
+            background-color: black;
+            padding: 30px 10px 30px 30px;
+            overflow: hidden;
+            color: #ffffff;
+        }
+        .classify{
+        }
+        .str{
+            width: 100%;
+        }
+        .strip-1{
+            width: 100%;
+        }
+        #two{
+            width: 1017px;
+        }
+        .send{
+            width: 100%;
+            color: #000000;
+        }
+        .addImg button{
+
+        }
+        .myigroup{
+        }
+        #imagecut {
+            display: none;
+        }
+
+        #previewborder {
+            border: 1px solid #000;
+            -moz-box-shadow: 3px 3px 4px #000;
+            -webkit-box-shadow: 3px 3px 4px #000;
+            box-shadow: 3px 3px 4px #000;
+            /*background: #fff;*/
+        }
+
+        canvas {
+            max-height: 480px;
+            max-width: 360px;
+            width: expression(this.width>360 && this.height<this.width?360: true);
+            height: expression(this.height>480?480: true);
+        }
+
+        div .jcrop-active {
+            max-height: 480px;
+            max-width: 360px;
+            width: expression(this.width>360 && this.height<this.width?360: true);
+            height: expression(this.height>480?480: true);
+        }
+    </style>
+    </head>
+<body id="body">
+
+<div class="one f-cb" style="color: #ffffff;">
+    <div onclick="toForst()">哈尔滨理工大学论坛</div>
+    <ul class="f-cb ul1">
+        <li>用户名：<input type="text" class="user_name"/></li>
+        <li>密码：<input type="password" class="user_password"/></li>
+        <li><input type="button" value="登录" style="width: 80px" onclick="toLogin()"/></li>
+        <li><input type="button" value="注册" style="width: 80px" onclick="toSign()"/></li>
+    </ul>
+    <ul class="f-cb ul2">
+        <li class="span"><span class="user_name"></span>,欢迎你!</li>
+        <li style="color: #000">
+            <input type="button" value="我的言论" onclick="myPost()"/>
+            <input type="button" value="发表言论" onclick="publishPost()"/>
+            <input type="button" value="退出系统" onclick="secede()"/>
+        </li>
+    </ul>
+</div>
+<div class="sign f-cb">
+    <h2>用户注册</h2>
+    <div>
+        用户名：<input type="text" class="user_name"/><br><br>
+        密码： <input type="password" class="user_password"/><br><br>
+        确认密码：<input type="password" class="user_repassword"/><br><br>
+    </div>
+    <input type="button" value="确认" onclick="toSure()" class="but">
+    <input type="button" value="取消" onclick="toCancel()" class="but"/>
+</div>
+<div class="strip f-cb">
+    <div class="str f-cb">
+        <div class="strip-1">
+            <ul class="f-cb bar">
+                <li id="school0" onclick="school(0)">校内信息</li>
+                <li id="school1" onclick="school(1)">学习交流</li>
+                <li id="school2" onclick="school(2)">吃喝玩乐</li>
+                <li id="school3" onclick="school(3)">失物招领</li>
+            </ul>
+        </div>
+        <div class="strip-2"></div>
+        <div class="strip-3"></div>
+        <div id="two" class="f-cb">
+            <div class="send f-cb">
+                <div class="sentTitle f-cb">
+                    主题：<input type="text" class="gatTitle"/>
+                </div>
+                <div class="sentContent ">
+                    <span class="sendContent-name">内容：</span><textarea class="getContent"></textarea>
+                </div>
+
+                <div class="addImg">
+                    <div class="f-cb button-box">
+                        <button class="f-fl add" type="button"  data-toggle="modal" data-target="#uploadpicmodal1">添加图片</button>
+                        <div class="classify f-fr" style="">
+                            <select onchange="getClass(this)" id="mySelect">
+                                <option value="0">校内信息</option>
+                                <option value="1">学习交流</option>
+                                <option value="2">吃喝玩乐</option>
+                                <option value="3">失物招领</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group myigroup">
+                        <div id="piccontainer" style="min-height: 120px;text-align: center;"></div>
+                    </div>
+                </div>
+
+
+                <div class="f-tar">
+                    <input type="button" value="确认" onclick="publishpost()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="uploadpicmodal1" role="dialog" aria-labelledby="uploadpiclabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="uploadpiclabel1">上传图片 Step1-2</h4>
+            </div>
+            <div class="modal-body">
+                <div class="uploadpic" id="uploadpic" style="width:100%;">
+                    <div class="alert alert-warning">为保证截图质量，请使用手机以竖直姿态拍照</div>
+                        <span class="btn btn-success fileinput-button" style="width:100%;margin-bottom:10px;">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>请点此在本地选择一个图片文件</span>
+                        <input id="fileupload" type="file" name="files[]" style="width:100%;" />
+                        </span>
+                    <div id="progress" class="progress" style="width:100%;">
+                        <div class="progress-bar progress-bar-success"></div>
+                    </div>
+                    <div id="files" class="files"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="uploadpicmodal2" role="dialog" aria-labelledby="uploadpiclabel2" aria-hidden="true">
+    <div class="modal-dialog" style="width: 610px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="uploadpiclabel2">上传图片 Step2-2</h4>
+            </div>
+            <div class="modal-body">
+                <div id="imagecut">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="jcrop-holder" style="width: 360px;height:480px;position:relative;background-color:black;">
+                                    <img src="#" alt="" id="target" style="display:block;visibility:visible;width:480px;height:480px;border:medium none;margin:0px;padding:0px;position:absolute;top:0px;left:0px;opacity:0.6;">
+                                </div>
+                            </td>
+                            <td>
+                                <div style="width:200px;height:200px;overflow:hidden;margin-left:10px;" id="previewborder">
+                                    <img src="#" alt="" id="preview" style="margin-left:-49px;margin-top:-54px;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="hidden" id="filename" name="filename" />
+                                <input type="hidden" id="x1" name="x1" value="0" />
+                                <input type="hidden" id="x2" name="x2" value="0" />
+                                <input type="hidden" id="y1" name="y1" value="0" />
+                                <input type="hidden" id="y2" name="y2" value="0" />
+                                <input type="hidden" id="cw" name="cw" value="0" />
+                                <input type="hidden" id="ch" name="ch" value="0" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-info" onclick="cutimage()">
+                    裁剪
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bottom">哈尔滨理工大学论坛</div>
+<script src="../js/top.js"></script>
+<script src="../js/myjs/conf.js "></script>
+<script src="../js/jquery-1.12.3.min.js "></script>
+<script src="../js/bootstrap-3.3.5-dist/js/bootstrap.min.js "></script>
+<script src="../js/myjs/json2.js "></script>
+<script src="../js/myjs/cookie.js "></script>
+<script src="../js/myjs/tools.js "></script>
+<script src="../js/myjs/ajax.js "></script>
+<script src="../js/myjs/create.js"></script>
+<script src="../js/vendor/jquery.ui.widget.js"></script>
+<script src="../js/jquery.iframe-transport.js"></script>
+<script src="../js/jquery.fileupload.js"></script>
+
+<script>
+    jQuery.support.cors = true;
+    $(function () {
+        'use strict';
+        var url = "http://" + backendserver + ":" + backendport + "/v1/post/web/pics/";
+        $("#fileupload").fileupload({
+            url: url,
+            dataType: 'json',
+            done: function (e, data) {
+                var canvascontainer = document.getElementsByClassName("jcrop-active");
+                var mycanvas = document.getElementsByTagName("canvas");
+                if (canvascontainer.length && mycanvas.length) {
+                    var ccontainer = canvascontainer[0];
+                    var mcanvas = mycanvas[0];
+                    ccontainer.removeChild(mcanvas);
+                    document.getElementById("target").style.display = "block";
+                    document.getElementById("target").style.width = "360px";
+                    document.getElementById("target").style.height = "480px";
+                    document.getElementById("target").style.opacity = "0.8";
+                }
+                if (data["result"]["infostatus"]) {
+                    $("#uploadpicmodal1").modal("hide");
+                    $("#uploadpicmodal2").modal("show");
+                    $("#target").attr("src", data["result"]["infomsg"]);
+                    $("#preview").attr("src", data["result"]["infomsg"]);
+                    $("#imagecut").css("display", "block");
+                    $("#filename").attr("value", data["result"]["infomsg"]);
+                } else {
+                    alert(data["result"]["infomsg"]);
+                }
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $("#progress .progress-bar").css(
+                        'width',
+                        progress + "%"
+                );
+            }
+        }).prop("disabled", !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+</script>
+<script src="../js/Jcrop.min.js"></script>
+<script>
+    $(function () {
+        $("#target").Jcrop({
+            onChange: showPreview,
+            onSelect: showPreview,
+            aspectRatio: 1,
+        });
+    });
+
+    function showPreview(coords) {
+        var canvascontainer = document.getElementsByClassName("jcrop-active");
+        var mycanvas = document.getElementsByTagName("canvas");
+        if (canvascontainer.length && mycanvas.length) {
+            var ccontainer = canvascontainer[0];
+            var mcanvas = mycanvas[0];
+            ccontainer.removeChild(mcanvas);
+            document.getElementById("target").style.display = "block";
+            document.getElementById("target").style.width = "360px";
+            document.getElementById("target").style.height = "480px";
+            document.getElementById("target").style.opacity = "0.8";
+        }
+        var rx = 200 / coords.w;
+        var ry = 200 / coords.h;
+        $("#preview").css({
+            width: Math.round(rx * 360) + "px",
+            height: Math.round(ry * 480) + "px",
+            marginLeft: '-' + Math.round(rx * coords.x) + "px",
+            marginTop: '-' + Math.round(ry * coords.y) + "px"
+        });
+        $("#x1").val(coords.x);
+        $("#y1").val(coords.y);
+        $("#x2").val(coords.x2);
+        $("#y2").val(coords.y2);
+        $("#cw").val(coords.w);
+        $("#ch").val(coords.h);
+    }
+</script>
+<script src="../js/URL.js"></script>
+<script src="../js/top.js"></script>
+</body>
+</html>
