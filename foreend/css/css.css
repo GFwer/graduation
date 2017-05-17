@@ -249,6 +249,10 @@ a{
     font-size: 30px;
     text-align: center;
 }
+.user_name{
+    font-size: 1em;
+
+}
 .send{
     float: left;
     color: #ffffff;
@@ -345,5 +349,9 @@ a{
     background-color: #000000;
     color: #ffffff;
     margin-top: 10px;
+}
+/*add*/
+.mdui-menu{
+    margin-top: 40px;
 }
 
