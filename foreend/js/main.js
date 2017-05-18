@@ -28,6 +28,7 @@ function school(figure) {
     fun(figure, 0);
 }
 
+
 //创建数据块
 function createBox(result) {
     console.log(result);
@@ -83,13 +84,13 @@ function createBox(result) {
 /**
  * 页面滚动
  */
-$('[data-scroll]').on('click', function(e) {
-    var $this = $(this);
-    var hash = $this.attr('href').split('#')[1];
-    var $target = $('#' + hash);
-    var scrollTop = $target.offset().top;
-    $('html, body').stop().animate({ scrollTop: scrollTop }, 300, 'linear');
-});
+// $('[data-scroll]').on('click', function(e) {
+//     var $this = $(this);
+//     var hash = $this.attr('href').split('#')[1];
+//     var $target = $('#' + hash);
+//     var scrollTop = $target.offset().top;
+//     $('html, body').stop().animate({ scrollTop: scrollTop }, 300, 'linear');
+// });
 
 /**
  * 图片占位符

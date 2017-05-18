@@ -1,6 +1,9 @@
 /**
  * Created by Administrator on 2016/11/1 0001.
  */
+
+//匿名函数
+
 //注册
 function toSign() {
     var sign = document.getElementsByClassName('sign')[0];
@@ -27,12 +30,20 @@ function toSure() {
     var user_password = document.getElementsByClassName('user_password')[1].value;
     var user_repassword = document.getElementsByClassName('user_repassword')[0].value;
     if (user_name == "") {
-        alert("用户名不能为空");
+        mdui.snackbar({
+            message: "用户名不能为空"
+        });
+        shake("loginform");
     } else if (user_password == "") {
-        alert("密码不能为空");
+        mdui.snackbar({
+            message: "密码不能为空"
+        });
+        shake("loginform");
     } else if (user_password !== user_repassword) {
-        alert("两次输入的密码不一致");
-        alert(aaaa)
+        mdui.snackbar({
+            message: "两次输入的密码不一致"
+        });
+        shake("loginform");
     } else {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function() {
@@ -44,7 +55,10 @@ function toSure() {
                 user_password = "";
                 user_repassword = "";
                 result = JSON.parse(xmlHttp.responseText);
-                alert(result["infomsg"]);
+                mdui.snackbar({
+                    message: result["infomsg"]
+                });
+                shake("loginform");
             }
         };
         var backendurl = url + "/v1/user/signup/";
@@ -63,12 +77,20 @@ function newtoSure() {
     var user_password = document.getElementsByClassName('user_password')[1].value;
     var user_repassword = document.getElementsByClassName('user_repassword')[0].value;
     if (user_name == "") {
-        alert("用户名不能为空");
+        mdui.snackbar({
+            message: "用户名不能为空"
+        });
+        shake("loginform");
     } else if (user_password == "") {
-        alert("密码不能为空");
+        mdui.snackbar({
+            message: "密码不能为空"
+        });
+        shake("loginform");
     } else if (user_password !== user_repassword) {
-        alert("两次输入的密码不一致");
-        alert(aaaa)
+        mdui.snackbar({
+            message: "两次输入的密码不一致"
+        });
+        shake("loginform");
     } else {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function() {
@@ -80,7 +102,10 @@ function newtoSure() {
                 user_password = "";
                 user_repassword = "";
                 result = JSON.parse(xmlHttp.responseText);
-                alert(result["infomsg"]);
+                mdui.snackbar({
+                    message: result["infomsg"]
+                });
+                shake("loginform");
                 if (result["infostatus"]) {
                     $('.in').addClass('active');
                     $('.up').removeClass('active');
@@ -100,18 +125,33 @@ function newtoSure() {
 var inCookies = function() {
     var user_name = getCookie("username");
     var username1 = document.getElementsByClassName("user_name")[0];
-    var sign = document.getElementsByClassName('sign')[0];
-    var ul1 = document.getElementsByClassName("ul1")[0];
-    var ul2 = document.getElementsByClassName("ul2")[0];
-    if (getCookie("usertoken")) {
+    // var sign = document.getElementsByClassName('sign')[0];
+    // var ul1 = document.getElementsByClassName("ul1")[0];
+    // var ul2 = document.getElementsByClassName("ul2")[0];
+    if (getCookie("username") != "" && getCookie("username") != "null") {
         username1.innerHTML = user_name;
-        sign.style.display = "none";
-        ul1.style.display = "none";
-        ul2.style.display = "block";
+        console.log(user_name);
+        // sign.style.display = "none";
+        // ul1.style.display = "none";
+        // ul2.style.display = "block";
     } else {
-        sign.style.display = "none";
-        ul1.style.display = "block";
-        ul2.style.display = "none";
+        // sign.style.display = "none";
+        // ul1.style.display = "block";
+        // ul2.style.display = "none";
+        var urlarr = window.location.href.split('/');
+        var domain = urlarr[urlarr.length - 1].split('.')[0];
+        var localhost = "http://127.0.0.1:8081/";
+        if (domain != 'index' && window.location.href != localhost) {
+            var body = document.getElementById("body");
+            body.style.display = "none";
+            alert("尚未登录");
+            window.location.href = "./index.html";
+        }
+        // console.log(urlarr[urlarr.length - 1])
+
+        // alert("尚未登录");
+        // window.location.href = "./html/index.html";
+
     }
 };
 inCookies();
@@ -120,7 +160,9 @@ var toLogin = function() {
     var user_name = document.getElementsByClassName("user_name")[0].value;
     var user_password = document.getElementsByClassName("user_password")[0].value;
     if (user_name == "" || user_password == "") {
-        alert("用户名或者密码不能为空")
+        mdui.snackbar({
+            message: "用户名或者密码不能为空"
+        });
     } else {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function() {
@@ -138,7 +180,10 @@ var toLogin = function() {
                         window.location.href = "../html/manage.html";
                     }
                 } else {
-                    alert(result["infomsg"]);
+                    mdui.snackbar({
+                        message: result["infomsg"]
+                    });
+                    shake("loginform");
                 }
             }
         };
@@ -153,7 +198,10 @@ function toLogin() {
     var user_name = document.getElementsByClassName("user_name")[0].value;
     var user_password = document.getElementsByClassName("user_password")[0].value;
     if (user_name == "" || user_password == "") {
-        alert("用户名或者密码不能为空")
+        mdui.snackbar({
+            message: "用户名或者密码不能为空"
+        });
+        shake("loginform");
     } else {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function() {
@@ -179,7 +227,10 @@ function toLogin() {
                         }
                     }
                 } else {
-                    alert(result["infomsg"]);
+                    mdui.snackbar({
+                        message: result["infomsg"]
+                    });
+                    shake("loginform");
                 }
             }
         };
@@ -189,6 +240,17 @@ function toLogin() {
         xmlHttp.send("user_name=" + user_name + "&user_password=" + user_password);
     }
 };
+
+function shake(classname) {
+    $('.' + classname).addClass('animated shake');
+    setTimeout(function() {
+        // $('.well').addClass('rotateIn')
+        $('.' + classname).removeClass('shake');
+    }, 700);
+    setTimeout(function() {
+        // $('.well').removeClass('rotateIn')
+    }, 2000)
+}
 //存储cookie
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
@@ -223,9 +285,11 @@ function secede() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             result = JSON.parse(xmlHttp.responseText);
             if (result.infostatus == true) {
-                setCookie("ifManage", result["infostatus"]["user_privilege"], -10);
-                setCookie("usertoken", result["inforesult"], -10);
-                setCookie("username", null, -10);
+                console.log(result);
+                setCookie("ifManage", result["infostatus"]["user_privilege"], 1);
+                setCookie("usertoken", result["inforesult"], 1);
+                // console.log(getCookie('usertoken'));
+                setCookie("username", null, 1);
                 // inCookies();
                 // document.getElementsByClassName("user_name")[0].value = "";
                 // document.getElementsByClassName("user_password")[0].value = "";
@@ -234,9 +298,7 @@ function secede() {
             mdui.snackbar({
                 message: '退出账号成功！'
             });
-            setTimeout(
-                window.location.href = './index.html', 2000
-            )
+            exit();
         }
     };
     var backendurl = url + "/v1/token/delete/";
@@ -244,6 +306,12 @@ function secede() {
     xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlHttp.send("usertoken_str=" + usertoken);
 }
+
+function exit() {
+    setTimeout(window.location.href = './index.html', 2000);
+}
+
+
 //发表言论
 function publishPost() {
     window.location.href = "../html/publishPost.html";
@@ -256,3 +324,17 @@ function toForst() {
         window.location.href = "../html/login.html";
     }
 }
+// (function() {
+//     var user_name = getCookie("username");
+//     var urlarr = window.location.href.split('/');
+//     if (user_name == null) {
+//         if（ urlarr[urlarr.length - 1] != "login.html"） {
+//             console.log(非登录)
+//         }
+//         else {
+//             console.log(登录)
+//         }
+//     } else {
+//         console.log(有用户名)
+//     }
+// })();

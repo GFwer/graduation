@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="../css/css.css"/>
-    <link rel="stylesheet" href="../css/func.css"/>
+    <title>理工论坛|管理员</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/css.css" />
+    <link rel="stylesheet" href="../css/func.css" />
+    <link rel="stylesheet" type="text/css" href="../css/animate.css">
+    <link rel="stylesheet" type="text/css" href="../css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/mdui.css">
 </head>
-<body id="body">
-<div class="one f-cb">
-    <div onclick="toForst()">哈尔滨理工大学论坛/div>
+
+<body id="body" class="mdui-theme-primary-blue mdui-theme-accent-pink">
+    <div class="mdui-toolbar mdui-color-theme">
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#left-drawer'}"><i class="mdui-icon material-icons"></i></span>
+        <a href="./login.html" class="mdui-typo-headline mdui-hidden-xs">理工论坛</a>
+        <!-- <a href="" class="mdui-typo-title">工具栏</a> -->
+        <div class="mdui-toolbar-spacer"></div>
+       <!--  <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-dialog="{target: '#dialog-docs-theme'}" mdui-tooltip="{content: '设置主题'}"><i class="mdui-icon material-icons"></i></span> -->
+        <button mdui-menu="{target: '#more'}" class="mdui-ripple mdui-btn"><span class="user_name"></span><i class="mdui-icon material-icons">&#xe5cf;</i></button>
+        <ul class="mdui-menu" id="more">
+            <li class="mdui-menu-item">
+                <button href="javascript:;" class="mdui-ripple mdui-btn" onclick="secede()">
+                    <i class="mdui-icon material-icons">&#xe879;</i>退出登录
+                </button>
+            </li>
+        </ul>
+    </div>
+    <!-- <button class="mdui-btn" mdui-drawer="{target: '#left-drawer'}">open left drawer</button> -->
+    <div class="mdui-drawer mdui-drawer-close" id="left-drawer">
+        <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+            <div class="mdui-collapse-item ">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue"></i>
+                    <div class="mdui-list-item-content">理工论坛</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons"></i>
+                </div>
+                <div class="mdui-collapse-item-body mdui-list">
+                    <a href="./download" class="mdui-list-item mdui-ripple ">现在</a>
+                    <a href="./compatibility" class="mdui-list-item mdui-ripple ">这里</a>
+                    <a href="./specs" class="mdui-list-item mdui-ripple ">是</a>
+                    <a href="./jq" class="mdui-list-item mdui-ripple ">凑字数的地方</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="one f-cb">
+    <div onclick="toForst()">哈尔滨理工大学论坛</div>
     <ul class="f-cb ul1">
         <li>用户名：<input type="text" class="user_name"/></li>
         <li>密码：<input type="password" class="user_password"/></li>
@@ -35,25 +76,29 @@
     <h2>用户注册</h2>
     <input type="button" value="确认" onclick="toSure()" class="but">
     <input type="button" value="取消" onclick="toCancel()" class="but"/>
-</div>
-<div class="strip f-cb">
-    <div class="str f-cb">
-        <div class="strip-1">
-            <ul class="f-cb bar">
-                <li id="school0" onclick="school(0)">校内信息</li>
-                <li id="school1" onclick="school(1)">学习交流</li>
-                <li id="school2" onclick="school(2)">吃喝玩乐</li>
-                <li id="school3" onclick="school(3)">失物招领</li>
-            </ul>
+</div> -->
+    <div class="strip f-cb">
+        <div class="str f-cb">
+            <div class="strip-1">
+                <ul class="f-cb bar">
+                    <li id="school0" onclick="school(0)">校内信息</li>
+                    <li id="school1" onclick="school(1)">学习交流</li>
+                    <li id="school2" onclick="school(2)">吃喝玩乐</li>
+                    <li id="school3" onclick="school(3)">失物招领</li>
+                </ul>
+            </div>
+            <div class="strip-2"></div>
+            <div class="strip-3"></div>
+            <div id="two" class="f-cb"></div>
         </div>
-        <div class="strip-2"></div>
-        <div class="strip-3"></div>
-        <div id="two" class="f-cb"></div>
     </div>
-</div>
-<div class="bottom">哈尔滨理工大学论坛</div>
-<script src="../js/URL.js"></script>
-<script src="../js/top.js"></script>
-<script src="../js/manage.js"></script>
+    <div class="bottom">哈尔滨理工大学论坛</div>
+    <script src="../js/URL.js"></script>
+    <script src="../js/top.js"></script>
+    <script src="../js/manage.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/holder.min.js"></script>
+    <script src='../js/mdui.js'></script>
 </body>
+
 </html>
