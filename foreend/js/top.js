@@ -163,6 +163,7 @@ var toLogin = function() {
         mdui.snackbar({
             message: "用户名或者密码不能为空"
         });
+        shake("loginform");
     } else {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function() {

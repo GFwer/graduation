@@ -20,10 +20,10 @@ var fun = function(figure, num) {
 function school(figure) {
     var oParent = document.getElementById('two'); // 父级对象
     oParent.innerHTML = "";
-    for (var i = 0; i < 4; i++) {
-        document.getElementById("school" + i).style.backgroundColor = "inherit";
-    }
-    document.getElementById("school" + figure).style.backgroundColor = "orange";
+    // for (var i = 0; i < 4; i++) {
+    //     document.getElementById("school" + i).style.backgroundColor = "inherit";
+    // }
+    // document.getElementById("school" + figure).style.backgroundColor = "orange";
     window.figure = figure;
     fun(figure, 0);
 }
@@ -35,8 +35,9 @@ function createBox(result) {
     if (result != "已经没有帖子了") {
         var oParent = document.getElementById('two'); // 父级对象
         for (var i = 0; i < result.length; i++) {
-            var a = document.createElement('a');
-            a.href = "../html/post.html?" + "id=" + result[i].post_id;
+            var a = document.createElement('li');
+            // a.href = "../html/post.html?" + "id=" + result[i].post_id;
+            a.className = "mdui-list-item" +"mdui-ripple";
             oParent.appendChild(a);
 
             var oProject = document.createElement('div');
@@ -44,22 +45,22 @@ function createBox(result) {
             a.appendChild(oProject);
 
             var oMess = document.createElement('div');
-            oMess.className = 'project_message';
+            oMess.className = 'project_message mdui-list-item-avatar';
             oProject.appendChild(oMess);
             var oCont = document.createElement('div');
-            oCont.className = 'content';
+            oCont.className = 'content mdui-list-item-content';
             oProject.appendChild(oCont);
 
             var oImg = document.createElement('img');
             // oImg.src=result[i].post_userhead;
-            var user_split = "holder.js/140x140?theme=sky&text=" + result[i].user_name.substr(0, 1);
+            var user_split = "holder.js/40x40?theme=sky&text=" + result[i].user_name.substr(0, 1);
             console.log(user_split);
             oImg.setAttribute("data-src", user_split);
             oMess.appendChild(oImg);
             var br1 = document.createElement('br');
             oMess.appendChild(br1);
             var oName = document.createElement('div');
-            oName.className = 'user_name';
+            oName.className = 'user_name2 mdui-list-item-content';
             oMess.appendChild(oName);
             oName.innerHTML = result[i].user_name;
 
@@ -99,6 +100,12 @@ Holder.addTheme("gray", {
     bg: "#BCBEC0",
     fg: "rgba(255, 255, 255, 1)",
     size: 12,
+    fontweight: "normal"
+});
+Holder.addTheme("me", {
+    bg: "#8C9EFF",
+    fg: "rgba(255, 255, 255, 1)",
+    size: 16,
     fontweight: "normal"
 });
 

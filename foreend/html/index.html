@@ -247,6 +247,12 @@
         margin-bottom: 20px;
         margin-top: 20px;
     }
+    
+    #logo {
+        height: 6em;
+        display: block;
+        margin: 0 auto;
+    }
     </style>
 </head>
 
@@ -285,8 +291,8 @@
     <div class="loginform" ng-app="logApp" ng-controller="logCtrl" name="in">
         <!-- materialize框架 -->
         <!-- calc()运算符两边加空格 -->
-        <div class="logo">
-            <div style="width:100%;"><img src="./img/logo.png" style="height: 6em;display: block;margin:0 auto;"></div>
+        <div class="logo" id="logo1">
+            <div style="width:100%;"></div>
         </div>
         <div class="loginform">
             <div class="loginmain">
@@ -414,6 +420,15 @@ $(document).ready(function() {
         $('.in').addClass('active');
         $('.formup').removeClass("formdisplay");
     } //刷新加载标签
+    var lParent = document.getElementById('logo1');
+    var lProject = document.createElement('img');
+    lProject.id = 'logo';
+    if (window.location.href == "http://127.0.0.1:8081") {
+        lProject.src = "./img/logo.png"
+    } else {
+        lProject.src = "./../img/logo.png"
+    }
+    lParent.appendChild(lProject);
 });
 </script>
 <script src="../js/URL.js"></script>

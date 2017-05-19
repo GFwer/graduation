@@ -13,6 +13,16 @@ var fun = function(figure, num) {
     var backendurl = url + "/v1/post/list/?" + qqqq;
     xmlHttp1.open("GET", backendurl, true);
     xmlHttp1.send();
+        //     $.ajax({
+        //     type: "GET",
+        //     url: url + "/v1/post/list/?" + qqqq,
+        //     dataType: "json",
+        //     async: false,
+        //     //cache:false,
+        //     success: function(data) {
+        //         console.log(data)
+        //     }
+        // })
 };
 
 //数据块内容
@@ -37,7 +47,7 @@ function deleteMyPost(post_id) {
             xmlHttp1.onreadystatechange = function() {
                 if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200) {
                     var result = JSON.parse(xmlHttp1.responseText);
-                    window.location.reload();
+                    // window.location.reload();
                     console.log(result);
                 }
             };
@@ -57,7 +67,7 @@ function toTop(post_id, figure) {
         xmlHttp1.onreadystatechange = function() {
             if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200) {
                 var result = JSON.parse(xmlHttp1.responseText);
-                window.location.reload();
+                // window.location.reload();
             }
         };
         var backendurl = url + "/v1/post/top/";
@@ -75,7 +85,7 @@ function cancelTop(post_id, figure) {
         xmlHttp1.onreadystatechange = function() {
             if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200) {
                 var result = JSON.parse(xmlHttp1.responseText);
-                window.location.reload();
+                // window.location.reload();
             }
         };
         var backendurl = url + "/v1/post/top/cancel/";
