@@ -3,8 +3,7 @@
  */
 
 //匿名函数
-// var localhost = "http://127.0.0.1:8081/";
-var localhost = "http://104.224.132.92:8081/";
+
 //注册
 function toSign() {
     var sign = document.getElementsByClassName('sign')[0];

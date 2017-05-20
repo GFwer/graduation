@@ -12,7 +12,7 @@ try:
     session.execute('create database CampusPost')
 except Exception as a:
     print(a)
-    print('数据库重复建立')
+    print('database repeat!')
 finally:
     session.close()
 engine = create_engine('mysql+mysqlconnector://root:950828@0.0.0.0/CampusPost?charset=utf8', echo=sqlecho)
