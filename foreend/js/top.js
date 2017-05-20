@@ -1,9 +1,35 @@
 /**
  * Created by Administrator on 2016/11/1 0001.
  */
-
-//匿名函数
-
+function border() {
+    var urlarr2 = window.location.href.split('#/');
+    var lasturl2 = urlarr2[1];
+    if (lasturl2 == 'tab-2') {
+        $('#2').addClass('bordercss');
+        $('#1').removeClass('bordercss');
+        $('#3').removeClass('bordercss');
+        $('#4').removeClass('bordercss');
+    } else if (lasturl2 == 'tab-3') {
+        $('#3').addClass('bordercss');
+        $('#1').removeClass('bordercss');
+        $('#2').removeClass('bordercss');
+        $('#4').removeClass('bordercss');
+    } else if (lasturl2 == 'tab-4') {
+        $('#4').addClass('bordercss');
+        $('#1').removeClass('bordercss');
+        $('#3').removeClass('bordercss');
+        $('#2').removeClass('bordercss');
+    } else {
+        $('#1').addClass('bordercss');
+        $('#2').removeClass('bordercss');
+        $('#3').removeClass('bordercss');
+        $('#4').removeClass('bordercss');
+    }
+}
+//载入特效
+$(document).ready(function() {
+    $('.preloader').fadeOut(1000); // set duration in brackets
+});
 //注册
 function toSign() {
     var sign = document.getElementsByClassName('sign')[0];

@@ -31,6 +31,9 @@
     <!-- <script type="text/javascript" src='./bootstrap-notify.min.js'></script> -->
     <!-- <script type="text/javascript" src='./sweetalert.min.js'></script> -->
     <link rel="stylesheet" type="text/css" href="../font-awesome/css/font-awesome.min.css">
+    <link href="https://cdn.bootcss.com/loaders.css/0.1.2/loaders.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/css.css" />
+    <link rel="stylesheet" href="../css/func.css" />
     <!-- <script type="text/javascript" src='../holder.min.js'></script> -->
     <style type="text/css">
     @font-face {
@@ -257,6 +260,15 @@
 </head>
 
 <body style="background-color: #263238;" class="mdui-container">
+    <div class="loaders preloader">
+        <div class="loader">
+            <div class="ball-pulse">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
     <!--     <div ng-app="myApp" ng-controller="myCo">
         <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
         <span class="sr-only">Loading...</span>
@@ -431,8 +443,10 @@ $(document).ready(function() {
     lParent.appendChild(lProject);
 });
 </script>
+<script src="../js/jquery.min.js "></script>
 <script src="../js/URL.js"></script>
 <script src="../js/top.js"></script>
+<!-- <script src="https://cdn.bootcss.com/loaders.css/0.1.2/loaders.css.min.js"></script> -->
 <!-- <script src="../js/manage.js"></script> -->
 
 </html>

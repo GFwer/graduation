@@ -2560,12 +2560,12 @@
       } else {
         trigger = 'click';
       }
-
+      // _this.activeIndex = 0;
       // 根据 url hash 获取默认激活的选项卡
       var hash = location.hash;
-      if (hash) {
+      if (hash||!hash) {
         $.each(_this.tabs, function (i, tab) {
-          if (tab.getAttribute('href') === hash) {
+          if (tab.getAttribute('href') == hash) {
             _this.activeIndex = i;
             return false;
           }

@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col x12 m12">
+        <li class="mdui-list-item mdui-ripple" ng-repeat="item in mydata" ng-class="{'itemborder':!$last}">
+            <div class="mdui-list-item-avatar"><img holder='holder.js/40x40?theme=me&text={{item.user_name| limitTo : 1 | uppercase }}' /></div>
+            <div class="mdui-list-item-content">{{item.user_name}}</div>
+            <i class="mdui-list-item-icon mdui-icon material-icons">&#xe0ca;</i>
+            <div class="mdui-devider"></div>
+        </li>
+
+    </div>
+</div>
