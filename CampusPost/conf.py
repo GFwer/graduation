@@ -4,7 +4,8 @@ table_args = {
     'mysql_charset': 'utf8'
 }
 # 用于测试的服务器和端口，注意这里不能用http://
-httpserver = "127.0.0.1"
+# httpserver = "127.0.0.1"
+httpserver = "104.224.132.92"
 httpport = "6500"   # 5000
 # 静态文件的服务器和端口
 staticserver = "127.0.0.1"
