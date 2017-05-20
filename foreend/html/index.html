@@ -340,7 +340,7 @@
                     </div>
                     <div class="loginbtn">
                         <!-- <button class="mdui-btn mdui-color-theme-accent mdui-ripple">登录</button> -->
-                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple" onclick="newtoSure()" disabled>注册</button>
+                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple" onclick="newtoSure()">注册</button>
                     </div>
                 </div>
                 <!-- ng-include src="" scope="" onload=""></ng-include> -->
@@ -423,7 +423,7 @@ $(document).ready(function() {
     var lParent = document.getElementById('logo1');
     var lProject = document.createElement('img');
     lProject.id = 'logo';
-    if (window.location.href == "http://127.0.0.1:8081") {
+    if (window.location.href == localhost) {
         lProject.src = "./img/logo.png"
     } else {
         lProject.src = "./../img/logo.png"

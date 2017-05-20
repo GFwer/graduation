@@ -3,7 +3,8 @@
  */
 
 //匿名函数
-
+// var localhost = "http://127.0.0.1:8081/";
+var localhost = "http://104.224.132.92:8081/";
 //注册
 function toSign() {
     var sign = document.getElementsByClassName('sign')[0];
@@ -58,7 +59,9 @@ function toSure() {
                 mdui.snackbar({
                     message: result["infomsg"]
                 });
-                shake("loginform");
+                if (result["infomsg"] != "注册成功") {
+                    shake("loginform");
+                }
             }
         };
         var backendurl = url + "/v1/user/signup/";
@@ -105,7 +108,9 @@ function newtoSure() {
                 mdui.snackbar({
                     message: result["infomsg"]
                 });
-                shake("loginform");
+                if (result["infomsg"] != "注册成功") {
+                    shake("loginform");
+                }
                 if (result["infostatus"]) {
                     $('.in').addClass('active');
                     $('.up').removeClass('active');
@@ -140,7 +145,6 @@ var inCookies = function() {
         // ul2.style.display = "none";
         var urlarr = window.location.href.split('/');
         var domain = urlarr[urlarr.length - 1].split('.')[0];
-        var localhost = "http://127.0.0.1:8081/";
         if (domain != 'index' && window.location.href != localhost) {
             var body = document.getElementById("body");
             body.style.display = "none";
