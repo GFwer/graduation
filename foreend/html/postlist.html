@@ -1,11 +1,42 @@
 <div class="row">
-    <div class="col x12 m12">
-        <li class="mdui-list-item mdui-ripple" ng-repeat="item in mydata" ng-class="{'itemborder':!$last}">
-            <div class="mdui-list-item-avatar"><img holder='holder.js/40x40?theme=me&text={{item.user_name| limitTo : 1 | uppercase }}' /></div>
-            <div class="mdui-list-item-content">{{item.user_name}}</div>
-            <i class="mdui-list-item-icon mdui-icon material-icons">&#xe0ca;</i>
-            <div class="mdui-devider"></div>
+    <div class="mdui-ripple" ng-repeat="item in mydata">
+        <li class="mdui-list-item" ng-if="item.post_topstatu=='1'">
+            <div class="mdui-list-item-avatar mdui-img-circle"><img holder='holder.js/40x40?theme=me&text={{item.user_name| limitTo : 1 | uppercase }}' /></div>
+            <!--             <div class="mdui-list-item-content mdui-list-item-two-line">{{item.user_name}}</div>
+            <div class="mdui-list-item-content mdui-list-item-two-line">{{item.user_name}}</div> -->
+            <ul class="mdui-list-item-content">
+                <li class="mdui-list-item-one-line name">{{item.user_name}}</li>
+                <li class="mdui-list-item-one-line date">{{item.post_time}}</li>
+            </ul>
+            <div class="stick mdui-color-theme-accent" mdui-tooltip="{content: '置顶'} "></div>
+            <!-- <i class="mdui-list-item-icon mdui-icon material-icons">&#xe0ca;</i> -->
+            <a ng-href="#/post/{{item.post_id}}"><i class="mdui-list-item-icon mdui-icon material-icons href">&#xe5c8;</i></a>
         </li>
-
+        <li class="mdui-list-item itemborder" ng-if="item.post_topstatu=='1'">
+            <div class="mdui-list-item-content" style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px;">
+                <div class="title">{{item.post_title}}</div>
+                <div class=" mdui-text-truncate" style="color:#616161">{{item.post_content}}</div>
+            </div>
+        </li>
+    </div>
+    <div class="mdui-ripple" ng-repeat="item in mydata">
+        <li class="mdui-list-item" ng-if="item.post_topstatu=='0'">
+            <div class="mdui-list-item-avatar mdui-img-circle"><img holder='holder.js/40x40?theme=me&text={{item.user_name| limitTo : 1 | uppercase }}' /></div>
+            <!--             <div class="mdui-list-item-content mdui-list-item-two-line">{{item.user_name}}</div>
+            <div class="mdui-list-item-content mdui-list-item-two-line">{{item.user_name}}</div> -->
+            <ul class="mdui-list-item-content">
+                <li class="mdui-list-item-one-line name">{{item.user_name}}</li>
+                <li class="mdui-list-item-one-line date">{{item.post_time}}</li>
+            </ul>
+            <div class="stick mdui-color-theme-accent" ng-if="item.post_topstatu=='1'"></div>
+            <!-- <i class="mdui-list-item-icon mdui-icon material-icons">&#xe0ca;</i> -->
+            <a ng-href="#/post/{{item.post_id}}"><i class="mdui-list-item-icon mdui-icon material-icons href">&#xe5c8;</i></a>
+        </li>
+        <li class="mdui-list-item" ng-if="item.post_topstatu=='0'" ng-class="{'itemborder':!$last}">
+            <div class="mdui-list-item-content mdui-text-truncate" style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px;">
+                <div class="title">{{item.post_title}}</div>
+                <div class="mdui-text-truncate" style="color:#616161">{{item.post_content}}</div>
+            </div>
+        </li>
     </div>
 </div>

@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="mdui-ripple">
+        <li class="mdui-list-item">
+            <div class="mdui-list-item-avatar mdui-img-circle"><img holder='holder.js/40x40?theme=me&text={{detaildata.post_username| limitTo : 1 | uppercase }}' /></div>
+            <!--             <div class="mdui-list-item-content mdui-list-item-two-line">{{item.post_username}}</div>
+            <div class="mdui-list-item-content mdui-list-item-two-line">{{item.post_username}}</div> -->
+            <ul class="mdui-list-item-content">
+                <li class="mdui-list-item-one-line name">{{detaildata.post_username}}</li>
+                <li class="mdui-list-item-one-line date">{{detaildata.post_time}}</li>
+            </ul>
+            <!-- <div class="stick mdui-color-theme-accent" mdui-tooltip="{content: '置顶'} "></div> -->
+            <!-- <i class="mdui-list-item-icon mdui-icon material-icons">&#xe0ca;</i> -->
+            <!-- <i class="mdui-list-item-icon mdui-icon material-icons" ">&#xe5c8;</i> -->
+        </li>
+        <li class="mdui-list-item itemborder ">
+            <div class="mdui-list-item-content " style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px; width: 100%">
+                <div class="title ">{{detaildata.post_title}}</div>
+                <div style="color:#616161" ng-bind-html="detaildata.post_content" class="text_content"></div>
+                <!--                 <div ng-repeat="item in detaildata.post_pics">
+                	
+                </div> -->
+                <!-- <img ng-src="{{detaildata.post_pics[1]}}"> -->
+                <div ng-repeat="img in detaildata.post_pics track by $index">
+                    <img class="mdui-img-fluid" ng-src="{{img}}">
+                </div>
+            </div>
+        </li>
+    </div>
+    <div class="mdui-ripple " ng-repeat="item in detailother">
+        <li class="mdui-list-item ">
+            <div class="mdui-list-item-avatar mdui-img-circle "><img holder='holder.js/40x40?theme=me&text={{item.comment_username| limitTo : 1 | uppercase }}' /></div>
+            <ul class="mdui-list-item-content ">
+                <li class="mdui-list-item-one-line name ">{{item.comment_username}}</li>
+                <li class="mdui-list-item-one-line date">{{item.comment_datetime}}</li>
+            </ul>
+            <!-- <i class="mdui-list-item-icon mdui-icon material-icons ">&#xe5c8;</i> -->
+        </li>
+        <li class="mdui-list-item" ng-class="{'itemborder':!$last}">
+            <div class="mdui-list-item-content" style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px;width: 100%">
+                <!-- <div class="title">{{item.comment_title}}</div> -->
+                <div style="color:#616161" ng-bind-html="item.comment_text | sanitize" class="text_content"></div>
+            </div>
+        </li>
+    </div>
+</div>
+<div class="mdui-container comm" style=" margin-top: 30px;font-size: 1.1em;font-weight: 300;width: 96%;height: 20px;color:#757575">请输入评论...</div>
+<div class="mdui-container" style="width: 90%;margin-top: 30px;">
+    <div id="editornote" style="height:400px;max-height:500px;"></div>
+    <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right" onclick="newToTrue(editor.$txt.html())" style="margin-top: 30px;">提交</button>
+</div>
+<script type="text/javascript">
+function hi2() {
+
+}
+var editor = new wangEditor('editornote');
+editor.create();
+</script>

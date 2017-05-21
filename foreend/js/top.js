@@ -199,7 +199,9 @@ var toLogin = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                 result = JSON.parse(xmlHttp.responseText);
                 if (result.infostatus) {
-                    alert(result.infomsg);
+                    mdui.snackbar({
+                        message: result["infomsg"]
+                    });
                     setCookie("usertoken", result.inforesult.usertoken_str, 1);
                     setCookie("ifManage", result.inforesult.user_privilege, 1);
                     setCookie("username", user_name, 1);
@@ -238,7 +240,9 @@ function toLogin() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                 result = JSON.parse(xmlHttp.responseText);
                 if (result.infostatus) {
-                    alert(result.infomsg);
+                    mdui.snackbar({
+                        message: result["infomsg"]
+                    });
                     setCookie("usertoken", result.inforesult.usertoken_str, 1);
                     setCookie("ifManage", result.inforesult.user_privilege, 1);
                     setCookie("username", user_name, 1);
@@ -338,7 +342,7 @@ function secede() {
 }
 
 function exit() {
-    setTimeout(window.location.href = './index.html', 2000);
+    setTimeout(function(){window.location.href = './index.html';}, 1500);
 }
 
 
