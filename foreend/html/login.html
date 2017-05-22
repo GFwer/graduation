@@ -3,18 +3,20 @@
 
 <head lang="en">
     <meta charset="UTF-8">
-    <title首页></title>
-        <link rel="shortcut icon" href="/favicon.ico">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../css/css.css" />
-        <link rel="stylesheet" href="../css/func.css" />
-        <link rel="stylesheet" type="text/css" href="../css/animate.css">
-        <link rel="stylesheet" type="text/css" href="../css/ionicons.min.css">
-        <link rel="stylesheet" type="text/css" href="../css/mdui.css">
-        <!-- <link rel="stylesheet" type="text/css" href="../css/materialize.min.css"> -->
-        <link href="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.css" rel="stylesheet" media='all' />
-        <!-- <link rel="stylesheet" href="../css/bootstrap.min.css" rel="stylesheet"> -->
+    <title>理工论坛|首页</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/css.css" />
+    <link rel="stylesheet" href="../css/func.css" />
+    <link rel="stylesheet" type="text/css" href="../bower_components/animate.css/animate.css">
+    <link rel="stylesheet" type="text/css" href="../css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="../bower_components/mdui/dist/css/mdui.min.css">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/materialize.min.css">
+    <link href="../bower_components/angular-loading-bar/src/loading-bar.css" rel="stylesheet" media='all' />
+    <link href="../bower_components/loaders.css/loaders.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="../css/bootstrap.min.css" rel="stylesheet"> -->
 </head>
 
 <body id="body" class=" mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded">
@@ -29,7 +31,7 @@
     </div>
     <div class="mdui-appbar" mdui-headroom style="position: fixed; top: 0; left: 0; right: 0;">
         <div class="mdui-toolbar mdui-color-theme">
-            <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#left-drawer'}"><i class="mdui-icon material-icons"></i></span>
+            <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" id="open"><i class="mdui-icon material-icons"></i></span>
             <a href="./login.html" class="mdui-typo-headline mdui-hidden-xs">理工论坛</a>
             <!-- <a href="" class="mdui-typo-title">工具栏</a> -->
             <div class="mdui-toolbar-spacer"></div>
@@ -77,6 +79,8 @@
     <div class="mdui-drawer mdui-drawer-close" id="left-drawer">
         <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
             <div class="mdui-card">
+                <div>
+                    <span id="close" style="position: absolute;top: 10px;z-index: 2;margin-left: 10px;color:white;font-size: 2em" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" id="open"><i class="mdui-icon material-icons ion-chevron-left"></i></span></div>
                 <div class="mdui-card-media">
                     <img class=".mdui-img-fluid" src="./../img/card.jpg" />
                     <div class="mdui-card-media-covered mdui-card-media-covered-transparent">
@@ -94,7 +98,7 @@
                     <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
                 </div>
                 <div class="mdui-collapse-item-body mdui-list ">
-                    <a href="javascript:void(0) " class="mdui-list-item mdui-ripple " onclick="myPost()">我的言论</a>
+                    <a href="#/mypost" class="mdui-list-item mdui-ripple ">我的言论</a>
                     <a href="javascript:void(0) " class="mdui-list-item mdui-ripple " onclick="secede()">退出系统</a>
                 </div>
             </div>
@@ -199,13 +203,13 @@
             <!--     <ul id="two" class="f-cb mdui-list mdui-col-md-12">
                 <li ng-repeat="item in data"></li>
             </ul> -->
-            <ul ng-view="" ng-controller="datactrl"></ul>
+            <ul ng-view=""></ul>
             <!--                 </div>
             </div> -->
         </div>
     </div>
     <!-- <div class="bottom ">理工论坛</div> -->
-    <div class="mdui-fab-wrapper " id="exampleFab " mdui-fab="{trigger: 'click'} ">
+    <div class="mdui-fab-wrapper" id="exampleFab" mdui-fab="{trigger: 'click'} ">
         <button class="mdui-fab mdui-ripple mdui-color-theme-accent ">
             <!-- 默认显示的图标 -->
             <i class="mdui-icon material-icons ">&#xe145;</i>
@@ -213,29 +217,27 @@
             <i class="mdui-icon mdui-fab-opened material-icons ">&#xe14c;</i>
         </button>
         <div class="mdui-fab-dial ">
-            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent " onclick="publishPost() " mdui-tooltip="{content: '发表言论'} "><i class="mdui-icon material-icons ">&#xe150;</i></button>
-            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent " onclick="myPost() " mdui-tooltip="{content: '我的言论'} "><i class="mdui-icon material-icons ">&#xe7fd;</i></button>
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent " mdui-tooltip="{content: '发表言论'} ">
+                <a href="#/edit" style="color:white"><i class="mdui-icon material-icons">&#xe150;</i></a></button>
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent " mdui-tooltip="{content: '我的言论'} ">
+                <a href="#/mypost" style="color:white"><i class="mdui-icon material-icons">&#xe7fd;</i></a></button>
             <!--             <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red "><i class="mdui-icon material-icons ">&#xe866;</i></button>
             <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange "><i class="mdui-icon material-icons ">&#xe191;</i></button>
             <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-blue "><i class="mdui-icon material-icons ">&#xe913;</i></button> -->
         </div>
     </div>
     <div class="doc-footer-nav mdui-color-theme">
-        <div class="mdui-container">
-            <div class="mdui-row">
-                <a href="#/" class="mdui-ripple mdui-color-theme mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left">
-                    <div class="doc-footer-nav-text">
-                        <i class="mdui-icon material-icons">&#xe0b0;</i>
-                        <span class="doc-footer-nav-direction mdui-hidden-xs-down"">By Fawen</span>
-                        <div class="doc-footer-nav-chapter mdui-hidden-xs-down">理工论坛</div>
-                    </div>
-                </a>
-                <a href="https://github.com/GFwer/shome" class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 doc-footer-nav-right">
-                    <div class="doc-footer-nav-text">
-                    </div>
-                </a>
+        <a href="#/" class="mdui-ripple mdui-color-theme mdui-col-xs-12 mdui-col-sm-12 doc-footer-nav-left">
+            <div class="doc-footer-nav-text" style="margin-left:20px;">
+                <i class="mdui-icon material-icons">&#xe0b0;</i>
+                <span class="doc-footer-nav-direction ">By Fawen</span>
+                <div class="doc-footer-nav-chapter ">理工论坛</div>
             </div>
-        </div>
+        </a>
+        <!--                 <a href="https://github.com/GFwer/shome" class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 doc-footer-nav-right">
+                    <div class="doc-footer-nav-text">
+                    </div>
+                </a> -->
     </div>
     <div class="mdui-dialog" id="dialog-docs-theme" style="display: none; top: 51.078px; height: 578.844px; ">
         <div class="mdui-dialog-title ">设置文档主题</div>
@@ -478,27 +480,36 @@
             <button class="mdui-btn mdui-ripple " mdui-dialog-confirm=" ">ok</button>
         </div>
     </div>
-    <script src="../js/jquery.min.js "></script>
-    <script src="https://cdn.bootcss.com/angular.js/1.6.0/angular.min.js "></script>
-    <script src="http://cdn.bootcss.com/angular.js/1.6.0/angular-route.min.js"></script>
-    <script src="../js/angulardata.js "></script>
-    <script src="../js/holder.min.js "></script>
-    <script src="../js/holder.js "></script>
-    <script src="https://cdn.bootcss.com/loaders.css/0.1.2/loaders.css.min.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-touch/angular-touch.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="../bower_components/angular-route/angular-route.min.js"></script>
+    <script src="../js/angulardata.js"></script>
+    <script src="../bower_components/holderjs/holder.min.js"></script>
+    <script src="../bower_components/angular-holderjs/src/holder.js"></script>
+    <script src="../bower_components/loaders.css/loaders.css.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
-    <script src='../js/mdui.js'></script>
-    <script src="../js/URL.js "></script>
-    <script src="../js/main.js "></script>
-    <script src="../js/top.js "></script>
-    <script src="https://cdn.bootcss.com/angular.js/1.6.0/angular-animate.min.js"></script>
-    <script src="https://cdn.bootcss.com/angular-loading-bar/0.9.0/loading-bar.js"></script>
-    <link rel="stylesheet" href="../css/wangEditor.css" rel="stylesheet">
-    <script src="../js/wangEditor.js"></script>
+    <script src='../bower_components/mdui/dist/js/mdui.min.js'></script>
+    <script src="../js/URL.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/top.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
+    <script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="../bower_components/angular-loading-bar/src/loading-bar.js"></script>
+    <link rel="stylesheet" href="../bower_components/wangEditor/dist/css/wangEditor.css" rel="stylesheet">
+    <script src="../bower_components/wangEditor/dist/js/wangEditor.js"></script>
+    <link rel="stylesheet" type="text/css" href="../bower_components/sweetalert/dist/sweetalert.css">
+    <script type="text/javascript" src="../bower_components/sweetalert/dist/sweetalert.min.js"></script>
     <!-- <script src="../js/bootstrap.min.js"></script> -->
     <script type="text/javascript" src="../js/text2.js"></script>
     <script type="text/javascript">
-    $(document).ready(function() {
-        border();
+    var inst = new mdui.Drawer('#left-drawer');
+    document.getElementById('close').addEventListener('click', function() {
+        inst.close();
+    });
+    document.getElementById('open').addEventListener('click', function() {
+        inst.open();
     });
     </script>
 </body>

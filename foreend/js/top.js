@@ -29,6 +29,9 @@ function border() {
 //载入特效
 $(document).ready(function() {
     $('.preloader').fadeOut(1000); // set duration in brackets
+    border();
+    wangEditor.config.mapAk = "nCkAvznhDrb9TNlL7FlhGDBSnYxZCGhi";
+
 });
 //注册
 function toSign() {
@@ -160,7 +163,7 @@ var inCookies = function() {
     // var ul2 = document.getElementsByClassName("ul2")[0];
     if (getCookie("username") != "" && getCookie("username") != "null") {
         username1.innerHTML = user_name;
-        console.log(user_name);
+        // console.log(user_name);
         // sign.style.display = "none";
         // ul1.style.display = "none";
         // ul2.style.display = "block";
@@ -202,15 +205,18 @@ var toLogin = function() {
                     mdui.snackbar({
                         message: result["infomsg"]
                     });
-                    setCookie("usertoken", result.inforesult.usertoken_str, 1);
-                    setCookie("ifManage", result.inforesult.user_privilege, 1);
-                    setCookie("username", user_name, 1);
-                    inCookies();
-                    if (result.inforesult.user_privilege == "0") {
-                        window.location.href = "../html/login.html";
-                    } else if (result.inforesult.user_privilege == "1") {
-                        window.location.href = "../html/manage.html";
-                    }
+                    setTimeout(function() {
+                        setCookie("usertoken", result.inforesult.usertoken_str, 1);
+                        setCookie("ifManage", result.inforesult.user_privilege, 1);
+                        setCookie("username", user_name, 1);
+                        inCookies();
+                        if (result.inforesult.user_privilege == "0") {
+                            window.location.href = "../html/login.html";
+                        } else if (result.inforesult.user_privilege == "1") {
+                            window.location.href = "../html/manage.html";
+                        }
+                    }, 300)
+
                 } else {
                     mdui.snackbar({
                         message: result["infomsg"]
@@ -342,7 +348,7 @@ function secede() {
 }
 
 function exit() {
-    setTimeout(function(){window.location.href = './index.html';}, 1500);
+    setTimeout(function() { window.location.href = './index.html'; }, 1500);
 }
 
 

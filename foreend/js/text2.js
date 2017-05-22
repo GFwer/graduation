@@ -29,7 +29,7 @@ var details = function() {
     xmlHttp1.open("GET", backendurl, true);
     xmlHttp1.send();
 };
-details();
+// details();
 
 function hidden() {
     var comment = document.getElementsByClassName("comment")[0];
@@ -50,6 +50,7 @@ function del() {
     var postId = getId();
     var usertoken = getCookie("usertoken");
     var xmlHttp2 = new XMLHttpRequest();
+    console.log(del)
     xmlHttp2.onreadystatechange = function() {
         if (xmlHttp2.readyState == 4 && xmlHttp2.status == 200) {
             var result = JSON.parse(xmlHttp2.responseText);
@@ -61,7 +62,26 @@ function del() {
     xmlHttp2.open("POST", backendurl, true);
     xmlHttp2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlHttp2.send("usertoken_str=" + usertoken + "&post_id=" + postId);
-}
+};
+
+function newdel() {
+    var postId = newGetId();
+    var usertoken = getCookie("usertoken");
+    var xmlHttp2 = new XMLHttpRequest();
+    xmlHttp2.onreadystatechange = function() {
+        if (xmlHttp2.readyState == 4 && xmlHttp2.status == 200) {
+            var result = JSON.parse(xmlHttp2.responseText);
+            mdui.snackbar({
+                message: result.infomsg
+            });
+            setTimeout(function() { window.history.go(-1); }, 1000)
+        }
+    };
+    var backendurl = url + "/v1/post/delete/";
+    xmlHttp2.open("POST", backendurl, true);
+    xmlHttp2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp2.send("usertoken_str=" + usertoken + "&post_id=" + postId);
+};
 
 //发布评论
 function toTrue() {
@@ -88,6 +108,7 @@ function newToTrue(text) {
     var usertoken = getCookie("usertoken");
     var comment = text;
     var xmlHttp2 = new XMLHttpRequest();
+    console.log(comment)
     if (comment == "<p><br></p>") {
         mdui.snackbar({
             message: "评论不能为空！"
@@ -161,5 +182,29 @@ function school(figure) {
         window.location.href = "../html/manage.html";
     } else {
         window.location.href = "../html/login.html";
+    }
+}
+//删除我的帖子
+function deleteMyPost(post_id){
+    return function(){
+        usertoken=getCookie("usertoken");
+        var r=confirm("是否确认要删除该帖子？");
+        if(r==true){
+            var xmlHttp1=new XMLHttpRequest();
+            xmlHttp1.onreadystatechange = function () {
+                if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200) {
+                    var result = JSON.parse(xmlHttp1.responseText);
+                    console.log(result);
+                    alert(result.infomsg);
+                    if(result.infostatus==true){
+                        window.location.href="../html/myPost.html";
+                    }
+                }
+            };
+            var backendurl = url+"/v1/post/delete/";
+            xmlHttp1.open("POST", backendurl, true);
+            xmlHttp1.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlHttp1.send("usertoken_str="+usertoken+"&post_id="+post_id);
+        }
     }
 }

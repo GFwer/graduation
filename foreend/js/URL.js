@@ -2,6 +2,10 @@
  * Created by Administrator on 2016/11/17 0017.
  */
 
+ 
+ // 以下两项自行修改或者二选一
+
+
 // var url = "http://127.0.0.1:6500";
 // var localhost = "http://127.0.0.1:8081/";
 

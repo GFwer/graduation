@@ -1,0 +1,103 @@
+<div class="mdui-container">
+    <div class="mdui-row">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label">标题</label>
+            <input class="mdui-textfield-input posttitle" type="text" maxlength="60" required="" />
+            <div class="mdui-textfield-error">标题不能为空</div>
+        </div>
+    </div>
+</div>
+<div class="mdui-container comm" style=" margin-top: 30px;font-size: 1.1em;font-weight: 300;width: 96%;height: 20px;color:#757575">请输入内容...</div>
+<div class="mdui-container" style="width: 90%;margin-top: 30px;clear: none;">
+    <div id="editornote2" style="height:400px;clear: none;"></div>
+    <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right mdui-col-md-2" onclick="publishpost()" style="margin-top: 30px;margin-left: 40px;">提交</button>
+    <div class="mdui-col-md-4 mdui-float-right">
+        <!-- <label>Browser Select</label> -->
+        <select class="browser-default" id = "getca" onchange="getClass(this)" style="margin-top: 30px;">
+            <option value="" disabled selected>选择分类</option>
+            <option value="0">校内信息</option>
+            <option value="1">学习交流</option>
+            <option value="2">吃喝玩乐</option>
+            <option value="3">失物招领</option>
+        </select>
+    </div>
+</div>
+<script type="text/javascript" src="../js/myjs/conf.js"></script>
+<script type="text/javascript">
+var usertoken = getCookie("usertoken");
+var editor2 = new wangEditor('editornote2');
+
+editor2.create();
+editor2.$txt.blur();
+
+function getClass(e) {
+    return e.value;
+}
+
+function postxmlhttp(url, params, callback) {
+    var parstr = "t=" + Math.random(1000) + "&";
+    for (var i in params) {
+        parstr = parstr + i + "=" + params[i] + "&";
+    }
+    parstr = parstr.substring(0, parstr.length - 1);
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var result = JSON.parse(xmlhttp.responseText);
+            callback(result);
+        }
+    };
+    xmlhttp.open("POST", "http://" + backendserver + ":" + backendport + url, true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send(parstr);
+}
+
+function publishpost() {
+    var gatTitle = document.getElementsByClassName("posttitle")[0].value;
+    var getContent = editor2.$txt.html();
+    var e = document.getElementById("getca");
+    var select = getClass(e);
+    // var pics = new Array();
+    // var piccontainer = objbyid("piccontainer");
+    // var piclist = piccontainer.childNodes;
+    // for (var i = 0; i < piclist.length; i++) {
+    //     var picobj = piclist[i].childNodes[0].src;
+    //     pics.push(picobj);
+    // }
+    if (gatTitle.length < 1 || getContent.length < 1) {
+        mdui.snackbar({
+            message: '标题或内容不能为空'
+        });
+    } else {
+        // pics = JSON.stringify(pics);
+        postxmlhttp("/v1/post/append/", {
+            "usertoken_str": usertoken,
+            "post_title": gatTitle,
+            "post_content": getContent,
+            "category_name": select,
+            "post_pics": '[]'
+        }, function(result) {
+            if (result["infostatus"]) {
+                // alert(result["infomsg"]);
+                mdui.snackbar({
+                    message: result["infomsg"]
+                });
+                setTimeout(function() {
+                    window.location.href = "../html/login.html#/mypost";
+                }, 1000)
+
+            } else {
+                // alert();
+                mdui.snackbar({
+                    message: result["infomsg"]
+                });
+            }
+        });
+    }
+}
+</script>

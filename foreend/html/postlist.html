@@ -1,4 +1,4 @@
-<div class="row">
+<div class="mdui-row">
     <div class="mdui-ripple" ng-repeat="item in mydata">
         <li class="mdui-list-item" ng-if="item.post_topstatu=='1'">
             <div class="mdui-list-item-avatar mdui-img-circle"><img holder='holder.js/40x40?theme=me&text={{item.user_name| limitTo : 1 | uppercase }}' /></div>
@@ -39,4 +39,13 @@
             </div>
         </li>
     </div>
+
+</div>
+
+        <!--         <ul class="pagination-sm" boundary-links='true', rotate='false', first-text="首页", last-text="尾页", total-items='totalItems', max-size='maxSize' , ng-model='currentPage', ng-change='pageChanged(currentPage, size)'>
+        </ul> -->
+        <div style="width: 100%;text-align: center;">
+        <ul uib-pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm "  template-url="../bower_components/ui-bootstrap/template/pagination/pagination.html" previous-text="&lsaquo;" next-text="&rsaquo;" ng-change='pageChange(currentPage,size)'></ul>
+        <!-- <i class="mdui-icon material-icons">&#xe5c4;</i> -->
+
 </div>

@@ -575,3 +575,8 @@ a {
 .mdui-theme-layout-dark .doc-footer-nav-text {
     color: #fff;
 }
+a:focus, a:hover {
+     color: white!important;
+     text-decoration: none!important; 
+}
+.clearfix {clear: none!important;}

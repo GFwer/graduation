@@ -1,0 +1,52 @@
+<div class="mdui-table-fluid" ng-controller="mypostctrl" style="min-height: 100px;margin-top: 100px;">
+    <table class="mdui-table mdui-table-hoverable" ng-hide="mypost1.length==0 &&mypost2.length==0&&mypost3.length==0&&mypost4.length==0">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>分类</th>
+                <th>发布时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in mypost1">
+                <td>{{item.post_title}}</td>
+                <td>校内信息</td>
+                <td>{{item.post_time}}</td>
+                <td><a style="color: gray" ng-href="#/post/{{item.post_id}}"><i class="mdui-icon material-icons">&#xe5cc;</i></a>
+                    <a style="color: gray;cursor: pointer;" ng-click='newDeleteMyPost(item.post_id)'><i class="mdui-icon material-icons">&#xe92b;</i></a>
+                </td>
+            </tr>
+            <tr ng-repeat="item in mypost2">
+                <td>{{item.post_title}}</td>
+                <td>学习交流</td>
+                <td>{{item.post_time}}</td>
+                <td><a style="color: gray" ng-href="#/post/{{item.post_id}}"><i class="mdui-icon material-icons">&#xe5cc;</i></a>
+                    <a style="color: gray;cursor: pointer;" ng-click='newDeleteMyPost(item.post_id)'><i class="mdui-icon material-icons">&#xe92b;</i></a>
+                </td>
+            </tr>
+            <tr ng-repeat="item in mypost3">
+                <td>{{item.post_title}}</td>
+                <td>吃喝玩乐</td>
+                <td>{{item.post_time}}</td>
+                <td><a style="color: gray" ng-href="#/post/{{item.post_id}}"><i class="mdui-icon material-icons">&#xe5cc;</i></a>
+                    <a style="color: gray;cursor: pointer;" ng-click='newDeleteMyPost(item.post_id)'><i class="mdui-icon material-icons">&#xe92b;</i></a>
+                </td>
+            </tr>
+            <tr ng-repeat="item in mypost4">
+                <td>{{item.post_title}}</td>
+                <td>失物招领</td>
+                <td>{{item.post_time}}</td>
+                <td><a style="color: gray" ng-href="#/post/{{item.post_id}}"><i class="mdui-icon material-icons">&#xe5cc;</i></a>
+                    <a style="color: gray;cursor: pointer;" ng-click='newDeleteMyPost(item.post_id)'><i class="mdui-icon material-icons">&#xe92b;</i></a>
+                </td>
+            </tr>
+
+            <div style="margin-left: 30px;margin-top: 30px;color:#424242" ng-if="mypost1.length==0 &&mypost2.length==0&&mypost3.length==0&&mypost4.length==0">
+              <i class="mdui-icon material-icons">&#xe87c;</i><div style="margin-top: 20px;margin-bottom: 30px;">没找到我的帖子~</div>
+            </div>
+        </tbody>
+    </table>
+</div>
+<!-- {{mypost}} -->
+<!-- {{mypost1}}{{mypost2}}{{mypost3}}{{mypost4}} -->

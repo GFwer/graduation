@@ -24,6 +24,7 @@ function publishpost() {
         var picobj = piclist[i].childNodes[0].src;
         pics.push(picobj);
     }
+    console.log(pics)
     if(gatTitle.length <1 || getContent.length<1 ){
         alert("标题或内容不能为空！");
     }else{
@@ -37,7 +38,7 @@ function publishpost() {
         }, function (result) {
             if (result["infostatus"]) {
                 alert(result["infomsg"]);
-                window.location.replace("./myPost.html");
+                // window.location.replace("./myPost.html");
             } else {
                 alert(result["infomsg"]);
             }

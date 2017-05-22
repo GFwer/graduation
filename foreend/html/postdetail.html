@@ -1,4 +1,4 @@
-<div class="row">
+<div class="mdui-row">
     <div class="mdui-ripple">
         <li class="mdui-list-item">
             <div class="mdui-list-item-avatar mdui-img-circle"><img holder='holder.js/40x40?theme=me&text={{detaildata.post_username| limitTo : 1 | uppercase }}' /></div>
@@ -9,12 +9,12 @@
                 <li class="mdui-list-item-one-line date">{{detaildata.post_time}}</li>
             </ul>
             <!-- <div class="stick mdui-color-theme-accent" mdui-tooltip="{content: '置顶'} "></div> -->
-            <!-- <i class="mdui-list-item-icon mdui-icon material-icons">&#xe0ca;</i> -->
-            <!-- <i class="mdui-list-item-icon mdui-icon material-icons" ">&#xe5c8;</i> -->
+            <!-- <a ng-click="scrollTo('editornote')"><i class="mdui-list-item-icon mdui-icon material-icons">&#xe0ca;</i></a> -->
+            <a onclick="newdel()" style="margin-left: 10px;"><i class="mdui-list-item-icon mdui-icon material-icons">&#xe872;</i></a>
         </li>
         <li class="mdui-list-item itemborder ">
             <div class="mdui-list-item-content " style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px; width: 100%">
-                <div class="title ">{{detaildata.post_title}}</div>
+                <div class="title">{{detaildata.post_title}}</div>
                 <div style="color:#616161" ng-bind-html="detaildata.post_content" class="text_content"></div>
                 <!--                 <div ng-repeat="item in detaildata.post_pics">
                 	
@@ -45,7 +45,7 @@
 </div>
 <div class="mdui-container comm" style=" margin-top: 30px;font-size: 1.1em;font-weight: 300;width: 96%;height: 20px;color:#757575">请输入评论...</div>
 <div class="mdui-container" style="width: 90%;margin-top: 30px;">
-    <div id="editornote" style="height:400px;max-height:500px;"></div>
+    <div id="editornote" style="height:400px;"></div>
     <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right" onclick="newToTrue(editor.$txt.html())" style="margin-top: 30px;">提交</button>
 </div>
 <script type="text/javascript">
@@ -53,5 +53,7 @@ function hi2() {
 
 }
 var editor = new wangEditor('editornote');
+
 editor.create();
+editor.$txt.blur();
 </script>
