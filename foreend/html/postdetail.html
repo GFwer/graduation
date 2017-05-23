@@ -15,7 +15,7 @@
         <li class="mdui-list-item itemborder ">
             <div class="mdui-list-item-content " style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px; width: 100%">
                 <div class="title">{{detaildata.post_title}}</div>
-                <div style="color:#616161" ng-bind-html="detaildata.post_content" class="text_content"></div>
+                <div style="color:#616161" ng-bind-html="detaildata.post_content | replace | sanitize " class="text_content"></div>
                 <!--                 <div ng-repeat="item in detaildata.post_pics">
                 	
                 </div> -->
@@ -38,7 +38,7 @@
         <li class="mdui-list-item" ng-class="{'itemborder':!$last}">
             <div class="mdui-list-item-content" style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px;width: 100%">
                 <!-- <div class="title">{{item.comment_title}}</div> -->
-                <div style="color:#616161" ng-bind-html="item.comment_text | sanitize" class="text_content"></div>
+                <div style="color:#616161" ng-bind-html="item.comment_text | replace | sanitize " class="text_content"></div>
             </div>
         </li>
     </div>

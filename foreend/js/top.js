@@ -291,6 +291,7 @@ function shake(classname) {
         // $('.well').removeClass('rotateIn')
     }, 2000)
 }
+
 //存储cookie
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();

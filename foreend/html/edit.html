@@ -59,7 +59,7 @@ function postxmlhttp(url, params, callback) {
 
 function publishpost() {
     var gatTitle = document.getElementsByClassName("posttitle")[0].value;
-    var getContent = editor2.$txt.html();
+    var getContent = editor2.$txt.html().replace(/&/g,'tihuanfu');
     var e = document.getElementById("getca");
     var select = getClass(e);
     // var pics = new Array();

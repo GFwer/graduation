@@ -16,135 +16,138 @@
     <link rel="stylesheet" type="text/css" href="../css/materialize.min.css">
     <link href="../bower_components/angular-loading-bar/src/loading-bar.css" rel="stylesheet" media='all' />
     <link href="../bower_components/loaders.css/loaders.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../bower_components/me-pageloading/me-pageloading.min.css">
     <!-- <link rel="stylesheet" href="../css/bootstrap.min.css" rel="stylesheet"> -->
 </head>
 
 <body id="body" class=" mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded">
-    <div class="loaders preloader">
-        <div class="loader">
-            <div class="ball-pulse">
-                <div></div>
-                <div></div>
-                <div></div>
+    <div class="wrapper">
+        <div class="main">
+            <div class="loaders preloader">
+                <div class="loader">
+                    <div class="ball-pulse">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="mdui-appbar" mdui-headroom style="position: fixed; top: 0; left: 0; right: 0;">
-        <div class="mdui-toolbar mdui-color-theme">
-            <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" id="open"><i class="mdui-icon material-icons"></i></span>
-            <a href="./login.html" class="mdui-typo-headline mdui-hidden-xs">理工论坛</a>
-            <!-- <a href="" class="mdui-typo-title">工具栏</a> -->
-            <div class="mdui-toolbar-spacer"></div>
-            <a href="https://github.com/GFwer/shome" target="_blank" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '查看 Github'}">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 36 36" enable-background="new 0 0 36 36" xml:space="preserve" class="mdui-icon" style="width: 24px;height:24px;">
-                    <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5
+            <div class="mdui-appbar" mdui-headroom style="position: fixed; top: 0; left: 0; right: 0;">
+                <div class="mdui-toolbar mdui-color-theme">
+                    <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" id="open"><i class="mdui-icon material-icons"></i></span>
+                    <a href="./login.html" class="mdui-typo-headline mdui-hidden-xs">{{hi}}</a>
+                    <!-- <a href="" class="mdui-typo-title">工具栏</a> -->
+                    <div class="mdui-toolbar-spacer"></div>
+                    <a href="https://github.com/GFwer/shome" target="_blank" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '查看 Github'}">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 36 36" enable-background="new 0 0 36 36" xml:space="preserve" class="mdui-icon" style="width: 24px;height:24px;">
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5
     c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1
     c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4
     c-0.2-0.4-0.7-2.1,0.2-4.3c0,0,1.4-0.4,4.5,1.7c1.3-0.4,2.7-0.5,4.1-0.5c1.4,0,2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7
     c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5
     c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5C34.3,8.7,27,1.4,18,1.4z"></path>
-                </svg>
-            </a>
-            <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-dialog="{target: '#dialog-docs-theme'}" mdui-tooltip="{content: '设置主题'}"><i class="mdui-icon material-icons"></i></span>
-            <button mdui-menu="{target: '#more'}" class="mdui-ripple mdui-btn"><span>{{user}}</span><i class="mdui-icon material-icons">&#xe5cf;</i></button>
-            <ul class="mdui-menu" id="more">
-                <li class="mdui-menu-item">
-                    <button href="javascript:;" class="mdui-ripple mdui-btn" onclick="secede()">
-                        <i class="mdui-icon material-icons">&#xe879;</i>退出登录
-                    </button>
-                </li>
-            </ul>
-        </div>
-        <div class="mdui-tab mdui-color-theme">
-            <a href="#/" class="mdui-ripple mdui-ripple-white" id="1" onclick="border()">
-                <i class="mdui-icon material-icons">&#xe0c9;</i>
-                <!-- <a href="#/1" style="height: 100%;width: 50%;z-index: 999;background-color: black;position: absolute;"></a> -->
-                <label>校内信息</label>
-            </a>
-            <a href="#/tab-2" class="mdui-ripple mdui-ripple-white" id="2" onclick="border()">
-                <i class="mdui-icon material-icons">&#xe865;</i>
-                <label>学习交流</label>
-            </a>
-            <a href="#/tab-3" class="mdui-ripple mdui-ripple-white" id="3" onclick="border()">
-                <i class="mdui-icon material-icons">&#xe553;</i>
-                <label>吃喝玩乐</label>
-            </a>
-            <a href="#/tab-4" class="mdui-ripple mdui-ripple-white" id="4" onclick="border()">
-                <i class="mdui-icon material-icons">&#xe402;</i>
-                <label>失物招领</label>
-            </a>
-        </div>
-    </div>
-    <!-- <button class="mdui-btn" mdui-drawer="{target: '#left-drawer'}">open left drawer</button> -->
-    <div class="mdui-drawer mdui-drawer-close" id="left-drawer">
-        <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
-            <div class="mdui-card">
-                <div>
-                    <span id="close" style="position: absolute;top: 10px;z-index: 2;margin-left: 10px;color:white;font-size: 2em" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" id="open"><i class="mdui-icon material-icons ion-chevron-left"></i></span></div>
-                <div class="mdui-card-media">
-                    <img class=".mdui-img-fluid" src="./../img/card.jpg" />
-                    <div class="mdui-card-media-covered mdui-card-media-covered-transparent">
-                        <div class="mdui-card-primary">
-                            <div class="mdui-card-primary-title">
-                                <img holder="holder.js/60x60?theme=me&text={{user1}}" class="mdui-img-circle"></div>
+                        </svg>
+                    </a>
+                    <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-dialog="{target: '#dialog-docs-theme'}" mdui-tooltip="{content: '设置主题'}"><i class="mdui-icon material-icons"></i></span>
+                    <button mdui-menu="{target: '#more'}" class="mdui-ripple mdui-btn"><span>{{user}}</span><i class="mdui-icon material-icons">&#xe5cf;</i></button>
+                    <ul class="mdui-menu" id="more">
+                        <li class="mdui-menu-item">
+                            <button href="javascript:;" class="mdui-ripple mdui-btn" onclick="secede()">
+                                <i class="mdui-icon material-icons">&#xe879;</i>退出登录
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mdui-tab mdui-color-theme">
+                    <a href="#/" class="mdui-ripple mdui-ripple-white" id="1" onclick="border()">
+                        <i class="mdui-icon material-icons">&#xe0c9;</i>
+                        <!-- <a href="#/1" style="height: 100%;width: 50%;z-index: 999;background-color: black;position: absolute;"></a> -->
+                        <label>校内信息</label>
+                    </a>
+                    <a href="#/tab-2" class="mdui-ripple mdui-ripple-white" id="2" onclick="border()">
+                        <i class="mdui-icon material-icons">&#xe865;</i>
+                        <label>学习交流</label>
+                    </a>
+                    <a href="#/tab-3" class="mdui-ripple mdui-ripple-white" id="3" onclick="border()">
+                        <i class="mdui-icon material-icons">&#xe553;</i>
+                        <label>吃喝玩乐</label>
+                    </a>
+                    <a href="#/tab-4" class="mdui-ripple mdui-ripple-white" id="4" onclick="border()">
+                        <i class="mdui-icon material-icons">&#xe402;</i>
+                        <label>失物招领</label>
+                    </a>
+                </div>
+            </div>
+            <!-- <button class="mdui-btn" mdui-drawer="{target: '#left-drawer'}">open left drawer</button> -->
+            <div class="mdui-drawer mdui-drawer-close" id="left-drawer">
+                <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+                    <div class="mdui-card">
+                        <div>
+                            <span id="close" style="position: absolute;top: 10px;z-index: 2;margin-left: 10px;color:white;font-size: 2em" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" id="open"><i class="mdui-icon material-icons ion-chevron-left"></i></span></div>
+                        <div class="mdui-card-media">
+                            <img class=".mdui-img-fluid" src="./../img/card.jpg" />
+                            <div class="mdui-card-media-covered mdui-card-media-covered-transparent">
+                                <div class="mdui-card-primary">
+                                    <div class="mdui-card-primary-title">
+                                        <img holder="holder.js/60x60?theme=me&text={{user1}}" class="mdui-img-circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdui-collapse-item ">
+                        <div class="mdui-collapse-item-header mdui-list-item mdui-ripple ">
+                            <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-red ">&#xe55a;</i>
+                            <div class="mdui-list-item-content "><span class="user_name"></span></div>
+                            <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
+                        </div>
+                        <div class="mdui-collapse-item-body mdui-list ">
+                            <a href="#/mypost" class="mdui-list-item mdui-ripple ">我的言论</a>
+                            <a href="javascript:void(0) " class="mdui-list-item mdui-ripple " onclick="secede()">退出系统</a>
+                        </div>
+                    </div>
+                    <div class="mdui-collapse-item ">
+                        <div class="mdui-collapse-item-header mdui-list-item mdui-ripple ">
+                            <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue "></i>
+                            <div class="mdui-list-item-content ">理工论坛</div>
+                            <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
+                        </div>
+                        <div class="mdui-collapse-item-body mdui-list ">
+                            <a href="#/" class="mdui-list-item mdui-ripple " onclick="border()">校内信息</a>
+                            <a href="#/tab-2" class="mdui-list-item mdui-ripple " onclick="border()">学习交流</a>
+                            <a href="#/tab-3" class="mdui-list-item mdui-ripple " onclick="border()">吃喝玩乐</a>
+                            <a href="#/tab-4" class="mdui-list-item mdui-ripple " onclick="border()">失物招领</a>
+                        </div>
+                    </div>
+                    <div class="mdui-collapse-item ">
+                        <div class="mdui-collapse-item-header mdui-list-item mdui-ripple ">
+                            <i class="mdui-list-item-icon mdui-icon material-icons ">&#xe2bd;</i>
+                            <div class="mdui-list-item-content ">天气状况</div>
+                            <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
+                        </div>
+                        <div class="mdui-collapse-item-body mdui-list">
+                            <a href="javascript:void(0)" class="mdui-list-item mdui-ripple weathertitle">今日天气</a>
+                            <img id="today" class=".mdui-img-fluid" ng-src="/../img/weather/{{wdata[0].cond.code_d}}.png">
+                            <a href="javascript:void(0)" class="mdui-list-item mdui-ripple">{{wdata[0].cond.txt_d}} {{wdata[0].tmp.min}}℃-{{wdata[0].tmp.max}}℃</a>
+                            <a href="javascript:void(0)" class="mdui-list-item mdui-ripple weathertitle ">明日天气</a>
+                            <img id="today" class=".mdui-img-fluid" ng-src="/../img/weather/{{wdata[1].cond.code_d}}.png">
+                            <a href="javascript:void(0)" class="mdui-list-item mdui-ripple">{{wdata[1].cond.txt_d}} {{wdata[1].tmp.min}}℃-{{wdata[1].tmp.max}}℃</a>
+                        </div>
+                    </div>
+                    <div class="mdui-collapse-item ">
+                        <div class="mdui-collapse-item-header mdui-list-item mdui-ripple ">
+                            <!-- <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue "></i> -->
+                            <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-orange">&#xe338;</i>
+                            <div class="mdui-list-item-content ">休闲娱乐</div>
+                            <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
+                        </div>
+                        <div class="mdui-collapse-item-body mdui-list">
+                            <a href="../html/rex-runner/index.html" target="_blank" class="mdui-list-item mdui-ripple ">Rex-Runner</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="mdui-collapse-item ">
-                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple ">
-                    <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-red ">&#xe55a;</i>
-                    <div class="mdui-list-item-content "><span class="user_name"></span></div>
-                    <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
-                </div>
-                <div class="mdui-collapse-item-body mdui-list ">
-                    <a href="#/mypost" class="mdui-list-item mdui-ripple ">我的言论</a>
-                    <a href="javascript:void(0) " class="mdui-list-item mdui-ripple " onclick="secede()">退出系统</a>
-                </div>
-            </div>
-            <div class="mdui-collapse-item ">
-                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple ">
-                    <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue "></i>
-                    <div class="mdui-list-item-content ">理工论坛</div>
-                    <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
-                </div>
-                <div class="mdui-collapse-item-body mdui-list ">
-                    <a href="#/" class="mdui-list-item mdui-ripple " onclick="border()">校内信息</a>
-                    <a href="#/tab-2" class="mdui-list-item mdui-ripple " onclick="border()">学习交流</a>
-                    <a href="#/tab-3" class="mdui-list-item mdui-ripple " onclick="border()">吃喝玩乐</a>
-                    <a href="#/tab-4" class="mdui-list-item mdui-ripple " onclick="border()">失物招领</a>
-                </div>
-            </div>
-            <div class="mdui-collapse-item ">
-                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple ">
-                    <i class="mdui-list-item-icon mdui-icon material-icons ">&#xe2bd;</i>
-                    <div class="mdui-list-item-content ">天气状况</div>
-                    <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
-                </div>
-                <div class="mdui-collapse-item-body mdui-list">
-                    <a href="javascript:void(0)" class="mdui-list-item mdui-ripple weathertitle">今日天气</a>
-                    <img id="today" class=".mdui-img-fluid" ng-src="/../img/weather/{{wdata[0].cond.code_d}}.png">
-                    <a href="javascript:void(0)" class="mdui-list-item mdui-ripple">{{wdata[0].cond.txt_d}} {{wdata[0].tmp.min}}℃-{{wdata[0].tmp.max}}℃</a>
-                    <a href="javascript:void(0)" class="mdui-list-item mdui-ripple weathertitle ">明日天气</a>
-                    <img id="today" class=".mdui-img-fluid" ng-src="/../img/weather/{{wdata[1].cond.code_d}}.png">
-                    <a href="javascript:void(0)" class="mdui-list-item mdui-ripple">{{wdata[1].cond.txt_d}} {{wdata[1].tmp.min}}℃-{{wdata[1].tmp.max}}℃</a>
-                </div>
-            </div>
-            <div class="mdui-collapse-item ">
-                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple ">
-                    <!-- <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue "></i> -->
-                    <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-orange">&#xe338;</i>
-                    <div class="mdui-list-item-content ">休闲娱乐</div>
-                    <i class="mdui-collapse-item-arrow mdui-icon material-icons "></i>
-                </div>
-                <div class="mdui-collapse-item-body mdui-list">
-                    <a href="../html/rex-runner/index.html" target="_blank" class="mdui-list-item mdui-ripple ">Rex-Runner</a>
-                </div>
-            </div>
         </div>
-    </div>
-    </div>
-    <!--     <div class="one f-cb ">
+        <!--     <div class="one f-cb ">
         <div onclick="toForst() ">理工论坛</div>
         <ul class="f-cb ul1 ">
             <li>用户名：
@@ -186,11 +189,11 @@
         <input type="button " value="确认 " onclick="toSure() " class="but">
         <input type="button " value="取消 " onclick="toCancel() " class="but "/>
     </div> -->
-    <div style="margin-top: 140px;" class="mdui-container" ng-controller='datactrl'>
-        <div class="mdui-row ">
-            <!--             <div class="strip f-cb ">
+        <div style="margin-top: 140px;" class="mdui-container" ng-controller='datactrl'>
+            <div class="mdui-row ">
+                <!--             <div class="strip f-cb ">
                 <div class="str f-cb "> -->
-            <!--                     <div class="strip-1 ">
+                <!--                     <div class="strip-1 ">
                         <ul class="f-cb bar ">
                             <li id="school0 " ng-click="school(0) ">校内信息</li>
                             <li id="school1 " ng-click="school(1) ">学习交流</li>
@@ -200,33 +203,35 @@
                     </div>
                     <div class="strip-2 "></div>
                     <div class="strip-3 "></div> -->
-            <!--     <ul id="two" class="f-cb mdui-list mdui-col-md-12">
+                <!--     <ul id="two" class="f-cb mdui-list mdui-col-md-12">
                 <li ng-repeat="item in data"></li>
             </ul> -->
-            <ul ng-view=""></ul>
-            <!--                 </div>
+                <ul ng-view="" class="view ng-fadeInLeftShort"></ul>
+                <!--                 </div>
             </div> -->
+            </div>
         </div>
-    </div>
-    <!-- <div class="bottom ">理工论坛</div> -->
-    <div class="mdui-fab-wrapper" id="exampleFab" mdui-fab="{trigger: 'click'} ">
-        <button class="mdui-fab mdui-ripple mdui-color-theme-accent ">
-            <!-- 默认显示的图标 -->
-            <i class="mdui-icon material-icons ">&#xe145;</i>
-            <!-- 在拨号菜单开始打开时，平滑切换到该图标，若不需要切换图标，则可以省略该元素 -->
-            <i class="mdui-icon mdui-fab-opened material-icons ">&#xe14c;</i>
-        </button>
-        <div class="mdui-fab-dial ">
-            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent " mdui-tooltip="{content: '发表言论'} ">
-                <a href="#/edit" style="color:white"><i class="mdui-icon material-icons">&#xe150;</i></a></button>
-            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent " mdui-tooltip="{content: '我的言论'} ">
-                <a href="#/mypost" style="color:white"><i class="mdui-icon material-icons">&#xe7fd;</i></a></button>
-            <!--             <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red "><i class="mdui-icon material-icons ">&#xe866;</i></button>
+        <!-- <div class="bottom ">理工论坛</div> -->
+        <div class="mdui-fab-wrapper" id="exampleFab" mdui-fab="{trigger: 'click'} ">
+            <button class="mdui-fab mdui-ripple mdui-color-theme-accent ">
+                <!-- 默认显示的图标 -->
+                <i class="mdui-icon material-icons ">&#xe145;</i>
+                <!-- 在拨号菜单开始打开时，平滑切换到该图标，若不需要切换图标，则可以省略该元素 -->
+                <i class="mdui-icon mdui-fab-opened material-icons ">&#xe14c;</i>
+            </button>
+            <div class="mdui-fab-dial">
+                <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent " mdui-tooltip="{content: '发表言论'} ">
+                    <a href="#/edit" style="color:white"><i class="mdui-icon material-icons">&#xe150;</i></a></button>
+                <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent " mdui-tooltip="{content: '我的言论'} ">
+                    <a href="#/mypost" style="color:white"><i class="mdui-icon material-icons">&#xe7fd;</i></a></button>
+                <!--             <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red "><i class="mdui-icon material-icons ">&#xe866;</i></button>
             <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange "><i class="mdui-icon material-icons ">&#xe191;</i></button>
             <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-blue "><i class="mdui-icon material-icons ">&#xe913;</i></button> -->
+            </div>
         </div>
     </div>
-    <div class="doc-footer-nav mdui-color-theme">
+    </div>
+    <div class="doc-footer-nav mdui-color-theme footer">
         <a href="#/" class="mdui-ripple mdui-color-theme mdui-col-xs-12 mdui-col-sm-12 doc-footer-nav-left">
             <div class="doc-footer-nav-text" style="margin-left:20px;">
                 <i class="mdui-icon material-icons">&#xe0b0;</i>
@@ -501,6 +506,9 @@
     <script src="../bower_components/wangEditor/dist/js/wangEditor.js"></script>
     <link rel="stylesheet" type="text/css" href="../bower_components/sweetalert/dist/sweetalert.css">
     <script type="text/javascript" src="../bower_components/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../bower_components/me-pageloading/me-pageloading.min.js"></script>
+
+    <script type="text/javascript" src="../bower_components/Snap.svg/dist/snap.svg-min.js"></script>
     <!-- <script src="../js/bootstrap.min.js"></script> -->
     <script type="text/javascript" src="../js/text2.js"></script>
     <script type="text/javascript">

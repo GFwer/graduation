@@ -21,25 +21,45 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             return $sce.trustAsHtml(htmlCode);
         }
     }])
+    .filter("replace", [function() {
+        return function(input) {
+            return input.replace(/tihuanfu/g,'&');
+        }
+    }])
     .config(function(cfpLoadingBarProvider) {
         // true is the default, but I left this here as an example:
         cfpLoadingBarProvider.includeSpinner = true;
         // cfpLoadingBarProvider.latencyThreshold = 500;
     })
-    .run(function($rootScope, cfpLoadingBar, $timeout, $rootScope) {
+    .run(function($rootScope, cfpLoadingBar, $timeout) {
         $rootScope.$on('$routeChangeStart', function() {
             cfpLoadingBar.start();
+            $('.view').removeClass('ng-fadeInLeftShort')
+                // $('.view').addClass('animated fadeOutRight');
+                // setTimeout(function() { $('.view').removeClass('fadeOutRight')}, 300)
+            console.log('start')
         });
 
         $rootScope.$on('$routeChangeSuccess', function() {
-            // var time = $timeout(function(){},1000);
-            // time.then(cfpLoadingBar.complete());
+            console.log($('.view').addClass('ng-fadeInLeftShort'))
+            console.log('nonono')
+                // var time = $timeout(function(){},1000);
+                // time.then(cfpLoadingBar.complete());
             setTimeout(function() { cfpLoadingBar.complete() }, 300)
-            $rootScope.$on('$routeChangeSuccess', function(event, current, previous, $rootScope) {
-                document.title = current.$$route.title;
-                $rootScope.title = current.$$route.title;
-            });
 
+
+            // $('.view').removeClass('');
+            // $('.view').addClass('animated fadeInLeft');
+            // setTimeout(function() { $('.view').removeClass('fadeInLeft')}, 700)
+        });
+        $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+            document.title = '理工论坛|' + current.$$route.title;
+            // $rootScope.title = {};
+            // $rootScope.title = current.$$route.title;
+            $rootScope.hi = current.$$route.title;
+            $('.view').addClass('ng-fadeInLeftShort')
+
+            // console.log($rootScope.hi);
         });
         // Do the same with $routeChangeError
     })
@@ -49,7 +69,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             .when('/', {
                 templateUrl: 'postlist.html',
                 controller: 'testctrl',
-                title: '理工论坛|校内信息',
+                title: '校内信息',
                 resolve: {
                     post: ['$rootScope', function($rootScope) {
                         (
@@ -69,7 +89,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
 
             })
             .when('/tab-2', {
-                title: '理工论坛|学习交流',
+                title: '学习交流',
                 templateUrl: 'postlist.html',
                 controller: 'testctrl',
                 resolve: {
@@ -90,7 +110,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                 }
             })
             .when('/tab-3', {
-                title: '理工论坛|吃喝玩乐',
+                title: '吃喝玩乐',
                 templateUrl: 'postlist.html',
                 controller: 'testctrl',
                 resolve: {
@@ -111,7 +131,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                 }
             })
             .when('/tab-4', {
-                title: '理工论坛|失物招领',
+                title: '失物招领',
                 templateUrl: 'postlist.html',
                 controller: 'testctrl',
                 resolve: {
@@ -157,7 +177,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             //     }
             // })
             .when('/post/:postid', {
-                title: '理工论坛|帖子详情',
+                title: '帖子详情',
                 templateUrl: 'postdetail.html',
                 controller: 'testctrl',
                 resolve: {
@@ -181,12 +201,12 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                 }
             })
             .when('/edit', {
-                title: '理工论坛|发布帖子',
+                title: '发布帖子',
                 templateUrl: 'edit.html',
                 controller: 'testctrl'
             })
             .when('/mypost', {
-                title: '理工论坛|我的帖子',
+                title: '我的帖子',
                 templateUrl: 'personal.html',
                 controller: 'testctrl',
                 resolve: {
@@ -296,7 +316,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             // }
             swal({
                     title: "确定删除吗？",
-                    text: "你将无法恢复该虚拟文件！",
+                    text: "你将无法恢复帖子！",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
@@ -361,6 +381,16 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
         //     $scope.apidomain = [];
         //     $scope.apipath = [];
         // };
+        $rootScope.view_ani = function() {
+
+            setTimeout(function() {
+                // $('.well').addClass('rotateIn')
+                $('.' + classname).removeClass('shake');
+            }, 700);
+            setTimeout(function() {
+                // $('.well').removeClass('rotateIn')
+            }, 2000)
+        }
         $scope.totalItems = Math.ceil(10 / 10) * 20;
         $scope.currentPage = 1;
 

@@ -106,7 +106,7 @@ function toTrue() {
 function newToTrue(text) {
     var postId = newGetId();
     var usertoken = getCookie("usertoken");
-    var comment = text;
+    var comment =text.replace(/&/g,'tihuanfu');
     var xmlHttp2 = new XMLHttpRequest();
     console.log(comment)
     if (comment == "<p><br></p>") {

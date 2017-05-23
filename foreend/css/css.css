@@ -575,8 +575,95 @@ a {
 .mdui-theme-layout-dark .doc-footer-nav-text {
     color: #fff;
 }
-a:focus, a:hover {
-     color: white!important;
-     text-decoration: none!important; 
+
+a:focus,
+a:hover {
+    color: white!important;
+    text-decoration: none!important;
 }
-.clearfix {clear: none!important;}
+
+.clearfix {
+    clear: none!important;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -58px;
+}
+
+.main {
+    /*padding-bottom: 10px;*/
+}
+
+.doc-footer-nav {
+    height: 96px;
+    margin-top: 100px;
+}
+
+@-webkit-keyframes fadeOutRightShort {
+    from {
+        opacity: 1
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: translate3d(18px, 0, 0);
+        transform: translate3d(18px, 0, 0)
+    }
+}
+
+@keyframes fadeOutRightShort {
+    from {
+        opacity: 1
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: translate3d(18px, 0, 0);
+        transform: translate3d(18px, 0, 0)
+    }
+}
+
+@-webkit-keyframes fadeInLeftShort {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(-18px, 0, 0);
+        transform: translate3d(-18px, 0, 0)
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none
+    }
+}
+
+@keyframes fadeInLeftShort {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(-18px, 0, 0);
+        -ms-transform: translate3d(-18px, 0, 0);
+        transform: translate3d(-18px, 0, 0)
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        -ms-transform: none;
+        transform: none
+    }
+}
+.ng-fadeInLeftShort.ng-enter {
+    -webkit-animation: fadeInLeftShort .5s;
+    -o-animation: fadeInLeftShort .5s;
+    animation: fadeInLeftShort .5s
+}
+
+.ng-fadeInLeftShort.ng-leave {
+    -webkit-animation: fadeOutRightShort .5s;
+    -o-animation: fadeOutRightShort .5s;
+    animation: fadeOutRightShort .5s
+}
