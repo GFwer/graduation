@@ -10,16 +10,99 @@
 <div class="mdui-container comm" style=" margin-top: 30px;font-size: 1.1em;font-weight: 300;width: 96%;height: 20px;color:#757575">请输入内容...</div>
 <div class="mdui-container" style="width: 90%;margin-top: 30px;clear: none;">
     <div id="editornote2" style="height:400px;clear: none;"></div>
+    <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-left mdui-col-md-2"" type="button"  data-toggle="modal" href="#uploadpicmodal1" style="margin-top: 30px;">添加图片</button>
+
     <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right mdui-col-md-2" onclick="publishpost()" style="margin-top: 30px;margin-left: 40px;">提交</button>
     <div class="mdui-col-md-4 mdui-float-right">
         <!-- <label>Browser Select</label> -->
-        <select class="browser-default" id = "getca" onchange="getClass(this)" style="margin-top: 30px;">
+        <select class="browser-default" id="getca" onchange="getClass(this)" style="margin-top: 30px;">
             <option value="" disabled selected>选择分类</option>
             <option value="0">校内信息</option>
             <option value="1">学习交流</option>
             <option value="2">吃喝玩乐</option>
             <option value="3">失物招领</option>
         </select>
+    </div>
+       <div class="input-group myigroup mdui-col-md-5">
+           <div id="piccontainer" style="min-height: 120px; text-align: center;"></div>
+       </div>
+</div>
+<div class="modal" id="uploadpicmodal1" role="dialog" aria-labelledby="uploadpiclabel1" aria-hidden="true" style="padding-right: 0px;">
+    <!-- <div class="modal-dialog"> -->
+        <div class="modal-content">
+
+            <div class="modal-body">
+                            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="uploadpiclabel1">上传图片 Step1-2</h4><i class="mdui-icon material-icons" mdui-tooltip="{content: '为保证质量，请上传竖直图片，否则可能会导致图片变形'}">&#xe887;</i>
+                <div class="uploadpic" id="uploadpic" style="width:100%;">
+                    
+
+        
+    <div style="width: 100%;height: 30px;"></div>
+                    <span class="mdui-btn btn-success fileinput-button mdui-ripple" style="width:100%;margin-bottom:10px;">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>请点此在本地选择一个图片文件</span>
+                    <input id="fileupload" type="file" name="files[]" style="width:100%;" />
+                    </span>
+<div class="mdui-progress" style="margin-top: 40px;">
+  <div class=""></div>
+</div>
+                    <div id="files" class="files"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href='#!' class="modal-action modal-close mdui-btn mdui-ripple" data-dismiss="modal">
+                    关闭
+                </a>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+<div class="modal" id="uploadpicmodal2" role="dialog" aria-labelledby="uploadpiclabel2" aria-hidden="true">
+    <div class="modal-dialog" style="width: 610px;width: 100%;height: 100%;margin: 0px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="uploadpiclabel2">上传图片 Step2-2</h4>
+            </div>
+            <div class="modal-body">
+                <div id="imagecut">
+                    <table>
+                        <tr>
+                            <td><p>请选择裁剪区域：</p><br>
+                                <div class="jcrop-holder" style="width: 360px;height:480px;position:relative;background-color:black;">
+                                    <img src="#" alt="" id="target" style="display:block;visibility:visible;width:480px;height:480px;border:medium none;margin:0px;padding:0px;position:absolute;top:0px;left:0px;opacity:0.6;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="hidden" id="filename" name="filename" />
+                                <input type="hidden" id="x1" name="x1" value="0" />
+                                <input type="hidden" id="x2" name="x2" value="0" />
+                                <input type="hidden" id="y1" name="y1" value="0" />
+                                <input type="hidden" id="y2" name="y2" value="0" />
+                                <input type="hidden" id="cw" name="cw" value="0" />
+                                <input type="hidden" id="ch" name="ch" value="0" />
+                            </td>
+                        </tr>
+                        <tr>                            <td><p>图片预览：</p><br>
+                                <div style="width:200px;height:200px;overflow:hidden;margin-left:10px;" id="previewborder">
+                                    <img src="#" alt="" id="preview" style="margin-left:-49px;margin-top:-54px;">
+                                </div>
+                            </td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class=" mdui-btn mdui-ripple" data-dismiss="modal">
+                    关闭
+                </button>
+                <button type="button" class=" mdui-btn mdui-ripple" onclick="cutimage()" style="margin-left: 20px;">
+                    裁剪
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="../js/myjs/conf.js"></script>
@@ -59,28 +142,34 @@ function postxmlhttp(url, params, callback) {
 
 function publishpost() {
     var gatTitle = document.getElementsByClassName("posttitle")[0].value;
-    var getContent = editor2.$txt.html().replace(/&/g,'tihuanfu');
+    var getContent = editor2.$txt.html().replace(/&/g, 'tihuanfu');
     var e = document.getElementById("getca");
     var select = getClass(e);
-    // var pics = new Array();
-    // var piccontainer = objbyid("piccontainer");
-    // var piclist = piccontainer.childNodes;
-    // for (var i = 0; i < piclist.length; i++) {
-    //     var picobj = piclist[i].childNodes[0].src;
-    //     pics.push(picobj);
-    // }
+    var pics = new Array();
+    var piccontainer = objbyid("piccontainer");
+    var piclist = piccontainer.childNodes;
+    for (var i = 0; i < piclist.length; i++) {
+        var picobj = piclist[i].childNodes[0].src;
+        pics.push(picobj);
+        console.log(pics)
+    }
     if (gatTitle.length < 1 || getContent.length < 1) {
         mdui.snackbar({
             message: '标题或内容不能为空'
         });
-    } else {
-        // pics = JSON.stringify(pics);
+    } 
+    else if(select==""){
+                mdui.snackbar({
+            message: '请选择分类'
+        });
+    }else {
+        pics = JSON.stringify(pics);
         postxmlhttp("/v1/post/append/", {
             "usertoken_str": usertoken,
             "post_title": gatTitle,
             "post_content": getContent,
             "category_name": select,
-            "post_pics": '[]'
+            "post_pics": pics
         }, function(result) {
             if (result["infostatus"]) {
                 // alert(result["infomsg"]);
@@ -96,8 +185,178 @@ function publishpost() {
                 mdui.snackbar({
                     message: result["infomsg"]
                 });
+                                console.log({
+            "usertoken_str": usertoken,
+            "post_title": gatTitle,
+            "post_content": getContent,
+            "category_name": select,
+            "post_pics": pics
+        });
             }
         });
     }
 }
 </script>
+<link rel="stylesheet" href="../js/css/Jcrop.min.css" />
+<link rel="stylesheet" href="../js/css/jquery.fileupload.css" />
+<link rel="stylesheet" href="../css/css.css"/>
+<link rel="stylesheet" href="../css/func.css"/>
+<script src="../js/top.js"></script>
+<script src="../js/myjs/conf.js "></script>
+<!-- <script src="../js/jquery-1.12.3.min.js "></script> -->
+<!-- <script src="../js/bootstrap-3.3.5-dist/js/bootstrap.min.js "></script> -->
+<script src="../js/myjs/json2.js "></script>
+<script src="../js/myjs/cookie.js "></script>
+<script src="../js/myjs/tools.js "></script>
+<script src="../js/myjs/ajax.js "></script>
+<!-- <script src="../js/myjs/create.js"></script> -->
+<script src="../js/vendor/jquery.ui.widget.js"></script>
+<script src="../js/jquery.iframe-transport.js"></script>
+<script src="../js/jquery.fileupload.js"></script>
+<script>
+jQuery.support.cors = true;
+$(function() {
+    'use strict';
+    var url = "http://" + backendserver + ":" + backendport + "/v1/post/web/pics/";
+    $("#fileupload").fileupload({
+        url: url,
+        dataType: 'json',
+        done: function(e, data) {
+            var canvascontainer = document.getElementsByClassName("jcrop-active");
+            var mycanvas = document.getElementsByTagName("canvas");
+            if (canvascontainer.length && mycanvas.length) {
+                var ccontainer = canvascontainer[0];
+                var mcanvas = mycanvas[0];
+                ccontainer.removeChild(mcanvas);
+                document.getElementById("target").style.display = "block";
+                document.getElementById("target").style.width = "360px";
+                document.getElementById("target").style.height = "480px";
+                document.getElementById("target").style.opacity = "0.8";
+            }
+            if (data["result"]["infostatus"]) {
+                $("#uploadpicmodal1").modal("hide");
+                $("#uploadpicmodal2").modal("show");
+                $("#target").attr("src", data["result"]["infomsg"]);
+                $("#preview").attr("src", data["result"]["infomsg"]);
+                $("#imagecut").css("display", "block");
+                $("#filename").attr("value", data["result"]["infomsg"]);
+            } else {
+                alert(data["result"]["infomsg"]);
+            }
+        },
+        progressall: function(e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $("#progress .progress-bar").css(
+                'width',
+                progress + "%"
+            );
+        }
+    }).prop("disabled", !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
+</script>
+<script src="../js/Jcrop.min.js"></script>
+<script>
+$(function() {
+    $("#target").Jcrop({
+        onChange: showPreview,
+        onSelect: showPreview,
+        aspectRatio: 1,
+    });
+});
+
+function showPreview(coords) {
+    var canvascontainer = document.getElementsByClassName("jcrop-active");
+    var mycanvas = document.getElementsByTagName("canvas");
+    if (canvascontainer.length && mycanvas.length) {
+        var ccontainer = canvascontainer[0];
+        var mcanvas = mycanvas[0];
+        ccontainer.removeChild(mcanvas);
+        document.getElementById("target").style.display = "block";
+        document.getElementById("target").style.width = "360px";
+        document.getElementById("target").style.height = "480px";
+        document.getElementById("target").style.opacity = "0.8";
+    }
+    var rx = 200 / coords.w;
+    var ry = 200 / coords.h;
+    $("#preview").css({
+        width: Math.round(rx * 360) + "px",
+        height: Math.round(ry * 480) + "px",
+        marginLeft: '-' + Math.round(rx * coords.x) + "px",
+        marginTop: '-' + Math.round(ry * coords.y) + "px"
+    });
+    $("#x1").val(coords.x);
+    $("#y1").val(coords.y);
+    $("#x2").val(coords.x2);
+    $("#y2").val(coords.y2);
+    $("#cw").val(coords.w);
+    $("#ch").val(coords.h);
+}
+/*
+图片裁切
+*/
+function cutimage() {
+    var filename = valuebyid("filename");
+    var x1 = valuebyid("x1");
+    var y1 = valuebyid("y1");
+    var x2 = valuebyid("x2");
+    var y2 = valuebyid("y2");
+    var cw = valuebyid("cw");
+    var ch = valuebyid("ch");
+    getxmlhttp("/v1/file/post/imagecut/", {
+            "filename": filename,
+            "x1": x1,
+            "y1": y1,
+            "x2": x2,
+            "y2": y2,
+            "cw": cw,
+            "ch": ch
+        },
+        function(result) {
+            $("#uploadpicmodal2").modal("hide");
+            var container = objbyid("piccontainer");
+            var piccontainter = makeobj("div", {
+                "class": "img-thumbnail",
+                "style": "width: 200px;float:left;margin-right:2px;margin-bottom:2px;text-align:center;padding:2px;",
+                "id": "pic" + result["infomsg"]
+            });
+            var img = makeobj("img", {
+                "class": "img-thumbnail",
+                "src": result["infomsg"],
+                "name": "goodspics",
+                "style": "width: 200px;height: 200px;",
+                "alt": "货物图片"
+            });
+            var removebutton = makeobj("button", {
+                "class": "btn btn-danger",
+                "onclick": "removepic('" + result["infomsg"] + "')",
+                "style": "width: 100%;"
+            }, "删除");
+            piccontainter.appendChild(img);
+            piccontainter.appendChild(removebutton);
+            container.appendChild(piccontainter);
+        }
+    );
+}
+
+/*
+删除上传的图片
+*/
+function removepic(picaddr) {
+    getxmlhttp("/v1/picture/remove/", {
+            "usertoken_str": usertoken,
+            "pic_address": picaddr
+        },
+        function(result) {
+            if (result["infostatus"]) {
+                var node = objbyid("pic" + picaddr);
+                var container = objbyid("piccontainer");
+                container.removeChild(node);
+            } else {
+                alert(result["infomsg"]);
+            }
+        }
+    );
+}
+</script>
+<script src="../js/URL.js"></script>
+<script src="../js/top.js"></script>

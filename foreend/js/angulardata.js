@@ -23,7 +23,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
     }])
     .filter("replace", [function() {
         return function(input) {
-            return input.replace(/tihuanfu/g,'&');
+            return input.replace(/tihuanfu/g, '&');
         }
     }])
     .config(function(cfpLoadingBarProvider) {
@@ -37,30 +37,30 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             $('.view').removeClass('ng-fadeInLeftShort')
                 // $('.view').addClass('animated fadeOutRight');
                 // setTimeout(function() { $('.view').removeClass('fadeOutRight')}, 300)
-            console.log('start')
+                // console.log('start')
         });
 
         $rootScope.$on('$routeChangeSuccess', function() {
-            console.log($('.view').addClass('ng-fadeInLeftShort'))
-            console.log('nonono')
+            $('.view').addClass('ng-fadeInLeftShort')
+                // console.log('nonono')
                 // var time = $timeout(function(){},1000);
                 // time.then(cfpLoadingBar.complete());
             setTimeout(function() { cfpLoadingBar.complete() }, 300)
+            $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+                document.title = '理工论坛|' + current.$$route.title;
+                // $rootScope.title = {};
+                // $rootScope.title = current.$$route.title;
+                $rootScope.hi = current.$$route.title;
+                console.log($rootScope.hi)
 
+                // console.log($rootScope.hi);
+            });
 
             // $('.view').removeClass('');
             // $('.view').addClass('animated fadeInLeft');
             // setTimeout(function() { $('.view').removeClass('fadeInLeft')}, 700)
         });
-        $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
-            document.title = '理工论坛|' + current.$$route.title;
-            // $rootScope.title = {};
-            // $rootScope.title = current.$$route.title;
-            $rootScope.hi = current.$$route.title;
-            $('.view').addClass('ng-fadeInLeftShort')
 
-            // console.log($rootScope.hi);
-        });
         // Do the same with $routeChangeError
     })
     .config(function($routeProvider, $locationProvider) {

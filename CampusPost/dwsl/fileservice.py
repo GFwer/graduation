@@ -40,12 +40,12 @@ class Webpicupload(restful.Resource):
         if width > 2400 or length > 1800 :
             return jsonify(Info(False,"图片过大（不大于2400px * 1800px）",None).tojson())
         nowtime = time.strftime('%Y-%m-%d',time.localtime())
-        if os.path.exists('/home/fris/公共的/CampusPost/picture/temp/'+nowtime):
-            newfaddr = "/home/fris/公共的/CampusPost/picture/temp/" + nowtime + '/' + file.filename
+        if os.path.exists('/home/fawen/shome/CampusPost/picture/temp/'+nowtime):
+            newfaddr = "/home/fawen/shome/CampusPost/picture/temp/" + nowtime + '/' + file.filename
             img.save(newfaddr)
         else:
-            os.mkdir('/home/fris/公共的/CampusPost/picture/temp/'+nowtime)
-            newfaddr = "/home/fris/公共的/CampusPost/picture/temp/" + nowtime + '/' + file.filename
+            os.mkdir('/home/fawen/shome/CampusPost/picture/temp/'+nowtime)
+            newfaddr = "/home/fawen/shome/CampusPost/picture/temp/" + nowtime + '/' + file.filename
             img.save(newfaddr)
         return jsonify(Info(True, "http://" + str(staticserver) + ":" + str(staticport) + "/temp/" + nowtime +'/' + file.filename, None).tojson())
 
@@ -78,7 +78,7 @@ class PostImageCutService(restful.Resource):
         cw = request.args.get("cw")
         ch = request.args.get("ch")
         nowtime = time.strftime('%Y-%m-%d',time.localtime())
-        filename = "/home/fris/公共的/CampusPost/picture/temp/" + nowtime + '/' + request.args.get("filename").split("/")[-1]
+        filename = "/home/fawen/shome/CampusPost/picture/temp/" + nowtime + '/' + request.args.get("filename").split("/")[-1]
         ci = ImageCut()
         faddr = "http://" + str(staticserver) + ":" + str(
             staticport) + "/pics/" + ci.cutpics(filename, x1, x2, y1, y2, cw, ch).split("/")[-1]

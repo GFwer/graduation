@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
     <title>理工论坛|登录</title>
     <link rel="stylesheet" type="text/css" href="../css/animate.css">
     <!-- <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700"> -->
@@ -40,6 +40,12 @@
     @font-face {
         font-family: Fawen;
         src: url('font-awesome/fonts/fontawesome-webfont.ttf');
+    }
+    
+    input,
+    input:focus,
+    input:active {
+        user-select: text;
     }
     
     * {
@@ -257,6 +263,10 @@
         display: block;
         margin: 0 auto;
     }
+    .loginhead>a:focus,
+    .loginhead>a:hover{
+        color:#66afe9!important;
+    }
     </style>
 </head>
 
@@ -328,7 +338,7 @@
                         <div class="mdui-textfield-error">密码不能为空</div>
                     </div>
                     <div class="loginbtn">
-                        <button ladda="loading" class="mdui-btn mdui-color-theme-accent mdui-ripple"  ng-click="laddaBtn()" onclick="toLogin()">登录</button>
+                        <button id="signin" ladda="loading" class="mdui-btn mdui-color-theme-accent mdui-ripple" ng-click="laddaBtn()" onclick="toLogin()">登录</button>
                         <!-- <button class="mdui-btn mdui-color-theme-accent mdui-ripple">注册</button> -->
                     </div>
                 </div>
@@ -353,7 +363,7 @@
                     </div>
                     <div class="loginbtn">
                         <!-- <button class="mdui-btn mdui-color-theme-accent mdui-ripple">登录</button> -->
-                        <button ladda="loading" class="mdui-btn mdui-color-theme-accent mdui-ripple" ng-click="laddaBtn()" onclick="newtoSure()" >注册</button>
+                        <button id="signup" ladda="loading" class="mdui-btn mdui-color-theme-accent mdui-ripple" ng-click="laddaBtn()" onclick="newtoSure()">注册</button>
                     </div>
                 </div>
                 <!-- ng-include src="" scope="" onload=""></ng-include> -->
@@ -457,6 +467,21 @@ $(document).ready(function() {
         lProject.src = "./../img/logo.png"
     }
     lParent.appendChild(lProject);
+});
+</script>
+<script type="text/javascript">
+//回车事件绑定
+$('.loginform').bind('keyup', function(event) {
+    if (event.keyCode == "13") {
+        var urlarr = window.location.href.split('#');
+        var lasturl = urlarr[urlarr.length - 1];
+        if (lasturl == 'signup') {
+            $('#signup').click();
+        } else {
+            $('#signin').click();
+        }
+
+    }
 });
 </script>
 <script src="../js/jquery.min.js "></script>

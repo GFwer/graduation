@@ -17,7 +17,7 @@ class ImageCut:
         ch = int(ch)
         region = (x1, y1, x2, y2)
         cropimg = img.crop(region) 
-        newfaddr = "/home/fris/公共的/CampusPost/picture/pics/" + newfname
+        newfaddr = "/home/fawen/shome/CampusPost/picture/pics/" + newfname
         cropimg.save(newfaddr)
         os.remove(filename)
         return newfaddr

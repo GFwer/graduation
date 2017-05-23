@@ -1,22 +1,23 @@
+var usertoken = getCookie("usertoken");
 
-var usertoken=getCookie("usertoken");
-function getClass(e){
+function getClass(e) {
     return e.value;
 }
 //数据块内容
-function school(figure){
+function school(figure) {
     inCookies();
-    if(getCookie("ifManage") == "1"){
-        window.location.href="../html/manage.html";
-    }else {
-        window.location.href="../html/login.html";
+    if (getCookie("ifManage") == "1") {
+        window.location.href = "../html/manage.html";
+    } else {
+        window.location.href = "../html/login.html";
     }
 }
+
 function publishpost() {
-    var gatTitle=document.getElementsByClassName("gatTitle")[0].value;
-    var getContent=document.getElementsByClassName("getContent")[0].value;
-    var e=document.getElementById("mySelect");
-    var select=getClass(e);
+    var gatTitle = document.getElementsByClassName("gatTitle")[0].value;
+    var getContent = document.getElementsByClassName("getContent")[0].value;
+    var e = document.getElementById("mySelect");
+    var select = getClass(e);
     var pics = new Array();
     var piccontainer = objbyid("piccontainer");
     var piclist = piccontainer.childNodes;
@@ -25,19 +26,27 @@ function publishpost() {
         pics.push(picobj);
     }
     console.log(pics)
-    if(gatTitle.length <1 || getContent.length<1 ){
+    if (gatTitle.length < 1 || getContent.length < 1) {
         alert("标题或内容不能为空！");
-    }else{
+    } else {
         pics = JSON.stringify(pics);
+        console.log({
+            "usertoken_str": usertoken,
+            "post_title": gatTitle,
+            "post_content": getContent,
+            "category_name": select,
+            "post_pics": pics
+        })
         postxmlhttp("/v1/post/append/", {
             "usertoken_str": usertoken,
-            "post_title":gatTitle,
-            "post_content":getContent,
-            "category_name":select,
+            "post_title": gatTitle,
+            "post_content": getContent,
+            "category_name": select,
             "post_pics": pics
-        }, function (result) {
+        }, function(result) {
             if (result["infostatus"]) {
                 alert(result["infomsg"]);
+
                 // window.location.replace("./myPost.html");
             } else {
                 alert(result["infomsg"]);
@@ -66,7 +75,7 @@ function cutimage() {
             "cw": cw,
             "ch": ch
         },
-        function (result) {
+        function(result) {
             $("#uploadpicmodal2").modal("hide");
             var container = objbyid("piccontainer");
             var piccontainter = makeobj("div", {
@@ -101,7 +110,7 @@ function removepic(picaddr) {
             "usertoken_str": usertoken,
             "pic_address": picaddr
         },
-        function (result) {
+        function(result) {
             if (result["infostatus"]) {
                 var node = objbyid("pic" + picaddr);
                 var container = objbyid("piccontainer");
