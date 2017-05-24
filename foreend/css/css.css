@@ -730,3 +730,20 @@ input:focus,
 input:active {
     user-select: text;
 }
+
+.text_content > table > tbody >td {
+    border: 1px solid black;
+}
+
+.display {
+    display: none;
+}
+
+@media (max-width: 9999px) {
+    .mdui-hidden-xs {
+        display: block!important;
+    }
+}
+.font{
+    font-size: 1.5em!important;
+}

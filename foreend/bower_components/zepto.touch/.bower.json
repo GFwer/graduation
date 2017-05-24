@@ -1,0 +1,29 @@
+{
+  "name": "zepto.touch",
+  "main": "zepto.touch.js",
+  "description": "a zepto/jquery touch events plugin",
+  "keywords": [
+    "touch",
+    "zepto.touch",
+    "zepto",
+    "jquery"
+  ],
+  "homepage": "https://github.com/huanz/zepto.touch",
+  "authors": [
+    "bukas <yhz1219@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "zepto": "1.x"
+  },
+  "_release": "89a7504967",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "89a75049673a0b33dc251bc6eede1fcd9b1cca08"
+  },
+  "_source": "https://github.com/huanz/zepto.touch.git",
+  "_target": "*",
+  "_originalSource": "zepto.touch",
+  "_direct": true
+}

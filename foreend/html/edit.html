@@ -9,8 +9,16 @@
 </div>
 <div class="mdui-container comm" style=" margin-top: 30px;font-size: 1.1em;font-weight: 300;width: 96%;height: 20px;color:#757575">请输入内容...</div>
 <div class="mdui-container" style="width: 90%;margin-top: 30px;clear: none;">
-    <div id="editornote2" style="height:400px;clear: none;"></div>
-    <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-left mdui-col-md-2"" type="button"  data-toggle="modal" href="#uploadpicmodal1" style="margin-top: 30px;">添加图片</button>
+    <div id="editornote2" style="height:400px;clear: none;" ng-class="{'display':ismobile()}"></div>
+    <div class="mdui-container" ng-class="{'display':!ismobile()}">
+    <div class="mdui-row">
+<div class="mdui-textfield mdui-textfield-floating-label">
+  <label class="mdui-textfield-label">内容</label>
+  <textarea class="mdui-textfield-input" id = "mobile"></textarea>
+</div>
+</div>
+</div>
+    <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-left mdui-col-md-2"" type="button"  data-toggle="modal" href="#uploadpicmodal1" style="margin-top: 30px;" ng-class="{'display':ismobile()}">添加图片</button>
 
     <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right mdui-col-md-2" onclick="publishpost()" style="margin-top: 30px;margin-left: 40px;">提交</button>
     <div class="mdui-col-md-4 mdui-float-right">
@@ -108,11 +116,12 @@
 <script type="text/javascript" src="../js/myjs/conf.js"></script>
 <script type="text/javascript">
 var usertoken = getCookie("usertoken");
+if (!ismobile()){
 var editor2 = new wangEditor('editornote2');
 
 editor2.create();
 editor2.$txt.blur();
-
+}
 function getClass(e) {
     return e.value;
 }
@@ -142,7 +151,9 @@ function postxmlhttp(url, params, callback) {
 
 function publishpost() {
     var gatTitle = document.getElementsByClassName("posttitle")[0].value;
-    var getContent = editor2.$txt.html().replace(/&/g, 'tihuanfu');
+    if(!ismobile){var getContent = editor2.$txt.html().replace(/&/g, 'tihuanfu');}
+    if(ismobile){var getContent = document.getElementById('mobile').value}
+    
     var e = document.getElementById("getca");
     var select = getClass(e);
     var pics = new Array();
@@ -360,3 +371,9 @@ function removepic(picaddr) {
 </script>
 <script src="../js/URL.js"></script>
 <script src="../js/top.js"></script>
+<!-- <script type="text/javascript" src="../bower_components/zepto.js/dist/zepto.min.js"></script>
+<script type="text/javascript" src="../bower_components/zepto.touch/zepto.touch.js"></script>
+<script type="text/javascript" src="../bower_components/wangEditor-mobile/dist/css/wangEditor-mobile.min.css"></script>
+<script type="text/javascript" src="../bower_components/wangEditor-mobile/dist/js/wangEditor-mobile.min.js"></script>
+ -->
+

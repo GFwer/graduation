@@ -1,4 +1,4 @@
-<div class="mdui-row " >
+<div class="mdui-row ">
     <div class="mdui-ripple">
         <li class="mdui-list-item">
             <div class="mdui-list-item-avatar mdui-img-circle"><img holder='holder.js/40x40?theme=me&text={{detaildata.post_username| limitTo : 1 | uppercase }}' /></div>
@@ -17,7 +17,7 @@
                 <div class="title">{{detaildata.post_title}}</div>
                 <div style="color:#616161" ng-bind-html="detaildata.post_content | replace | sanitize " class="text_content"></div>
                 <!--                 <div ng-repeat="item in detaildata.post_pics">
-                	
+                    
                 </div> -->
                 <!-- <img ng-src="{{detaildata.post_pics[1]}}"> -->
                 <div ng-repeat="img in detaildata.post_pics track by $index">
@@ -45,15 +45,24 @@
 </div>
 <div class="mdui-container comm" style=" margin-top: 30px;font-size: 1.1em;font-weight: 300;width: 96%;height: 20px;color:#757575">请输入评论...</div>
 <div class="mdui-container" style="width: 90%;margin-top: 30px;">
-    <div id="editornote" style="height:400px;"></div>
-    <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right" onclick="newToTrue(editor.$txt.html())" style="margin-top: 30px;">提交</button>
+    <div id="editornote" style="height:400px;" ng-class="{'display':ismobile()}"></div>
+    <div class="mdui-container" ng-class="{'display':!ismobile()}">
+    <div class="mdui-row">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label">内容</label>
+            <textarea class="mdui-textfield-input" id="mobile"></textarea>
+        </div>
+    </div>
+</div>
+    <div ng-class="{'display':ismobile()}"><button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right" onclick="newToTrue(editor.$txt.html())" style="margin-top: 30px;">提交</button></div>
+    
+    <div ng-class="{'display':!ismobile()}"><button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right" onclick="newToTrue()" style="margin-top: 30px;">提交</button></div>
 </div>
 <script type="text/javascript">
-function hi2() {
+if (!ismobile()) {
+    var editor = new wangEditor('editornote');
 
+    editor.create();
+    editor.$txt.blur();
 }
-var editor = new wangEditor('editornote');
-
-editor.create();
-editor.$txt.blur();
 </script>

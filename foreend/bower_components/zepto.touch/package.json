@@ -1,0 +1,28 @@
+{
+  "name": "zepto.touch",
+  "version": "1.0.3",
+  "description": "a zepto/jquery touch events plugin",
+  "main": "zepto.touch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/huanz/zepto.touch"
+  },
+  "keywords": [
+    "touch",
+    "zepto.touch",
+    "zepto",
+    "jquery"
+  ],
+  "dependencies": {
+    "zepto": "1.x"
+  },
+  "author": "bukas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/huanz/zepto.touch/issues"
+  },
+  "homepage": "https://github.com/huanz/zepto.touch"
+}

@@ -118,10 +118,11 @@ function toTrue() {
 function newToTrue(text) {
     var postId = newGetId();
     var usertoken = getCookie("usertoken");
-    var comment = text.replace(/&/g, 'tihuanfu');
+    if(!ismobile()){var comment = text.replace(/&/g, 'tihuanfu');}
+    if(ismobile()){var comment = document.getElementById('mobile').value}
     var xmlHttp2 = new XMLHttpRequest();
     console.log(comment)
-    if (comment == "<p><br></p>") {
+    if (comment == "<p><br></p>"||comment == ""||comment == undefined) {
         mdui.snackbar({
             message: "评论不能为空！"
         });
