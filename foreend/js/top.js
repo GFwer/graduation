@@ -213,6 +213,7 @@ var toLogin = function() {
                         if (result.inforesult.user_privilege == "0") {
                             window.location.href = "../html/login.html";
                         } else if (result.inforesult.user_privilege == "1") {
+                            // window.pri = 1;
                             window.location.href = "../html/manage.html";
                         }
                     }, 300)

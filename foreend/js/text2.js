@@ -75,7 +75,7 @@ function newdel() {
             closeOnConfirm: false
         },
         function() {
-            swal("删除！", "你的虚拟文件已经被删除。", "success");
+            swal("删除！", "帖子已经被删除。", "success");
             var postId = newGetId();
             var usertoken = getCookie("usertoken");
             var xmlHttp2 = new XMLHttpRequest();

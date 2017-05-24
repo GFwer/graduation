@@ -21,12 +21,14 @@ class Postorml:
         try:
             category_id = session.query(Category.category_id).filter_by(category_name=categoryname).all()
             categoryid = category_id[0][0]
+            postlist1 = session.query(Post.post_id).filter_by(post_categoryid=categoryid).all()
+            lenlen = len(postlist1)
             listdict = []
             if int(startposi) > 0 :
                 postlist = session.query(Post.post_title,Post.post_time,Post.post_content,Post.post_userid,Post.post_id).filter_by(post_categoryid=categoryid).order_by(desc(Post.post_time)).offset(startposi).limit(pagesize).all()
                 if len(postlist) == 0 :
                     session.close()
-                    return Info(True,0,"已经没有帖子了").tojson()   
+                    return Info(True,lenlen,"已经没有帖子了").tojson()   
                 for lista in postlist:
                     dicta = {}
                     dicta["post_id"] = lista[4]
@@ -45,7 +47,7 @@ class Postorml:
                         dicta["post_topstatu"] = "1"
                     listdict.append(dicta)
                 session.close()
-                return Info(True,0,listdict).tojson()
+                return Info(True,lenlen,listdict).tojson()
             toplistid = session.query(Toppost.top_postid).filter_by(top_categoryid=categoryid).order_by(Toppost.top_time).offset(startposi).limit(pagesize).all()
             toplist_id = []
             for postid in toplistid:
@@ -77,7 +79,7 @@ class Postorml:
             postlist = session.query(Post.post_title,Post.post_time,Post.post_content,Post.post_userid,Post.post_id).filter_by(post_categoryid=categoryid).order_by(desc(Post.post_time)).offset(str(startposi)).limit(str(pagesizeafter)).all()
             if len(postlist) == 0 :
                 session.close()
-                return Info(True,listdictlen,listdict).tojson()   
+                return Info(True,lenlen,listdict).tojson()   
             for lista in postlist:
                 dicta = {}
                 dicta["post_id"] = lista[4]
@@ -99,7 +101,7 @@ class Postorml:
             lengh = int(pagesize) - int(startposi)
             if len(listdict) < lengh:
                 session.close()
-                return Info(True,listdictlen,listdict).tojson()
+                return Info(True,lenlen,listdict).tojson()
             for a in listdict:
                 if a not in listdictafter:
                     listdictafter.append(a)
@@ -131,7 +133,7 @@ class Postorml:
                     if a not in listdictafter:
                         listdictafter.append(a)   
             session.close()
-            return Info(True,listdictlen,listdictafter).tojson()
+            return Info(True,lenlen,listdictafter).tojson()
         except Exception as a:
             print(a)
             session.close()
@@ -181,9 +183,9 @@ class Postorml:
                 return Info(False, '没有该帖子', None).tojson() 
             user_id2 = session.query(Post.post_userid).filter_by(post_id=postid).all()
             userid2 = user_id2[0][0]
-            print(userid1)
-            print(userid2)
-            if userid1 != userid2 :
+            user_privilege = session.query(User.user_privilege).filter_by(user_id=userid1).all()
+            userprivilege = user_privilege[0][0]
+            if userid1 != userid2 and userprivilege == 0:
                 return Info(False, '没有操作的权限', None).tojson()
             if session.query(Picture).filter_by(picture_postid=postid).count() > 0:
                 session.query(Picture).filter_by(picture_postid=postid).delete()
@@ -191,7 +193,7 @@ class Postorml:
                 session.query(Comment).filter_by(comment_postid=postid).delete()
             if session.query(Toppost).filter_by(top_postid=postid).count() > 0:
                 session.query(Toppost).filter_by(top_postid=postid).delete() 
-            session.query(Post).filter_by(post_id=postid,post_userid=userid1).delete()
+            session.query(Post).filter_by(post_id=postid,post_userid=userid2).delete()
             session.commit()
             session.close()
             return Info(True,'删除帖子成功',None).tojson()

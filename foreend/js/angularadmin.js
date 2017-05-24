@@ -67,7 +67,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
         $locationProvider.hashPrefix('');
         $routeProvider
             .when('/', {
-                templateUrl: 'postlist.html',
+                templateUrl: 'postlistadmin.html',
                 controller: 'testctrl',
                 title: '校内信息',
                 resolve: {
@@ -91,7 +91,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             })
             .when('/tab-2', {
                 title: '学习交流',
-                templateUrl: 'postlist.html',
+                templateUrl: 'postlistadmin.html',
                 controller: 'testctrl',
                 resolve: {
                     post: ['$rootScope', function($rootScope) {
@@ -114,7 +114,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             })
             .when('/tab-3', {
                 title: '吃喝玩乐',
-                templateUrl: 'postlist.html',
+                templateUrl: 'postlistadmin.html',
                 controller: 'testctrl',
                 resolve: {
                     post: ['$rootScope', function($rootScope) {
@@ -136,7 +136,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             })
             .when('/tab-4', {
                 title: '失物招领',
-                templateUrl: 'postlist.html',
+                templateUrl: 'postlistadmin.html',
                 controller: 'testctrl',
                 resolve: {
                     post: ['$rootScope', function($rootScope) {
@@ -277,7 +277,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             });
         // $locationProvider.html5Mode(true);
     })
-    .controller('testctrl', function($scope, $location, $anchorScroll,$rootScope) {
+    .controller('testctrl', function($scope, $location, $anchorScroll, $rootScope) {
         var urlarr2 = window.location.href.split('#/');
         var lasturl2 = urlarr2[1];
         if (lasturl2 == 'tab-2') {
@@ -300,6 +300,73 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             $('#2').removeClass('bordercss mdui-tab-active');
             $('#3').removeClass('bordercss mdui-tab-active');
             $('#4').removeClass('bordercss mdui-tab-active');
+        }
+        $rootScope.down = function(id) {
+            swal({
+                    title: "取消置顶",
+                    text: "确定将帖子取消置顶！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定！",
+                    closeOnConfirm: false
+                },
+                function() {
+                    swal("取消！", "帖子已经取消置顶。", "success");
+                    var usertoken = getCookie("usertoken");
+                    var xmlHttp1 = new XMLHttpRequest();
+                    xmlHttp1.onreadystatechange = function() {
+                        if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200) {
+                            var result = JSON.parse(xmlHttp1.responseText);
+                            window.location.reload();
+                        }
+                    };
+                    var backendurl = url + "/v1/post/top/cancel/";
+                    xmlHttp1.open("POST", backendurl, true);
+                    xmlHttp1.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlHttp1.send("usertoken_str=" + usertoken + "&post_id=" + id);
+                });
+        }
+        $rootScope.airport = function(id) {
+            // console.log(id)
+            var urlarr3 = window.location.href.split('#/');
+            // console.log(1)
+            var catr = 0;
+            var lasturl3 = urlarr3[urlarr3.length - 1];
+            if (lasturl3 == 'tab-2') {
+                catr = 1;
+            }
+            if (lasturl3 == "tab-3") {
+                catr = 2;
+            }
+            if (lasturl3 == "tab-4") {
+                catr = 3;
+            }
+            swal({
+                    title: "置顶",
+                    text: "确定将置顶帖子！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定！",
+                    closeOnConfirm: false
+                },
+                function() {
+                    swal("成功！", "帖子已经置顶。", "success");
+                    var usertoken = getCookie("usertoken");
+                    var xmlHttp1 = new XMLHttpRequest();
+                    xmlHttp1.onreadystatechange = function() {
+                        if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200) {
+                            var result = JSON.parse(xmlHttp1.responseText);
+                            window.location.reload();
+                        }
+                    };
+                    var backendurl = url + "/v1/post/top/";
+                    xmlHttp1.open("POST", backendurl, true);
+                    xmlHttp1.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlHttp1.send("usertoken_str=" + usertoken + "&post_id=" + id + "&category_name=" + catr);
+                });
+
         }
         $rootScope.totalItems = Math.ceil(($rootScope.item) / 10) * 10;
         $rootScope.setPage = function(pageNo) {

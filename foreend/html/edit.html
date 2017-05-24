@@ -151,8 +151,8 @@ function postxmlhttp(url, params, callback) {
 
 function publishpost() {
     var gatTitle = document.getElementsByClassName("posttitle")[0].value;
-    if(!ismobile){var getContent = editor2.$txt.html().replace(/&/g, 'tihuanfu');}
-    if(ismobile){var getContent = document.getElementById('mobile').value}
+    if(!ismobile()){var getContent = editor2.$txt.html().replace(/&/g, 'tihuanfu');}
+    if(ismobile()){var getContent = document.getElementById('mobile').value}
     
     var e = document.getElementById("getca");
     var select = getClass(e);
