@@ -32,7 +32,7 @@
         </select>
     </div>
        <div class="input-group myigroup mdui-col-md-5">
-           <div id="piccontainer" style="min-height: 120px; text-align: center;"></div>
+           <div id="piccontainer" style="min-height: 120px; text-align: center;color:black;"></div>
        </div>
 </div>
 <div class="modal" id="uploadpicmodal1" role="dialog" aria-labelledby="uploadpiclabel1" aria-hidden="true" style="padding-right: 0px;">
@@ -153,7 +153,7 @@ function publishpost() {
     var gatTitle = document.getElementsByClassName("posttitle")[0].value;
     if(!ismobile()){var getContent = editor2.$txt.html().replace(/&/g, 'tihuanfu');}
     if(ismobile()){var getContent = document.getElementById('mobile').value}
-    
+    var iurl = window.location.href;
     var e = document.getElementById("getca");
     var select = getClass(e);
     var pics = new Array();
@@ -187,10 +187,16 @@ function publishpost() {
                 mdui.snackbar({
                     message: result["infomsg"]
                 });
-                setTimeout(function() {
-                    window.location.href = "../html/login.html#/mypost";
-                }, 1000)
-
+                    if(iurl.indexOf("manage")!=-1){
+                                        setTimeout(function() {
+                        window.location.href = "../html/manage.html#/mypost";                    
+                    }, 1000)
+                }
+                else{
+                    setTimeout(function() {
+                        window.location.href = "../html/login.html#/mypost";
+                    }, 1000)
+                }
             } else {
                 // alert();
                 mdui.snackbar({

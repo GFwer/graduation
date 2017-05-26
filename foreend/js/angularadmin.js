@@ -46,15 +46,6 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                 // var time = $timeout(function(){},1000);
                 // time.then(cfpLoadingBar.complete());
             setTimeout(function() { cfpLoadingBar.complete() }, 300)
-            $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
-                document.title = '理工论坛|' + current.$$route.title;
-                // $rootScope.title = {};
-                // $rootScope.title = current.$$route.title;
-                $rootScope.hi = current.$$route.title;
-                // console.log($rootScope.hi)
-
-                // console.log($rootScope.hi);
-            });
 
             // $('.view').removeClass('');
             // $('.view').addClass('animated fadeInLeft');
