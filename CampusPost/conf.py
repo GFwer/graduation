@@ -12,7 +12,8 @@ httpserver = "104.224.132.92"
 
 httpport = "6500"   # 5000
 # 静态文件的服务器和端口
-staticserver = "127.0.0.1"
+# staticserver = "127.0.0.1"
+staticserver = "104.224.132.92"
 staticport = "6600"  # 5500
 # 用于日志配置
 formatstr = "%(asctime)s\t%(name)s\t%(pathname)s\t%(lineno)d\t%(message)s\t%(funcName)s\t%(levelname)s"
