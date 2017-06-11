@@ -1,4 +1,9 @@
-<div class="mdui-row ">
+<div ng-if="detaildata==null">
+    <i class="ion-android-sad" style="font-size: 2em"></i>
+    <p>你要找的帖子不存在或已经被删除！<a href="#/">回到首页</a></p>
+</div>
+<div ng-hide="detaildata==null">
+<div class="mdui-row">
     <div class="mdui-ripple">
         <li class="mdui-list-item">
             <div class="mdui-list-item-avatar mdui-img-circle"><img holder='holder.js/40x40?theme=me&text={{detaildata.post_username| limitTo : 1 | uppercase }}' /></div>
@@ -57,6 +62,7 @@
     <div ng-class="{'display':ismobile()}"><button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right" onclick="newToTrue(editor.$txt.html())" style="margin-top: 30px;">提交</button></div>
     
     <div ng-class="{'display':!ismobile()}"><button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right" onclick="newToTrue()" style="margin-top: 30px;">提交</button></div>
+</div>
 </div>
 <script type="text/javascript">
 if (!ismobile()) {

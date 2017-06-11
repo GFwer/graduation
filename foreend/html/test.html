@@ -6,34 +6,120 @@
     <title>Document</title>
     <script src="https://cdn.bootcss.com/angular.js/1.6.4/angular.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../bower_components/mdui/dist/css/mdui.min.css">
+    <script src='../bower_components/mdui/dist/js/mdui.min.js'></script>
+    <link rel="stylesheet" type="text/css" href="../css/ionicons.min.css">
+    <style type="text/css">
+    .right,
+    .left {
+        width: 49%;
+        min-height: 100px;
+        word-wrap: break-word;
+        display: inline-block;
+    }
+    
+    .op {
+        opacity: 0;
+    }
+    
+    .left,
+    .right {
+        position: relative;
+        margin: 0 auto;
+    }
+    </style>
 </head>
 
-<body ng-app="myapp" ng-controller="wctrl">
+<body ng-app="myapp" ng-controller="wctrl" class="  mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded">
+    <div class="mdui-toolbar mdui-color-theme">
+        <span class="mdui-typo-title">理工机器人</span>
+        <div class="mdui-toolbar-spacer"></div>
+    </div>
+    <div style="width: 100%;" class="body">
+        <!--     <span ng-repeat="item in arr">
+        <span>{{item}}</span>
+    </span> -->
+        <div ng-repeat="item in arr track by $index" style="overflow: auto;width: 100%;display: inline-block;text-align: center;margin-top: 50;">
+            <div class="left" ng-class="{'op':$index%2!=0}">
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="mdui-icon material-icons ion-person"></i></span>
+                    <span class="mdui-chip-title">{{item}}</span>
+                </div>
+            </div>
+            <div class="right" ng-class="{'op':$index%2==0}">
+                <div class="mdui-chip"><span class="mdui-chip-title">{{item}}</span>
+                    <span class="mdui-chip-icon mdui-color-blue"><i class="mdui-icon material-icons">&#xe87c;</i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mdui-bottom-nav mdui-bottom-nav-text-auto" style="position: fixed;bottom: 0px;">
+        <div class="mdui-textfield" style="width: 100%;margin-left: 3px">
+            <input class="mdui-textfield-input" type="text" placeholder="请输入内容..." my-enter="do()" />
+        </div>
+    </div>
     <script type="text/javascript">
-    angular.module('myapp', []).controller('wctrl', function($scope) {
-        var mydata= {
-                "key": "ac6f682b6b60444c95dd1081417055eb",
-                "info": "哈尔滨理工大学"
+    $('.body').css("height", document.body.scrollHeight - 56 - 56);
+    angular.module('myapp', [])
+        .controller('wctrl', function($scope, $rootScope) {
+            $rootScope.arr = [];
+            // console.log($rootScope.arr.push("您好，我是理工机器人，我可以聊天，有什么问题也可以问我～"))
+            // $('.mdui-textfield-input').bind('keyup', function(event) {
+            //     var x = $('.mdui-textfield-input')[0].value;
+            //     if (event.keyCode == "13" && x != '') {
+            //         $rootScope.arr.push(x);
+            //         $rootScope.getdata(x);
+            //         $('.mdui-textfield-input')[0].value = null;
+            //     }
+            // });
+
+            // var token = document.cookies;
+            $rootScope.do = function() {
+
+                var x = $('.mdui-textfield-input')[0].value;
+                if (x != '') {
+                    $rootScope.arr.push($('.mdui-textfield-input')[0].value);
+                    $rootScope.getdata(x);
+                }
+
             }
-            // var mydata = {
-            //     {
-            //         "key": "ac6f682b6b60444c95dd1081417055eb",
-            //         "info": "小狗的图片",
-            //     },
-            // };
-        $.ajax({
-            type: "GET",
-            // url: "http://openapi.tuling123.com/openapi/api/v2",
-            url: "http://www.tuling123.com/openapi/api",
-            dataType: "json",
-            // async: false,
-            data: mydata,
-            //cache:false,
-            success: function(data) {
-                console.log(data)
+            $rootScope.getdata = function(data) {
+                var mydata = {
+                    // "key": "ac6f682b6b60444c95dd1081417055eb",
+                    // "info": "新闻"
+                    'token': '96852B0A20C1BD6A4AC99E2D303A3781',
+                    'query': data,
+                    'session_id': 'gfw'
+                }
+                $.ajax({
+                    type: "GET",
+                    url: "http://www.yige.ai/v1/query",
+                    dataType: "json",
+                    // async: false,
+                    data: mydata,
+                    //cache:false,
+                    success: function(res) {
+                        $rootScope.resp = res;
+                        $rootScope.arr.push(res.answer)
+                        console.log($rootScope.arr)
+                        $('.mdui-textfield-input')[0].value = '';
+                    }
+                })
             }
         })
-    })
+        .directive('myEnter', function() {
+            return function(scope, element, attrs) {
+                element.bind("keydown keypress", function(event) {
+                    if (event.which === 13) {
+                        scope.$apply(function() {
+                            scope.$eval(attrs.myEnter);
+                        });
+
+                        event.preventDefault();
+                    }
+                });
+            };
+        });
     </script>
 </body>
 

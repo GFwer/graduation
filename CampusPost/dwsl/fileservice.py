@@ -35,10 +35,10 @@ class Webpicupload(restful.Resource):
         img = Image.open(file)
         width = list(img.size)[1]
         length = list(img.size)[0]
-        if width < 480 or length < 640 :
-            return jsonify(Info(False,"图片过小（不小于480px * 360px）",None).tojson())
-        if width > 2400 or length > 1800 :
-            return jsonify(Info(False,"图片过大（不大于2400px * 1800px）",None).tojson())
+        #if width < 480 or length < 640 :
+            #return jsonify(Info(False,"图片过小（不小于480px * 360px）",None).tojson())
+       # if width > 2400 or length > 1800 :
+            #return jsonify(Info(False,"图片过大（不大于2400px * 1800px）",None).tojson())
         nowtime = time.strftime('%Y-%m-%d',time.localtime())
         if os.path.exists('/home/fawen/shome/CampusPost/picture/temp/'+nowtime):
             newfaddr = "/home/fawen/shome/CampusPost/picture/temp/" + nowtime + '/' + file.filename

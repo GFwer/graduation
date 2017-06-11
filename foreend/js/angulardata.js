@@ -194,7 +194,6 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                                 url: url + "/v1/post/id/detail/?" + "post_id=" + $route.current.params.postid,
                                 dataType: "json",
                                 success: function(res) {
-
                                     $rootScope.detaildata = res.inforesult;
                                     $rootScope.detailother = res.inforesult.post_comments;
                                     // console.log($rootScope.mydata)
@@ -273,7 +272,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             })
             // "/v1/post/mypostlist/?category_name=3&startposi=0&pagesize=20&usertoken_str=" + getCookie("usertoken")
             .otherwise({
-                // templateUrl: 'postlist.html'
+                templateUrl: '404.html'
             });
         // $locationProvider.html5Mode(true);
     })
