@@ -89,9 +89,43 @@ class TokenDelete(restful.Resource):
         uo = Userorml()
         Infoa = uo.tokendelete(usertoken)
         return jsonify(Infoa) 
+class UserList(restful.Resource):
+    '''
+    请求方式: GET
+    请求参数:null
+    返回值:
+    True,返回列表
+    False,数据库错误,None
+    '''
 
+    @allow_cross_domain
+    def get(self):
+        # usertoken = request.form["usertoken_str"]
+        uo = Userorml()
+        Infoa = uo.getuserlist()
+        return jsonify(Infoa) 
 
+class UserDelete(restful.Resource):
+    '''
+    请求方式: POST
+    请求参数:
+    user_name : Jack
+    user_password : jack123
+    user_privilege : 用户 
+    返回值:
+    True,登录成功,usertoken;
+    False,用户名或密码错误,None;
+    False,数据库错误,None
+    '''
 
+    @allow_cross_domain
+    def post(self):
+        user_id = request.form["user_id"]
+        if not all([user_id]):
+            return "id错误"
+        uo = Userorml()
+        Infoa = uo.userdel(user_id)
+        return jsonify(Infoa) 
 
 
 

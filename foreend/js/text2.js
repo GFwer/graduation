@@ -75,13 +75,19 @@ function newdel() {
             closeOnConfirm: false
         },
         function() {
-            swal("删除！", "帖子已经被删除。", "success");
+
             var postId = newGetId();
             var usertoken = getCookie("usertoken");
             var xmlHttp2 = new XMLHttpRequest();
             xmlHttp2.onreadystatechange = function() {
                 if (xmlHttp2.readyState == 4 && xmlHttp2.status == 200) {
                     var result = JSON.parse(xmlHttp2.responseText);
+                    if (result['infomsg'] == '没有操作的权限') {
+                        swal("失败！", "没有操作权限", "warning");
+                    } else {
+                        swal("成功！", "帖子已经删除", "success");
+                        window.location.reload();
+                    }
                     mdui.snackbar({
                         message: result.infomsg
                     });
@@ -118,11 +124,15 @@ function toTrue() {
 function newToTrue(text) {
     var postId = newGetId();
     var usertoken = getCookie("usertoken");
-    if(!ismobile()){var comment = text.replace(/&/g, 'tihuanfu');}
-    if(ismobile()){var comment = document.getElementById('mobile').value}
+    if (!ismobile()) {
+        var comment = text.replace(/&/g, 'tihuanfu');
+    }
+    if (ismobile()) {
+        var comment = document.getElementById('mobile').value
+    }
     var xmlHttp2 = new XMLHttpRequest();
     console.log(comment)
-    if (comment == "<p><br></p>"||comment == ""||comment == undefined) {
+    if (comment == "<p><br></p>" || comment == "" || comment == undefined) {
         mdui.snackbar({
             message: "评论不能为空！"
         });

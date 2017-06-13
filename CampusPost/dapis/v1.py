@@ -4,6 +4,8 @@ from dwsl import fileservice
 
 routedict = {
     userservice.CheckUserExist: "/v1/user/signup/", #检查用户名是否被占用
+    userservice.UserList:"/v1/user/list/", #返回用户列表
+    userservice.UserDelete:"/v1/user/del/", #删除用户
     userservice.AddUser: "/v1/user/signup/",        #用户注册
     userservice.CheckLogin: "/v1/user/login/",      #用户登录
     userservice.TokenDelete: "/v1/token/delete/",   #删除usertoken

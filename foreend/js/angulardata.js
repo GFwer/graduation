@@ -276,7 +276,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             });
         // $locationProvider.html5Mode(true);
     })
-    .controller('testctrl', function($scope, $location, $anchorScroll,$rootScope) {
+    .controller('testctrl', function($scope, $location, $anchorScroll, $rootScope) {
         var urlarr2 = window.location.href.split('#/');
         var lasturl2 = urlarr2[1];
         if (lasturl2 == 'tab-2') {
@@ -347,16 +347,22 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                     closeOnConfirm: false
                 },
                 function() {
-                    swal("删除！", "你的帖子已经删除。", "success");
+
                     var xmlHttp1 = new XMLHttpRequest();
                     xmlHttp1.onreadystatechange = function() {
                         if (xmlHttp1.readyState == 4 && xmlHttp1.status == 200) {
                             var result = JSON.parse(xmlHttp1.responseText);
                             // console.log(result);
                             // alert(result.infomsg);
-                            if (result.infostatus == true) {
+
+                            if (result['infomsg'] == '没有操作权限') {
+                                swal("失败！", "没有操作权限", "failed");
+                            } else {
+                                swal("成功！", "帖子已经删除", "success");
                                 window.location.reload();
                             }
+
+
                         }
                     };
                     var backendurl = url + "/v1/post/delete/";
@@ -470,17 +476,17 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                 }
             }
             // console.log(111)
-            $.ajax({
-                type: "GET",
-                url: "https://free-api.heweather.com/v5/forecast?city=haerbin&key=48c9dd085d24442d8c0a05f4c151423b",
-                dataType: "json",
-                async: false,
-                //cache:false,
-                success: function(data) {
-                    $scope.wdata = data.HeWeather5[0].daily_forecast;
-                    // http://openapi.tuling123.com/openapi/api/v2
-                }
-            })
+        $.ajax({
+            type: "GET",
+            url: "https://free-api.heweather.com/v5/forecast?city=haerbin&key=48c9dd085d24442d8c0a05f4c151423b",
+            dataType: "json",
+            async: false,
+            //cache:false,
+            success: function(data) {
+                $scope.wdata = data.HeWeather5[0].daily_forecast;
+                // http://openapi.tuling123.com/openapi/api/v2
+            }
+        })
         $rootScope.school = function(figure) {
             // var oParent = document.getElementById('two'); // 父级对象
             // oParent.innerHTML = "";

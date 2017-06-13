@@ -195,6 +195,30 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                     }]
                 }
             })
+            .when('/userlist', {
+                title: '用户管理',
+                templateUrl: 'userlist.html',
+                controller: 'testctrl',
+                resolve: {
+                    postdetail: ['$rootScope', '$routeParams', '$route', function($rootScope, $routeParams, $route) {
+                        (
+                            // console.log($route.current.params);
+                            $.ajax({
+                                async: false,
+                                type: "GET",
+                                url: url + "/v1/user/list/",
+                                dataType: "json",
+                                success: function(res) {
+
+                                    $rootScope.userlist = res.inforesult;
+                                    // $rootScope.detailother = res.inforesult.post_comments;
+                                    // console.log($rootScope.mydata)
+                                }
+                            })
+                        ).$promise;
+                    }]
+                }
+            })
             .when('/edit', {
                 title: '发布帖子',
                 templateUrl: 'edit.html',
@@ -316,6 +340,36 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                     xmlHttp1.open("POST", backendurl, true);
                     xmlHttp1.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlHttp1.send("usertoken_str=" + usertoken + "&post_id=" + id);
+                });
+        }
+        $rootScope.deleteuser = function(user_id) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    result = JSON.parse(xmlHttp.responseText);
+                    mdui.snackbar({
+                        message: result["infomsg"]
+                    });
+                    if (result['infomsg'] == '数据库错误') { swal("删除！", result["infomsg"], "warning"); } else {
+                        swal("删除！", result["infomsg"], "success");
+                        window.location.reload();
+                    }
+                }
+            };
+            swal({
+                    title: "确定删除吗？",
+                    text: "你将无法恢复用户！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定删除！",
+                    closeOnConfirm: false
+                },
+                function() {
+                    var backendurl = url + "/v1/user/del/";
+                    xmlHttp.open("POST", backendurl, true);
+                    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlHttp.send("user_id=" + user_id);
                 });
         }
         $rootScope.airport = function(id) {
@@ -529,17 +583,17 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                 }
             }
             // console.log(111)
-            $.ajax({
-                type: "GET",
-                url: "https://free-api.heweather.com/v5/forecast?city=haerbin&key=48c9dd085d24442d8c0a05f4c151423b",
-                dataType: "json",
-                async: false,
-                //cache:false,
-                success: function(data) {
-                    $scope.wdata = data.HeWeather5[0].daily_forecast;
-                    // http://openapi.tuling123.com/openapi/api/v2
-                }
-            })
+        $.ajax({
+            type: "GET",
+            url: "https://free-api.heweather.com/v5/forecast?city=haerbin&key=48c9dd085d24442d8c0a05f4c151423b",
+            dataType: "json",
+            async: false,
+            //cache:false,
+            success: function(data) {
+                $scope.wdata = data.HeWeather5[0].daily_forecast;
+                // http://openapi.tuling123.com/openapi/api/v2
+            }
+        })
         $rootScope.school = function(figure) {
             // var oParent = document.getElementById('two'); // 父级对象
             // oParent.innerHTML = "";

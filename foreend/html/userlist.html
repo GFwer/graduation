@@ -1,0 +1,27 @@
+<div class="mdui-table-fluid" ng-controller="mypostctrl" style="min-height: 100px;margin-top: 100px;">
+    <table class="mdui-table mdui-table-hoverable">
+        <thead>
+            <tr>
+                <th>用户ID</th>
+                <th>用户名</th>
+                <th>用户权限</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in userlist track by $index">
+
+                    <td ng-if="item[0]!=2">{{item[0]}}</td>
+                    <td ng-if="item[0]!=2">{{item[1]}}</td>
+                    <td ng-if="item[2]=='1'&&item[0]!=2">管理员</td>
+                    <td ng-if="item[2]=='0'&&item[0]!=2">普通用户</td>
+                    <td ng-if="item[0]!=2">
+                        <a style="color: gray;cursor: pointer;" ng-click='deleteuser(item[0])'><i class="mdui-icon material-icons">&#xe92b;</i></a>
+                    </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>提示：为了保证安全，删除用户之前请先删除对应帖子</p>
+</div>
+<!-- {{mypost}} -->
+<!-- {{mypost1}}{{mypost2}}{{mypost3}}{{mypost4}} -->

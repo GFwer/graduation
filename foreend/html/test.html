@@ -14,6 +14,7 @@
     .left {
         width: 49%;
         min-height: 100px;
+        max-height: 500px;
         word-wrap: break-word;
         display: inline-block;
     }
@@ -27,6 +28,24 @@
         position: relative;
         margin: 0 auto;
     }
+    
+    .mdui-chip-title {
+        height: auto!important;
+    }
+    
+    .mdui-chip {
+        white-space: pre-line!important;
+        background-color: white!important;
+    }
+    
+    .mdui-chip:focus,
+    .mdui-chip:hover {
+        box-shadow: none!important;
+    }
+    
+    .body {
+        margin-top: 50px;
+    }
     </style>
 </head>
 
@@ -35,11 +54,11 @@
         <span class="mdui-typo-title">理工机器人</span>
         <div class="mdui-toolbar-spacer"></div>
     </div>
-    <div style="width: 100%;" class="body">
+    <div style="width: 100%;" class="body" id='body'>
         <!--     <span ng-repeat="item in arr">
         <span>{{item}}</span>
     </span> -->
-        <div ng-repeat="item in arr track by $index" style="overflow: auto;width: 100%;display: inline-block;text-align: center;margin-top: 50;">
+        <div ng-repeat="item in arr track by $index" style="width: 100%;display: inline-block;text-align: center;">
             <div class="left" ng-class="{'op':$index%2!=0}">
                 <div class="mdui-chip">
                     <span class="mdui-chip-icon"><i class="mdui-icon material-icons ion-person"></i></span>
@@ -53,7 +72,7 @@
             </div>
         </div>
     </div>
-    <div class="mdui-bottom-nav mdui-bottom-nav-text-auto" style="position: fixed;bottom: 0px;">
+    <div class="mdui-bottom-nav mdui-bottom-nav-text-auto" style="position: fixed;bottom: 0px;width: 100%;">
         <div class="mdui-textfield" style="width: 100%;margin-left: 3px">
             <input class="mdui-textfield-input" type="text" placeholder="请输入内容..." my-enter="do()" />
         </div>
@@ -80,7 +99,9 @@
                 if (x != '') {
                     $rootScope.arr.push($('.mdui-textfield-input')[0].value);
                     $rootScope.getdata(x);
+                    $(document).scrollTop(100000);
                 }
+
 
             }
             $rootScope.getdata = function(data) {
@@ -103,6 +124,7 @@
                         $rootScope.arr.push(res.answer)
                         console.log($rootScope.arr)
                         $('.mdui-textfield-input')[0].value = '';
+                        $(document).scrollTop(100000);
                     }
                 })
             }
@@ -120,6 +142,14 @@
                 });
             };
         });
+    $(document).ready(function() {
+        $(document).bind('keyup', function(event) {
+            if (event.keyCode == "13") {
+                $(document).scrollTop(100000);
+
+            }
+        });
+    });
     </script>
 </body>
 
