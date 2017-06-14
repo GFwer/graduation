@@ -7,21 +7,21 @@ from dbmodels.picturemodel import Picture
 from dbmodels.usertokenmodel import Usertoken
 from tools.info import Info
 import uuid
-from orml.dbbase import DBSession
-from dbmodels.usermodel import User
-from dbmodels.postmodel import Post
-from dbmodels.usertokenmodel import Usertoken
-from dbmodels.categorymodel import Category
-from dbmodels.toppostmodel import Toppost
-from dbmodels.picturemodel import Picture
-from dbmodels.commentmodel import Comment
-from tools.info import Info
-from sqlalchemy import desc
-from conf import staticserver, staticport
-import time
-from tools.timetools import Timetools
-import os
-import demjson
+# from orml.dbbase import DBSession
+# from dbmodels.usermodel import User
+# from dbmodels.postmodel import Post
+# from dbmodels.usertokenmodel import Usertoken
+# from dbmodels.categorymodel import Category
+# from dbmodels.toppostmodel import Toppost
+# from dbmodels.picturemodel import Picture
+# from dbmodels.commentmodel import Comment
+# from tools.info import Info
+# from sqlalchemy import desc
+# from conf import staticserver, staticport
+# import time
+# from tools.timetools import Timetools
+# import os
+# import demjson
 
 class Userorml:
 
@@ -147,8 +147,28 @@ class Userorml:
                     session.close()
                     return Info(True,'成功删除用户',user_id).tojson()
                 else:
-                    return (False,'该用户不存在',None)
+                    return (False,'该用户不存在',None).tojson()
+                    session.close()
             except Exception as a:
                 session.rollback()
                 session.close()
                 return Info(False, '数据库错误', user_id).tojson()
+    def changepwd(self, name, pwd, new):
+        session = DBSession()
+        try:
+            if session.query(User).filter_by(user_name=name,user_password=pwd).count()>0:
+                user1 = session.query(User).filter_by(user_name=name,user_password=pwd).scalar()
+                user1.user_password=new
+                session.commit()
+                session.close()
+                return Info(True,'修改成功！',None).tojson()
+            else:
+                return Info(False,'原密码错误！',None).tojson()
+                session.close()
+
+        except Exception as a:
+            print(a)
+            session.rollback()
+            # x = session.query(User).filter_by(user_name=name,user_password=pwd).scalar()
+            return Info(False, '数据库错误', x).tojson()
+            session.close()

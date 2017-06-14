@@ -1,0 +1,19 @@
+<div class="mdui-container" ng-controller="changectrl">
+    <div class="mdui-textfield mdui-textfield-floating-label">
+        <label class="mdui-textfield-label">原密码</label>
+        <input class="mdui-textfield-input old" type="text" maxlength="60" required="" />
+        <div class="mdui-textfield-error">原密码</div>
+    </div>
+    <div class="mdui-textfield mdui-textfield-floating-label">
+        <label class="mdui-textfield-label">新密码</label>
+        <input class="mdui-textfield-input new1" type="password" maxlength="60" required="" />
+        <div class="mdui-textfield-error">新密码不能为空</div>
+    </div>
+    <div class="mdui-textfield mdui-textfield-floating-label">
+        <label class="mdui-textfield-label">确认密码</label>
+        <input class="mdui-textfield-input new2" type="password" maxlength="60" required="" />
+        <div class="mdui-textfield-error">确认密码不能为空</div>
+    </div>
+    <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right mdui-col-md-2" ng-click="changepwd()" style="margin-top: 30px;margin-left: 40px;">提交</button>
+</div>
+

@@ -1,0 +1,46 @@
+<div class="mdui-container" ng-controller="searchctrl">
+    <div class="mdui-row">
+        <div class="mdui-col-md-2">
+            <!-- <label>Browser Select</label> -->
+            <select class="browser-default" onchange="getClass(this)" style="margin-top: 30px;" id="catr">
+                <option value="" disabled selected>选择分类</option>
+                <option value="0">标题</option>
+                <option value="1">内容</option>
+            </select>
+        </div>
+        <div class="mdui-col-md-6">
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">搜索</label>
+                <input class="mdui-textfield-input searchcon" type="text" ng-model="searchc" maxlength="60" required="" />
+                <div class="mdui-textfield-error">内容不能为空</div>
+            </div>
+        </div>
+        <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right mdui-col-md-2" ng-click="searchcontent()" style="margin-top: 30px;margin-left: 40px;">提交</button>
+    </div>
+    <div class="mdui-table-fluid" ng-if="getre.length>0;" style="margin-top: 30px;">
+        <table class="mdui-table mdui-table-hoverable">
+            <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>作者</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in getre">
+                    <td>{{item.post_title}}</td>
+                    <td>{{item.user_name}}</td>
+                    <td>{{item.post_time}}</td>
+                    <td><a style="color: gray" ng-href="#/post/{{item.post_id}}"><i class="mdui-icon material-icons">&#xe5cc;</i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div ng-if="getre.length==0"  class="mdui-container" style="margin-top: 30px;font-size: 1em"><p style="font-size: 3em"><i class="ion-android-sad"></i></p>未找到符合条件的帖子</div>
+<script type="text/javascript">
+function getClass(e) {
+    return e.value;
+}
+</script>

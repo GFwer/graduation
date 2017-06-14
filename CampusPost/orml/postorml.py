@@ -13,6 +13,8 @@ import time
 from tools.timetools import Timetools
 import os
 import demjson
+# import json
+# from datetime import datetime  
 
 class Postorml:
     
@@ -429,9 +431,61 @@ class Postorml:
         except Exception as a:
             print(a)
             session.close()
-            return Info(False, '数据库错误', None).tojson()                 
-                
-                
+            return Info(False, '数据库错误', None).tojson()   
+    def postsearch(self, key):            
+        session = DBSession()
+        try:
+            # return "key"
+            # list = 1
+            list = session.query(Post.post_title,Post.post_time,Post.post_content,Post.post_userid,Post.post_id).filter(Post.post_content.like('%'+key+'%')).all();
+            listdict=[]
+            for lista in list:
+                dicta = {}
+                dicta["post_id"] = lista[4]
+                dicta["post_title"] = lista[0]
+                dicta["post_time"] = lista[1]
+                dicta["post_content"] = lista[2]
+                user_name = session.query(User.user_name,User.user_userlogo).filter_by(user_id=lista[3]).all()
+                username = user_name[0][0]
+                dicta["user_name"] = username
+                userlogo = user_name[0][1]
+                userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/' + userlogo
+                dicta["post_userhead"] = userlogo
+                listdict.append(dicta)
+            # json_data = json.dumps(x,cls=AlchemyEncoder)
+            session.close()
+            return Info(True, '返回帖子列表', listdict).tojson() 
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', listdict).tojson()               
+    def postsearchtitle(self, key):            
+        session = DBSession()
+        try:
+            # return "key"
+            # list = 1
+            list = session.query(Post.post_title,Post.post_time,Post.post_content,Post.post_userid,Post.post_id).filter(Post.post_title.like('%'+key+'%')).all();
+            listdict=[]
+            for lista in list:
+                dicta = {}
+                dicta["post_id"] = lista[4]
+                dicta["post_title"] = lista[0]
+                dicta["post_time"] = lista[1]
+                dicta["post_content"] = lista[2]
+                user_name = session.query(User.user_name,User.user_userlogo).filter_by(user_id=lista[3]).all()
+                username = user_name[0][0]
+                dicta["user_name"] = username
+                userlogo = user_name[0][1]
+                userlogo = 'http://' + str(staticserver) + ":" + str(staticport) + '/logo/' + userlogo
+                dicta["post_userhead"] = userlogo
+                listdict.append(dicta)
+            # json_data = json.dumps(x,cls=AlchemyEncoder)
+            session.close()
+            return Info(True, '返回帖子列表', listdict).tojson() 
+        except Exception as a:
+            print(a)
+            session.close()
+            return Info(False, '数据库错误', listdict).tojson()  
                 
                 
                 

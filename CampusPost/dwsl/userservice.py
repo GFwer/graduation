@@ -125,7 +125,25 @@ class UserDelete(restful.Resource):
             return "id错误"
         uo = Userorml()
         Infoa = uo.userdel(user_id)
-        return jsonify(Infoa) 
+        return jsonify(Infoa)
+class ChangePWD(restful.Resource):
+    '''
+    请求方式: POST
+    请求参数:
+    usertoken_str : usertoken
+    返回值:
+    True,成功删除usertoken,None;
+    False,数据库错误,None
+    '''
+
+    @allow_cross_domain
+    def post(self):
+        name = request.form["name"]
+        pwd = request.form["pwd"]
+        new = request.form["new"]
+        uo = Userorml()
+        Infoa = uo.changepwd(name,pwd,new)
+        return jsonify(Infoa)  
 
 
 

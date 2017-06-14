@@ -285,6 +285,47 @@ class Pictureremove(restful.Resource):
         Infoa = mo.pictureremove(usertoken,pic_address)
         result = jsonify(Infoa)
         return result 
+class PostSearch(restful.Resource):
+    
+    '''
+    请求参数:
+    usertoken_str: tokenstr
+    comment_id: commentid
+    reply_str: replystr
+    返回值:
+    True, 回复成功, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    '''
+    
+    @allow_cross_domain
+    def get(self):#请求方式为POST
+        # return "nihao"
+        key = request.args.get("key")
+        # return key
+        po = Postorml()
+        Infoa = po.postsearch(key)
+        return jsonify(Infoa)  
+class PostSearchTitle(restful.Resource):
+    
+    '''
+    请求参数:
+    usertoken_str: tokenstr
+    comment_id: commentid
+    reply_str: replystr
+    返回值:
+    True, 回复成功, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    '''
+    
+    @allow_cross_domain
+    def get(self):#请求方式为POST
+        key = request.args.get("key")
+        # return key
+        po = Postorml()
+        Infoa = po.postsearchtitle(key)
+        return jsonify(Infoa)  
  
  
  

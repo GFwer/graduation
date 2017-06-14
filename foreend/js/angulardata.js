@@ -208,6 +208,16 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                 templateUrl: 'edit.html',
                 controller: 'testctrl'
             })
+            .when('/search', {
+                title: '搜索',
+                templateUrl: 'search.html',
+                controller: 'testctrl'
+            })
+            .when('/change', {
+                title: '修改密码',
+                templateUrl: 'change.html',
+                controller: 'testctrl'
+            })
             .when('/mypost', {
                 title: '我的帖子',
                 templateUrl: 'personal.html',
@@ -466,6 +476,85 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
     .controller('pagectrl', function($scope, $rootScope) {
         // $scope.totalItems = Math.ceil(($scope.total) / 10) * 20;
 
+    })
+    .controller('searchctrl', function($scope, $rootScope) {
+        $scope.searchcontent = function() {
+            // $scope.x = $scope.search
+            var e = document.getElementById("catr");
+            var select = getClass(e);
+            var gatcon = document.getElementsByClassName("searchcon")[0].value;
+            if (select == "" || gatcon == "") {
+                mdui.snackbar({
+                    message: '分类或内容不能为空！'
+                });
+            } else {
+                if (select == 0) {
+                    $.ajax({
+                        async: false,
+                        type: "GET",
+                        url: url + "/v1/post/searchtitle/?" + "key=" + gatcon,
+                        dataType: "json",
+                        success: function(res) {
+                            $rootScope.getre = res.inforesult;
+                            // console.log($rootScope.mydata)
+                        }
+                    })
+
+                } else if (select == 1) {
+                    $.ajax({
+                        async: false,
+                        type: "GET",
+                        url: url + "/v1/post/search/?" + "key=" + gatcon,
+                        dataType: "json",
+                        success: function(res) {
+                            $rootScope.getre = res.inforesult;
+                            // console.log($rootScope.mydata)
+                        }
+                    })
+                }
+            }
+        }
+
+    })
+    .controller('changectrl', function($scope, $rootScope) {
+        $rootScope.changepwd = function() {
+            var old = document.getElementsByClassName('old')[0].value;
+            var new1 = document.getElementsByClassName('new1')[0].value;
+            var new2 = document.getElementsByClassName('new2')[0].value;
+            var name = getCookie("username")
+            if (old == "" || new1 == "" || new2 == "") {
+                mdui.snackbar({
+                    message: '内容均不能为空！'
+                });
+
+            } else if (new1 != new2) {
+                mdui.snackbar({
+                    message: '两次输入的密码不一致！'
+                });
+            } else {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.onreadystatechange = function() {
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                        result = JSON.parse(xmlHttp.responseText);
+                        if (result['infostatus'] == true) {
+                            mdui.snackbar({
+                                message: '修改成功！'
+                            });
+                            setTimeout(secede(), 1000)
+                        } else {
+                            mdui.snackbar({
+                                message: result['infomsg']
+                            });
+                        }
+                    }
+                };
+                var backendurl = url + "/v1/user/change/";
+                xmlHttp.open("POST", backendurl, true);
+                xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlHttp.send("name=" + name + "&pwd=" + old + "&new=" + new2);
+            }
+
+        }
     })
     .controller('wctrl', function($rootScope, $scope) {
         $rootScope.ismobile = function() {

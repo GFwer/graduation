@@ -86,7 +86,7 @@ function newdel() {
                         swal("失败！", "没有操作权限", "warning");
                     } else {
                         swal("成功！", "帖子已经删除", "success");
-                        window.location.reload();
+                        setTimeout(function() { window.history.go(-1); }, 1000)
                     }
                     mdui.snackbar({
                         message: result.infomsg

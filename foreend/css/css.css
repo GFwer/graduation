@@ -578,7 +578,7 @@ a {
 
 a:focus,
 a:hover {
-    color: white!important;
+    /*color: white!important;*/
     text-decoration: none!important;
 }
 
