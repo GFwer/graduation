@@ -485,7 +485,65 @@ class Postorml:
         except Exception as a:
             print(a)
             session.close()
-            return Info(False, '数据库错误', listdict).tojson()  
+            return Info(False, '数据库错误', listdict).tojson()
+    def commentlist(self,usern):
+        session = DBSession()
+        try:
+            # cpmmentall = {}     
+            muid = session.query(User.user_id).filter_by(user_name=usern)[0]                         
+            comment = session.query(Comment.comment_id,Comment.comment_userid,Comment.comment_text,Comment.comment_datetime,Comment.comment_postid).filter_by(comment_userid=muid[0]).order_by(desc(Comment.comment_datetime)).all() 
+            commentlist = []
+            for y in comment:
+                commentdict = {}
+                commentdict['comment_id'] = y[0]
+                # commentdict['comment_userid'] = y[1]
+                commentdict['postid'] = y[4]
+                commentdict['postname'] = session.query(Post.post_title).filter_by(post_id=y[4])[0]
+                commentdict['comment_text'] = y[2]
+                commentdict['comment_datetime'] = y[3]
+                commentlist.append(commentdict)
+            commentlist.sort(key = lambda x : x['comment_datetime'],reverse=True)
+            # for x in commentlist:
+                # x['comment_datetime'] = tt.timetonow(x['comment_datetime'])    
+            return Info(True,'返回成功',commentlist).tojson()
+            session.commit()
+            session.close()
+        except Exception as a:
+            print(a)
+            session.close()
+            # a = comment = session.query(Comment.comment_id,Comment.comment_userid,Comment.comment_text,Comment.comment_datetime,Comment.comment_postid).filter_by(comment_userid=userid).order_by(desc(Comment.comment_datetime)).all()
+            return Info(False, '数据库错误', None).tojson()
+    def postshow(self,username):
+        session = DBSession()
+        try:
+            username = session.query(User.user_id).filter_by(user_name=username)[0]
+            postlist = session.query(Post.post_userid,Post.post_title,Post.post_content,Post.post_time,Post.post_id,Post.post_categoryid).filter_by(post_userid=username[0]).all();
+            posts = []
+            for x in postlist:
+                postdetail = {}
+                postdetail["post_id"] = x[4]
+                postdetail["time"] = x[3]
+                postdetail['title'] = x[1]
+                cat = session.query(Category.category_name).filter_by(category_id=x[5])[0]
+                if cat[0]=='0':
+                    postdetail['cat']='校内信息'
+                elif cat[0]=='1':
+                    postdetail['cat'] = '学习交流'
+                elif cat[0]=='2':
+                    postdetail['cat']="吃喝玩乐"
+                else:
+                    postdetail['cat']="失物招领"
+                posts.append(postdetail)
+            posts.sort(key = lambda x : x['time'],reverse=True)
+                # postdetail["post_userid"] = postlist[0][0]   
+            return Info(True,'返回成功',posts).tojson()
+            session.commit()
+            session.close()
+        except Exception as a:
+            print(a)
+            session.close()
+            # a = comment = session.query(Comment.comment_id,Comment.comment_userid,Comment.comment_text,Comment.comment_datetime,Comment.comment_postid).filter_by(comment_userid=userid).order_by(desc(Comment.comment_datetime)).all()
+            return Info(False, '数据库错误', None).tojson()    
                 
                 
                 

@@ -10,7 +10,7 @@
             <!--             <div class="mdui-list-item-content mdui-list-item-two-line">{{item.post_username}}</div>
             <div class="mdui-list-item-content mdui-list-item-two-line">{{item.post_username}}</div> -->
             <ul class="mdui-list-item-content">
-                <li class="mdui-list-item-one-line name">{{detaildata.post_username}}</li>
+                <li class="mdui-list-item-one-line name"><a ng-href="#/show/{{detaildata.post_username}}" style="color:#333">{{detaildata.post_username}}</a></li>
                 <li class="mdui-list-item-one-line date">{{detaildata.post_time}}</li>
             </ul>
             <!-- <div class="stick mdui-color-theme-accent" mdui-tooltip="{content: '置顶'} "></div> -->
@@ -35,7 +35,7 @@
         <li class="mdui-list-item ">
             <div class="mdui-list-item-avatar mdui-img-circle "><img holder='holder.js/40x40?theme=me&text={{item.comment_username| limitTo : 1 | uppercase }}' /></div>
             <ul class="mdui-list-item-content ">
-                <li class="mdui-list-item-one-line name ">{{item.comment_username}}</li>
+                <li class="mdui-list-item-one-line name "><a ng-href="#/show/{{item.comment_username}}" style="color:#333">{{item.comment_username}}</a></li>
                 <li class="mdui-list-item-one-line date">{{item.comment_datetime}}</li>
             </ul>
             <!-- <i class="mdui-list-item-icon mdui-icon material-icons ">&#xe5c8;</i> -->

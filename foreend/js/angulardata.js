@@ -21,6 +21,11 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
             return $sce.trustAsHtml(htmlCode);
         }
     }])
+    .filter("del", ['$sce', function($sce) {
+        return function(input) {
+            return input.replace(/\s*/g, "").replace(/<style[\s\S]*?<\/style>/g, "").replace(/<img*?<\/img>/g, "").replace(/<\/?[^>]*>/g, "").replace(/(\r)/g, "").replace(/(\t)/g, "").replace(/(\n)/g, "")
+        }
+    }])
     .filter("replace", [function() {
         return function(input) {
             return input.replace(/tihuanfu/g, '&');
@@ -217,6 +222,43 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                 title: '修改密码',
                 templateUrl: 'change.html',
                 controller: 'testctrl'
+            })
+            .when('/show/:username', {
+                title: '帖子展示',
+                templateUrl: 'show.html',
+                controller: 'testctrl',
+                resolve: {
+                    postdetail: ['$rootScope', '$routeParams', '$route', function($rootScope, $routeParams, $route) {
+                        // $rootScope.mypost = [];
+                        (
+                            // console.log($route.current.params);
+                            $.ajax({
+                                async: false,
+                                type: "GET",
+                                url: url + "/v1/post/show/?username=" + $route.current.params.username,
+                                dataType: "json",
+                                success: function(res) {
+                                    $rootScope.postshow = res.inforesult
+
+                                    // console.log($rootScope.mypost1)
+                                    // $rootScope.detailother = arr.post_comments;
+                                    // console.log($rootScope.mydata)
+                                }
+                            }), $.ajax({
+                                async: false,
+                                type: "GET",
+                                url: url + "/v1/post/comment/?username=" + $route.current.params.username,
+                                dataType: "json",
+                                success: function(res) {
+                                    $rootScope.commentshow = res.inforesult;
+
+                                    // $rootScope.detailother = arr.post_comments;
+                                    // console.log($rootScope.mydata)
+                                }
+                            })
+                        ).$promise;
+                    }]
+                }
             })
             .when('/mypost', {
                 title: '我的帖子',

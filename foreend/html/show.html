@@ -1,0 +1,54 @@
+<div class="mdui-table-fluid"  style="min-height: 100px;margin-top: 100px;">
+    <span class="mdui-float-left">该用户发布的帖子</span>
+    <table class="mdui-table mdui-table-hoverable" ng-hide="postshow.length==0">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>分类</th>
+                <th>发布时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in postshow">
+                <td>{{item.title}}</td>
+                <td>{{item.cat}}</td>
+                <td>{{item.time}}</td>
+                <td><a style="color: gray" ng-href="#/post/{{item.post_id}}"><i class="mdui-icon material-icons">&#xe5cc;</i></a>
+                </td>
+            </tr>
+            <div style="margin-left: 30px;margin-top: 30px;color:#424242" ng-if="postshow.length==0">
+                <i class="mdui-icon material-icons">&#xe87c;</i>
+                <div style="margin-top: 20px;margin-bottom: 30px;">没找到该用户的帖子~</div>
+            </div>
+        </tbody>
+    </table>
+</div>
+<div class="mdui-table-fluid" style="min-height: 100px;margin-top: 100px;">
+    <span class="mdui-float-left">该用户发布的评论</span>
+    <table class="mdui-table mdui-table-hoverable" ng-hide="commentshow.length==0">
+        <thead style="width: 100%">
+            <tr style="width: 100%">
+                <th style="max-width: 25%;overflow: hidden;text-overflow: ellipsis;">名称</th>
+                <th>标题</th>
+                <th>发布时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in commentshow">
+                <td style="max-width: 150px;overflow: hidden;text-overflow: ellipsis;word-wrap: nowrap">{{item.comment_text | del}}</td>
+                <td>{{item.postname[0]}}</td>
+                <td>{{item.comment_datetime}}</td>
+                <td><a style="color: gray" ng-href="#/post/{{item.postid}}"><i class="mdui-icon material-icons">&#xe5cc;</i></a>
+                </td>
+            </tr>
+            <div style="margin-left: 30px;margin-top: 30px;color:#424242" ng-if="commentshow.length==0">
+                <i class="mdui-icon material-icons">&#xe87c;</i>
+                <div style="margin-top: 20px;margin-bottom: 30px;">没找到该用户的帖子~</div>
+            </div>
+        </tbody>
+    </table>
+</div>
+<!-- {{mypost}} -->
+<!-- {{mypost1}}{{mypost2}}{{mypost3}}{{mypost4}} -->

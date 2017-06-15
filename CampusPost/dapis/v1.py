@@ -11,6 +11,8 @@ routedict = {
     userservice.CheckLogin: "/v1/user/login/",      #用户登录
     userservice.TokenDelete: "/v1/token/delete/",   #删除usertoken
     postservice.Postlist: "/v1/post/list/",         #返回帖子列表
+    postservice.CommentList: "/v1/post/comment/",    #返回评论列表
+    postservice.PostShow: "/v1/post/show/",    #返回帖子
     postservice.Postappend:"/v1/post/append/",      #发布帖子
     postservice.PostSearch:"/v1/post/search/",      #按内容搜索帖子
     postservice.PostSearchTitle:"/v1/post/searchtitle/",      #按标题搜索帖子

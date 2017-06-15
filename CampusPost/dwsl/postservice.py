@@ -7,6 +7,7 @@ from tools.crossdomain import allow_cross_domain
 from orml.postorml import Postorml
 from tools.info import Info
 
+
 class Postlist(restful.Resource): 
 
     '''
@@ -326,9 +327,35 @@ class PostSearchTitle(restful.Resource):
         po = Postorml()
         Infoa = po.postsearchtitle(key)
         return jsonify(Infoa)  
- 
- 
- 
+class CommentList(restful.Resource):
+    
+    '''
+    请求参数:
+    usertoken_str: tokenstr
+    comment_id: commentid
+    reply_str: replystr
+    返回值:
+    True, 回复成功, None
+    False, 用户登录已过期，请重新登录, None
+    False, 数据库错误, None
+    '''
+    
+    @allow_cross_domain
+    def get(self):#请求方式为POST
+        userid = request.args.get("username")
+        # return key
+        po = Postorml()
+        Infoa = po.commentlist(userid)
+        return jsonify(Infoa)  
+
+class PostShow(restful.Resource):
+    @allow_cross_domain
+    def get(self):#请求方式为POST
+        userid = request.args.get("username")
+        # return key
+        po = Postorml()
+        Infoa = po.postshow(userid)
+        return jsonify(Infoa)
  
  
  
