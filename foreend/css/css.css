@@ -747,3 +747,12 @@ input:active {
 .font{
     font-size: 1.5em!important;
 }
+.heyy > p >img{
+    max-width: 100%!important;
+}
+.mdui-text-truncate > p >img{
+    max-width: 100%!important;
+}
+.mdui-text-truncate > p {
+    max-width: 90%;
+}

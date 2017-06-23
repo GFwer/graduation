@@ -272,7 +272,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                             $.ajax({
                                 async: false,
                                 type: "GET",
-                                url: url + "/v1/post/mypostlist/?category_name=0&startposi=0&pagesize=20&usertoken_str=" + getCookie("usertoken"),
+                                url: url + "/v1/post/mypostlist/?category_name=0&startposi=0&pagesize=50&usertoken_str=" + getCookie("usertoken"),
                                 dataType: "json",
                                 success: function(res) {
                                     $rootScope.mypost1 = res.inforesult;
@@ -284,7 +284,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                             }), $.ajax({
                                 async: false,
                                 type: "GET",
-                                url: url + "/v1/post/mypostlist/?category_name=1&startposi=0&pagesize=20&usertoken_str=" + getCookie("usertoken"),
+                                url: url + "/v1/post/mypostlist/?category_name=1&startposi=0&pagesize=50&usertoken_str=" + getCookie("usertoken"),
                                 dataType: "json",
                                 success: function(res) {
                                     $rootScope.mypost2 = res.inforesult;
@@ -295,7 +295,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                             }), $.ajax({
                                 async: false,
                                 type: "GET",
-                                url: url + "/v1/post/mypostlist/?category_name=2&startposi=0&pagesize=20&usertoken_str=" + getCookie("usertoken"),
+                                url: url + "/v1/post/mypostlist/?category_name=2&startposi=0&pagesize=50&usertoken_str=" + getCookie("usertoken"),
                                 dataType: "json",
                                 success: function(res) {
                                     $rootScope.mypost3 = res.inforesult;
@@ -307,7 +307,7 @@ angular.module('myapp', ['ngRoute', 'ngHolder', 'chieffancypants.loadingBar', 'n
                             $.ajax({
                                 async: false,
                                 type: "GET",
-                                url: url + "/v1/post/mypostlist/?category_name=3&startposi=0&pagesize=20&usertoken_str=" + getCookie("usertoken"),
+                                url: url + "/v1/post/mypostlist/?category_name=3&startposi=0&pagesize=50&usertoken_str=" + getCookie("usertoken"),
                                 dataType: "json",
                                 success: function(res) {
                                     $rootScope.mypost4 = res.inforesult;

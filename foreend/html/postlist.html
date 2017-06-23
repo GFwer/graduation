@@ -13,9 +13,9 @@
             <a ng-href="#/post/{{item.post_id}}"><i class="mdui-list-item-icon mdui-icon material-icons href" mdui-tooltip="{content: '帖子详情'}">&#xe5c8;</i></a>
         </li>
         <li class="mdui-list-item itemborder" ng-if="item.post_topstatu=='1'">
-            <div class="mdui-list-item-content" style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px;">
+            <div class="mdui-list-item-content" style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px;max-width: 90%;">
                 <div class="title">{{item.post_title}}</div>
-                <div class=" mdui-text-truncate" style="color:#616161">{{item.post_content}}</div>
+                <div class=" mdui-text-truncate" style="color:#616161;max-height: 300px;" ng-bind-html="item.post_content | sanitize"></div>
             </div>
         </li>
     </div>
@@ -24,7 +24,7 @@
             <div class="mdui-list-item-avatar mdui-img-circle"><img holder='holder.js/40x40?theme=me&text={{item.user_name| limitTo : 1 | uppercase }}' /></div>
             <!--             <div class="mdui-list-item-content mdui-list-item-two-line">{{item.user_name}}</div>
             <div class="mdui-list-item-content mdui-list-item-two-line">{{item.user_name}}</div> -->
-            <ul class="mdui-list-item-content">
+            <ul class="mdui-list-item-content"">
                 <li class="mdui-list-item-one-line name">{{item.user_name}}</li>
                 <li class="mdui-list-item-one-line date">{{item.post_time}}</li>
             </ul>
@@ -33,9 +33,9 @@
             <a ng-href="#/post/{{item.post_id}}"><i class="mdui-list-item-icon mdui-icon material-icons href" mdui-tooltip="{content: '帖子详情'}">&#xe5c8;</i></a>
         </li>
         <li class="mdui-list-item" ng-if="item.post_topstatu=='0'" ng-class="{'itemborder':!$last}">
-            <div class="mdui-list-item-content mdui-text-truncate" style="margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px;">
-                <div class="title">{{item.post_title}}</div>
-                <div class="mdui-text-truncate" style="color:#616161">{{item.post_content}}</div>
+            <div class="mdui-list-item-content mdui-text-truncate" style="max-width: 90%;margin-left: 20px;font-size: 0.9em;margin-bottom: 20px;margin-top: 20px;text-overflow: ellipsis;overflow: hidden;max-width: 90%;">
+                <div class="title" style="max-width: 90%;text-overflow: ellipsis;overflow: hidden;">{{item.post_title}}</div>
+                <div class="mdui-text-truncate" style="color:#616161;max-width: 90%;text-overflow: ellipsis;overflow: hidden;">{{item.post_content}}</div>
             </div>
         </li>
     </div>
